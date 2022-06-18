@@ -1,0 +1,27 @@
+Requisitos Funcionais:
+	Gerenciamento de Usuários
+	Gerenciamento de Clientes
+	Gerenciamento de Formas de Pagamento
+	Gerenciamento de Vendas
+	Gerenciamento de Movimentos
+	Gerenciamento de Produtos
+	Gerenciamento de Categorias
+	Gerenciamento de Subcategorias
+	Gerenciamento de Marcas
+	Gerenciamento de Linhas
+	Gerenciamento de Packs
+	Gerenciamento de Agenda
+
+
+Requisitos Não Funcionais:
+	O sistema deve ter um banco de dados local para acesso aos dados quando offline
+	O sistema deve exportar comprovantes de venda
+	O sistema deve exportar comprovantes de pagamento
+	O sistema deve exportar um extrato do período desejado das movimentações do cliente
+	O sistema deve exportar um extrato de pagamentos recebidos do usuário
+	O sistema deve avisar quando um cliente ultrapassou a data de pagamento combinada
+	O sistema deve agendar automaticamente a visita ao cliente para receber pagamentos
+	O sistema deve ser acessível a fontes de diversos tamanhos
+	O sistema deve ser acessível a dispositivos com baixo desempenho
+	O sistema deve permitir a importação de clientes por meio da agenda de contatos do usuário
+	
