@@ -14,6 +14,12 @@
         android:theme="@style/Theme.TCCGerenciadorDeVendas"
         tools:targetApi="31">
         <activity
+            android:name=".AdicionarCliente"
+            android:exported="false" />
+        <activity
+            android:name=".ListaClientes"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

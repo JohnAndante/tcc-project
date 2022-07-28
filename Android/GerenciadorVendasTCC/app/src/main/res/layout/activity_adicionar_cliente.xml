@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="@color/dark_gray_01"
+    tools:context=".AdicionarCliente">
+
+    <ImageView
+        android:id="@+id/imgvwIconCliente"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/ic_baseline_person_outline_24_white"
+        android:background="@drawable/cardbg_roundcorners_lightgray"
+        />
+
+    <TextView
+        android:id="@+id/adicionarNomeCliente"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:text="Nome"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        android:textColor="@color/light_gray_01"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="2dp"
+        />
+
+    <LinearLayout
+        android:layout_width="330dp"
+        android:layout_height="45dp"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal|center"
+        android:background="@drawable/cardbg_roundcorners_lightgray">
+
+        <EditText
+            android:id="@+id/editNomeCliente"
+            android:layout_width="290dp"
+            android:layout_height="45dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:ems="10"
+            android:textColor="@color/white"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:inputType="textPersonName"
+            android:backgroundTint="@color/light_gray_01"
+            />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_baseline_edit_24_white"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/adicionarTelefoneCliente"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:text="Telefone"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        android:textColor="@color/light_gray_01"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="2dp"
+        />
+
+    <LinearLayout
+        android:layout_width="330dp"
+        android:layout_height="45dp"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal|center"
+        android:background="@drawable/cardbg_roundcorners_lightgray">
+
+        <EditText
+            android:id="@+id/editTelefoneCliente"
+            android:layout_width="290dp"
+            android:layout_height="45dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:ems="10"
+            android:textColor="@color/white"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:inputType="textPersonName"
+            android:backgroundTint="@color/light_gray_01"
+            />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_baseline_edit_24_white"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal|center">
+
+        <Button
+            android:id="@+id/btClienteSalvar"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="50dp"
+            android:text="Salvar" />
+
+        <Button
+            android:id="@+id/btClienteCancelar"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="Cancelar"
+            />
+    </LinearLayout>
+
+
+
+</LinearLayout>

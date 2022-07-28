@@ -2,10 +2,12 @@ package com.example.tcc_gerenciadordevendas;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,13 +16,19 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-    LinearLayout linearFabMain;
-    FloatingActionButton fabMain,
-                         fabNovoPagamento,
-                         fabNovaVenda,
-                         fabNovoCliente;
-    Float translationY = 100f;
-    Boolean isMenuOpen = false;
+    private LinearLayout linearFabMain;
+    private FloatingActionButton fabMain,
+                                 fabNovoPagamento,
+                                 fabNovaVenda,
+                                 fabNovoCliente;
+
+    private Button  btCliente,
+                    btVenda,
+                    btPagamento,
+                    btProduto;
+
+    private Float translationY = 100f;
+    private Boolean isMenuOpen = false;
 
     OvershootInterpolator interpolator = new OvershootInterpolator();
 
@@ -31,7 +39,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         initFabMenu();
+        initButtonsHub();
 
+    }
+
+    private void initButtonsHub(){
+        btCliente   = findViewById(R.id.btCliente);
+        btVenda     = findViewById(R.id.btVenda);
+        btPagamento = findViewById(R.id.btPagamento);
+        btProduto   = findViewById(R.id.btProduto);
+
+        btCliente.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, ListaClientes.class));
+            }
+        });
     }
 
     private void initFabMenu(){
@@ -91,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     openFabMenu();
                 }
                 break;
+
             case R.id.floatingNovoPagamento:
                 if (isMenuOpen) {
                     closeFabMenu();
@@ -98,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     openFabMenu();
                 }
                 break;
+
             case R.id.floatingNovaVenda:
                 if (isMenuOpen) {
                     closeFabMenu();
@@ -105,7 +130,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     openFabMenu();
                 }
                 break;
+
             case R.id.floatingNovoCliente:
+
+                startActivity(new Intent(MainActivity.this, ListaClientes.class));
+
                 if (isMenuOpen) {
                     closeFabMenu();
                 } else {
@@ -115,4 +144,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
     }
+
 }
