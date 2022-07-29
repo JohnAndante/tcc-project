@@ -9,8 +9,11 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -19,6 +22,8 @@ public class ListaClientes extends AppCompatActivity {
 
     private Button btClienteVoltar;
     private Button btClienteAdicionar;
+    private ImageButton imgbtIconeNovoCliente;
+    private LinearLayout llAdicionarCliente;
     private ListView listView;
     private ClienteAdapter adapter;
     private ArrayList<Cliente> listaDinamicaClientes;
@@ -33,15 +38,25 @@ public class ListaClientes extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_clientes);
 
+        listaDinamicaClientes = new ArrayList<Cliente>();
+
         initButtonsHub();
         initSQLdb();
 
-        listaDinamicaClientes = new ArrayList<Cliente>();
+        adapter = new ClienteAdapter(this, 0, listaDinamicaClientes);
         listView = (ListView) findViewById(R.id.listViewClientes);
         listView.setAdapter(adapter);
 
-        btClienteAdicionar = (Button) findViewById(R.id.btClienteNovo);
-        btClienteAdicionar.setOnClickListener(new View.OnClickListener() {
+        imgbtIconeNovoCliente = (ImageButton) findViewById(R.id.imgbtIconeNovoCliente);
+        imgbtIconeNovoCliente.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                novoCliente();
+            }
+        });
+
+        llAdicionarCliente = (LinearLayout) findViewById(R.id.llAdicionarCliente);
+        llAdicionarCliente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 novoCliente();
@@ -63,10 +78,11 @@ public class ListaClientes extends AppCompatActivity {
     @SuppressLint("Range")
     private void initSQLdb(){
         db = openOrCreateDatabase("GerenciadorVendas", MODE_PRIVATE, null);
+//      db.execSQL("DROP TABLE CLIENTE");
         db.execSQL("CREATE TABLE IF NOT EXISTS CLIENTE (" +
-                        "ID_CLIENTE INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        "NOME VARCHAR(60), " +
-                        "TELEFONE VARCHAR(11))");
+                        "ID         INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        "NOME       VARCHAR(60), " +
+                        "TELEFONE   VARCHAR(11))");
 
         Cursor cursor = db.rawQuery("SELECT * FROM CLIENTE", null);
         cursor.moveToFirst();
@@ -74,13 +90,14 @@ public class ListaClientes extends AppCompatActivity {
         if (cursor.getCount() > 0) {
             do {
                 listaDinamicaClientes.add(new Cliente(
-                    cursor.getInt(cursor.getColumnIndex("ID_CLIENTE")),
+                    cursor.getInt(cursor.getColumnIndex("ID")),
                     cursor.getString(cursor.getColumnIndex("NOME")),
                     cursor.getString(cursor.getColumnIndex("TELEFONE"))
                 ));
             } while (cursor.moveToNext());
             cursor.close();
         }
+
     }
 
     private void novoCliente() {
@@ -96,7 +113,7 @@ public class ListaClientes extends AppCompatActivity {
         if ((requestCode == ALTERAR_CLIENTE) && (resultCode == RESULT_OK)) {
             ContentValues c1 = new ContentValues();
 
-            int id = listaDinamicaClientes.get(data.getIntExtra("posicao", 0)).getId_cliente();
+            int id = listaDinamicaClientes.get(data.getIntExtra("posicao", 0)).getId();
             c1.put("NOME", data.getStringExtra("nome"));
             c1.put("TELEFONE", data.getStringExtra("telefone"));
 
@@ -111,7 +128,7 @@ public class ListaClientes extends AppCompatActivity {
         }
 
         //Criando novos dados
-        if ((requestCode == NOVO_CLIENTE)&&(resultCode == RESULT_OK)){
+        if ((requestCode == NOVO_CLIENTE)&&(resultCode == RESULT_OK)) {
             ContentValues c1 = new ContentValues();
 
             c1.put("NOME", data.getStringExtra("nome"));
@@ -120,7 +137,7 @@ public class ListaClientes extends AppCompatActivity {
             db.insert("CLIENTE", null, c1);
             int idx = 0;
 
-            Cursor cursor = db.rawQuery("SELECT MAX(ID_CLIENTE) IDMAIOR FROM CLIENTE", null);
+            Cursor cursor = db.rawQuery("SELECT MAX(ID) IDMAIOR FROM CLIENTE", null);
             cursor.moveToFirst();
             idx = cursor.getInt(cursor.getColumnIndex("IDMAIOR"));
 
@@ -129,6 +146,7 @@ public class ListaClientes extends AppCompatActivity {
                                                 data.getStringExtra("telefone")));
 
             adapter.notifyDataSetChanged();
+
         }
     }
 }

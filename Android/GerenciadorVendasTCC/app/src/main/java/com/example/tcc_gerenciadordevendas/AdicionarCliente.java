@@ -4,9 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class AdicionarCliente extends AppCompatActivity {
 
@@ -25,7 +27,9 @@ public class AdicionarCliente extends AppCompatActivity {
         Intent intent = getIntent();
 
         if (intent.hasExtra("posicao")) {
+            Salvar.setText("Alterar");
             posicao = intent.getIntExtra("posicao", 0);
+
             Nome.setText(intent.getStringExtra("nome"));
             Telefone.setText(intent.getStringExtra("telefone"));
         }
@@ -49,13 +53,17 @@ public class AdicionarCliente extends AppCompatActivity {
                 if (posicao > 0)
                     bundle.putInt("posicao", posicao);
 
-                bundle.putString("nome", Nome.getText().toString());
-                bundle.putString("telefone", Telefone.getText().toString());
+                if (confereCampos()){
+                    bundle.putString("nome", Nome.getText().toString());
+                    bundle.putString("telefone", Telefone.getText().toString());
 
-                Intent intent = new Intent();
-                intent.putExtras(bundle);
-                setResult(RESULT_OK, intent);
-                finish();
+                    Intent intent = new Intent();
+                    intent.putExtras(bundle);
+
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+
             }
         });
 
@@ -66,5 +74,20 @@ public class AdicionarCliente extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private boolean confereCampos(){
+        String clienteNome      = Nome.getText().toString();
+        String clienteTelefone  = Telefone.getText().toString();
+
+        if (clienteNome.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Favor preencher Nome", Toast.LENGTH_SHORT).show();
+            return false;
+        } else
+        if (clienteTelefone.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Favor preencher Telefone!", Toast.LENGTH_SHORT).show();
+            return false;
+        } else
+            return true;
     }
 }
