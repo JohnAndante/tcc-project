@@ -1,14 +1,12 @@
 package com.example.tcc_gerenciadordevendas;
 
-import static android.content.ContentValues.TAG;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,13 +20,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                  fabNovaVenda,
                                  fabNovoCliente;
 
-    private Button  btCliente,
-                    btVenda,
-                    btPagamento,
-                    btProduto;
-
     private Float translationY = 100f;
     private Boolean isMenuOpen = false;
+
+    BancoDadosCliente dbc = new BancoDadosCliente(this);
 
     OvershootInterpolator interpolator = new OvershootInterpolator();
 
@@ -39,22 +34,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         initFabMenu();
-        initButtonsHub();
-
-    }
-
-    private void initButtonsHub(){
-        btCliente   = findViewById(R.id.btCliente);
-        btVenda     = findViewById(R.id.btVenda);
-        btPagamento = findViewById(R.id.btPagamento);
-        btProduto   = findViewById(R.id.btProduto);
-
-        btCliente.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, ListaClientes.class));
-            }
-        });
     }
 
     private void initFabMenu(){
@@ -133,8 +112,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.floatingNovoCliente:
 
-                startActivity(new Intent(MainActivity.this, ListaClientes.class));
-
                 if (isMenuOpen) {
                     closeFabMenu();
                 } else {
@@ -144,5 +121,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
     }
+
+    /* TESTE DO CRUD */
+
+    //  INSERT OK
+    //  dbc.addCliente(new Cliente("Cleito","44999595650"));
+    //  Toast.makeText(MainActivity.this, "Salvo com sucesso", Toast.LENGTH_SHORT).show();
+
+
+    //  DELETE OK
+    //  Cliente cliente = new Cliente();
+    //  cliente.setCodigo(3);
+    //  dbc.apagarCliente(cliente);
+
+    //  Toast.makeText(MainActivity.this, "Apagado com sucesso", Toast.LENGTH_SHORT).show();
+
+
+    // SELECT OK
+    // Cliente cliente = db.selecionarCliente(4);
+    //
+    // Log.d("Cliente Selecionado", "Codigo: " + cliente.getCodigo());
+    // Log.d("Cliente Selecionado", "Nome: " + cliente.getNome());
+    // Log.d("Cliente Selecionado", "Telefone: " + cliente.getTelefone());
+    // Log.d("Cliente Selecionado", "Email: " + cliente.getEmail());
+    //
+    // Toast.makeText(MainActivity.this, "Selecionado com sucesso", Toast.LENGTH_SHORT).show();
+
+    // UPDATE OK
+    // Cliente cliente = new Cliente();
+    // cliente.setCodigo(4);
+    // cliente.setNome("Alemão Caolho Monobola");
+    // cliente.setTelefone("444444444");
+    // cliente.setEmail("monobola@alemao.br");
+    //
+    // db.atualizaCliente(cliente);
+    //
+    // Toast.makeText(MainActivity.this, "Atualizado com sucesso", Toast.LENGTH_SHORT).show();
+
 
 }
