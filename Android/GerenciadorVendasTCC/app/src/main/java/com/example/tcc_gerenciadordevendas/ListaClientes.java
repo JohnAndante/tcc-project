@@ -78,13 +78,15 @@ public class ListaClientes extends AppCompatActivity {
     @SuppressLint("Range")
     private void initSQLdb(){
         db = openOrCreateDatabase("GerenciadorVendas", MODE_PRIVATE, null);
-//      db.execSQL("DROP TABLE CLIENTE");
         db.execSQL("CREATE TABLE IF NOT EXISTS CLIENTE (" +
                         "ID         INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         "NOME       VARCHAR(60), " +
                         "TELEFONE   VARCHAR(11))");
 
+      //  Log.i("INFO DB INSERT", db.execSQL("INSERT INTO CLIENTE VALUES ('13','João', '44 9999 9999')") );
+
         Cursor cursor = db.rawQuery("SELECT * FROM CLIENTE", null);
+
         cursor.moveToFirst();
 
         if (cursor.getCount() > 0) {
@@ -134,7 +136,8 @@ public class ListaClientes extends AppCompatActivity {
             c1.put("NOME", data.getStringExtra("nome"));
             c1.put("TELEFONE", data.getStringExtra("telefone"));
 
-            db.insert("CLIENTE", null, c1);
+            int id0x = (int) db.insert("CLIENTE", null, c1);
+            int id = (int) db.insert("CLIENTE", null, c1);
             int idx = 0;
 
             Cursor cursor = db.rawQuery("SELECT MAX(ID) IDMAIOR FROM CLIENTE", null);
