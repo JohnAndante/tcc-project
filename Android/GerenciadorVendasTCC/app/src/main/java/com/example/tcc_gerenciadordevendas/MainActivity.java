@@ -2,6 +2,7 @@ package com.example.tcc_gerenciadordevendas;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
@@ -20,10 +21,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                  fabNovaVenda,
                                  fabNovoCliente;
 
+    private Button btCliente;
+
     private Float translationY = 100f;
     private Boolean isMenuOpen = false;
 
-    BancoDadosCliente dbc = new BancoDadosCliente(this);
+    BancoDadosCliente db = new BancoDadosCliente(this);
 
     OvershootInterpolator interpolator = new OvershootInterpolator();
 
@@ -34,6 +37,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         initFabMenu();
+        initButtonsHub();
+
+
+        /* TESTE DO CRUD */
+
+        // INSERT OK
+        // db.addCliente(new Cliente("Angelo Corsa","4499969696"));
+        // db.addCliente(new Cliente("Mario Bro","4499969696"));
+        // db.addCliente(new Cliente("Bro mario","4499969696"));
+        // Toast.makeText(MainActivity.this, "Salvo com sucesso", Toast.LENGTH_SHORT).show();
+
+
+        // DELETE
+        // Cliente cliente = new Cliente();
+        // cliente.setId(3);
+        // db.deleteCliente(cliente);
+
+        // Toast.makeText(MainActivity.this, "Apagado com sucesso", Toast.LENGTH_SHORT).show();
+
+
+        // SELECT
+        // Cliente cliente = db.selectCliente(4);
+        //
+        // Log.d("Cliente Selecionado", "Codigo: " + cliente.getId());
+        // Log.d("Cliente Selecionado", "Nome: " + cliente.getNome());
+        // Log.d("Cliente Selecionado", "Telefone: " + cliente.getTelefone());
+        //
+        // Toast.makeText(MainActivity.this, "Selecionado com sucesso", Toast.LENGTH_SHORT).show();
+
+        // UPDATE
+        // Cliente cliente = new Cliente();
+        // cliente.setId(4);
+        // cliente.setNome("Alemão Caolho Monobola");
+        // cliente.setTelefone("444444444");
+        //
+        // db.updateCliente(cliente);
+        //
+        // Toast.makeText(MainActivity.this, "Atualizado com sucesso", Toast.LENGTH_SHORT).show();
+
     }
 
     private void initFabMenu(){
@@ -59,6 +101,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fabNovoPagamento.setOnClickListener(this);
         fabNovaVenda.setOnClickListener(this);
         fabNovoCliente.setOnClickListener(this);
+    }
+
+    private void initButtonsHub(){
+        btCliente = findViewById(R.id.btCliente);
+
+        btCliente.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, ListClientes.class));
+            }
+        });
     }
 
     private void openFabMenu() {
@@ -121,42 +174,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
     }
-
-    /* TESTE DO CRUD */
-
-    //  INSERT OK
-    //  dbc.addCliente(new Cliente("Cleito","44999595650"));
-    //  Toast.makeText(MainActivity.this, "Salvo com sucesso", Toast.LENGTH_SHORT).show();
-
-
-    //  DELETE OK
-    //  Cliente cliente = new Cliente();
-    //  cliente.setCodigo(3);
-    //  dbc.apagarCliente(cliente);
-
-    //  Toast.makeText(MainActivity.this, "Apagado com sucesso", Toast.LENGTH_SHORT).show();
-
-
-    // SELECT OK
-    // Cliente cliente = db.selecionarCliente(4);
-    //
-    // Log.d("Cliente Selecionado", "Codigo: " + cliente.getCodigo());
-    // Log.d("Cliente Selecionado", "Nome: " + cliente.getNome());
-    // Log.d("Cliente Selecionado", "Telefone: " + cliente.getTelefone());
-    // Log.d("Cliente Selecionado", "Email: " + cliente.getEmail());
-    //
-    // Toast.makeText(MainActivity.this, "Selecionado com sucesso", Toast.LENGTH_SHORT).show();
-
-    // UPDATE OK
-    // Cliente cliente = new Cliente();
-    // cliente.setCodigo(4);
-    // cliente.setNome("Alemão Caolho Monobola");
-    // cliente.setTelefone("444444444");
-    // cliente.setEmail("monobola@alemao.br");
-    //
-    // db.atualizaCliente(cliente);
-    //
-    // Toast.makeText(MainActivity.this, "Atualizado com sucesso", Toast.LENGTH_SHORT).show();
 
 
 }

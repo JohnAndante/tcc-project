@@ -50,7 +50,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
     }
 
-    // CRUD CLIENTE
+    // CRUD CLIENTE ////////////////////////////////////////////////////////////////////////////
 
     void addCliente (Cliente cliente) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -93,6 +93,32 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                 null,
                 null
                 );
+
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        Cliente cliente1 = new Cliente(
+                Integer.parseInt(cursor.getString(0)),
+                cursor.getString(1),
+                cursor.getString(2));
+
+        return cliente1;
+    }
+
+    Cliente selectMaxCliente () {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.query(
+                CLIENTE_TABLE,
+                new String[] {
+                        "MAX(" + COLUMN_ID + ")"
+                },
+                null,
+                null,
+                null,
+                null,
+                null
+        );
 
         if (cursor != null)
             cursor.moveToFirst();
