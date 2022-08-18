@@ -2,16 +2,19 @@ package com.example.tcc_gerenciadordevendas;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListClientes extends AppCompatActivity {
 
@@ -19,9 +22,10 @@ public class ListClientes extends AppCompatActivity {
     private Button btClienteAdicionar;
     private ImageButton imgbtIconeNovoCliente;
     private LinearLayout llAdicionarCliente;
-    private ListView listView;
+    private ListView listViewClientes;
     private AdapterCliente adapter;
     private ArrayList<Cliente> listaDinamicaClientes;
+    private ArrayList<String> arrayList;
 
     BancoDadosCliente db = new BancoDadosCliente(this);
 
@@ -31,13 +35,10 @@ public class ListClientes extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        listaDinamicaClientes = new ArrayList<Cliente>();
+        setContentView(R.layout.activity_list_clients_zero);
 
         initButtonsHub();
-
-        adapter = new AdapterCliente(this, 0, listaDinamicaClientes);
-        listView = (ListView) findViewById(R.id.listViewCardClientes);
-        listView.setAdapter(adapter);
+        listClientes();
 
         imgbtIconeNovoCliente = (ImageButton) findViewById(R.id.imgbtIconeNovoCliente);
         imgbtIconeNovoCliente.setOnClickListener(new View.OnClickListener() {
@@ -78,8 +79,15 @@ public class ListClientes extends AppCompatActivity {
 
             Cliente cliente = new Cliente(nome, telefone);
             db.addCliente(cliente);
+            db.close();
 
-            Cliente clienteMax = db.selectMaxCliente();
+            Cliente clienteMax = new Cliente();
+            try {
+                clienteMax = db.selectMaxCliente();
+            } catch (Exception e) {
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+            db.close();
             listaDinamicaClientes.add(clienteMax);
 
             adapter.notifyDataSetChanged();
@@ -102,7 +110,34 @@ public class ListClientes extends AppCompatActivity {
     }
 
     private void addNewCliente() {
-        Intent intent = new Intent(getApplication(), /* AddCliente.class*/ null);
+        Intent intent = new Intent(getApplication(), AddCliente.class);
         startActivityForResult(intent, NOVO_CLIENTE);
+    }
+
+    private void listClientes(){
+
+        List<Cliente> clientes = db.listAllClientes();
+        listaDinamicaClientes = new ArrayList<Cliente>();
+
+        ListView listViewClientesTeste;
+
+        if (!clientes.isEmpty()) {
+            for (Cliente c : clientes) {
+                Log.d("Lista", "\nID: " + c.getId()
+                        + "\nNome: " + c.getNome()
+                        + "\nTelefone: " + c.getTelefone());
+
+                listaDinamicaClientes.add(c);
+
+            }
+        }
+
+        adapter = new AdapterCliente(this, 0, listaDinamicaClientes);
+
+        listViewClientes = (ListView) findViewById(R.id.listVClientes);
+        Log.d("wtf", "\n \nlistview: " + listViewClientes);
+        listViewClientes.setAdapter(adapter);
+
+        adapter.notifyDataSetChanged();
     }
 }

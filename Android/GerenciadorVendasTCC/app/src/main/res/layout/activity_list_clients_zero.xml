@@ -51,13 +51,10 @@
     </LinearLayout>
 
     <ListView
-        android:id="@+id/listViewCardClientes"
+        android:id="@+id/listVClientes"
         android:layout_width="match_parent"
         android:layout_height="540dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        >
-
-    </ListView>
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <Button
         android:id="@+id/btClienteVoltar"

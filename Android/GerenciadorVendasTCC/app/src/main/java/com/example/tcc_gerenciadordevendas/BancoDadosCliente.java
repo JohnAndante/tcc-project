@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -108,17 +109,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     Cliente selectMaxCliente () {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        Cursor cursor = db.query(
-                CLIENTE_TABLE,
-                new String[] {
-                        "MAX(" + COLUMN_ID + ")"
-                },
-                null,
-                null,
-                null,
-                null,
-                null
-        );
+        Cursor cursor = db.rawQuery("SELECT * FROM " + CLIENTE_TABLE + " WHERE " + COLUMN_ID + " = (SELECT MAX(" + COLUMN_ID + ") " + "FROM " + CLIENTE_TABLE + ")", null);
 
         if (cursor != null)
             cursor.moveToFirst();
