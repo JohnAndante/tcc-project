@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -20,14 +19,49 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     // Nome do banco
     private static final String DB_NAME = "tcc_db";
 
-    // Tabela cliente para teste
-    // Nome da tabela
+    // Nome das tabelas
     private static final String CLIENTE_TABLE       = "cliente_tb";
+    private static final String ENDERECO_TABLE      = "endereco_tb";
+    private static final String TELEFONE_TABLE      = "telefone_tb";
+    private static final String CIDADE_TABLE        = "cidade_tb";
+    private static final String ESTADO_TABLE        = "estado_tb";
 
-    // Colunas da tabela
-    private static final String COLUMN_ID       = "id";
-    private static final String COLUMN_NOME     = "nome";
-    private static final String COLUMN_TELEFONE = "telefone";
+    // Colunas da tabela cliente
+    private static final String CLIENTE_ID          = "id_cliente";
+    private static final String CLIENTE_NOME        = "nome";
+    private static final String CLIENTE_TELEFONE    = "telefone";
+
+    // Colunas da tabela endereco
+    private static final String ENDERECO_ID         = "id_endereco";
+    private static final String ENDERECO_NUM        = "numero";
+    private static final String ENDERECO_RUA        = "rua";
+    private static final String ENDERECO_BAIRRO     = "bairro";
+    private static final String ENDERECO_COMP       = "complemento";
+    private static final String ENDERECO_REF        = "referencia";
+    private static final String ENDERECO_CIDADE     = "id_cidade";
+    private static final String ENDERECO_CLIENTE    = "id_cliente";
+
+    // Colunas da tabela telefone
+    private static final String TELEFONE_ID         = "id_telefone";
+    private static final String TELEFONE_NUM        = "telefone";
+    private static final String TELEFONE_CLIENTE    = "id_cliente";
+
+    // Colunas da tabela cidade
+    private static final String CIDADE_ID           = "id_cidade";
+    private static final String CIDADE_NOME         = "nome";
+    private static final String CIDADE_ESTADO       = "id_estado";
+
+    // Colunas da cidade estado
+    private static final String ESTADO_ID           = "id_estado";
+    private static final String ESTADO_NOME         = "nome";
+    private static final String ESTADO_UF           = "uf";
+
+    // Strings para query de criação
+    private String CLIENTE_QUERY    = "SELECT * FROM " + CLIENTE_TABLE;
+    private String ENDERECO_QUERY   = "SELECT * FROM " + ENDERECO_TABLE;
+    private String TELEFONE_QUERY   = "SELECT * FROM " + TELEFONE_TABLE;
+    private String CIDADE_QUERY     = "SELECT * FROM " + CIDADE_TABLE;
+    private String ESTADO_QUERY     = "SELECT * FROM " + ESTADO_TABLE;
 
     public BancoDadosCliente(@Nullable Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -36,18 +70,42 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        // Preparando string de criação de tabela
-        String CLIENTE_QUERY = "CREATE TABLE " + CLIENTE_TABLE + "("
-                + COLUMN_ID         + " INTEGER PRIMARY KEY, "
-                + COLUMN_NOME       + " TEXT, "
-                + COLUMN_TELEFONE   + " TEXT)";
+        createTables();
 
-        // executando string
+        // executando strings
         db.execSQL(CLIENTE_QUERY);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+
+    }
+
+    private void createTables(){
+        // Preparando strings de criação de tabelas
+        CLIENTE_QUERY = "CREATE TABLE " + CLIENTE_TABLE + "("
+                + CLIENTE_ID        + " INTEGER PRIMARY KEY, "
+                + CLIENTE_NOME      + " TEXT, "
+                + CLIENTE_TELEFONE  + " TEXT)";
+
+        TELEFONE_QUERY = "CREATE TABLE " + TELEFONE_TABLE + "("
+                + TELEFONE_ID       + " INTEGER PRIMARY KEY, "
+                + TELEFONE_NUM      + " TEXT, "
+                + TELEFONE_CLIENTE  + " INTEGER, "
+                + "FOREIGN KEY ("   + TELEFONE_CLIENTE  + ") "
+                                    + "REFERENCES "     + CLIENTE_TABLE + " (" + TELEFONE_CLIENTE + "))";
+
+        ESTADO_QUERY = "CREATE TABLE " + ESTADO_TABLE + "("
+                + ESTADO_ID + " INTEGER PRIMARY KEY, "
+                + ESTADO_NOME + " TEXT,"
+                + ESTADO_UF + " TEXT)";
+
+        CIDADE_QUERY = "CREATE TABLE " + CIDADE_TABLE + "("
+                + CIDADE_ID + " INTEGER PRIMARY KEY, "
+                + CIDADE_NOME + " TEXT, "
+                + CIDADE_ESTADO + " INTEGER)";
+
+
 
     }
 
@@ -58,8 +116,8 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
 
-        values.put(COLUMN_NOME, cliente.getNome());
-        values.put(COLUMN_TELEFONE, cliente.getTelefone());
+        values.put(CLIENTE_NOME, cliente.getNome());
+        values.put(CLIENTE_TELEFONE, cliente.getTelefone());
 
         db.insert(CLIENTE_TABLE, null, values);
         db.close();
@@ -68,7 +126,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     void deleteCliente (Cliente cliente) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        db.delete(CLIENTE_TABLE, COLUMN_ID + " = ? ", new String[] {
+        db.delete(CLIENTE_TABLE, CLIENTE_ID + " = ? ", new String[] {
                 String.valueOf(cliente.getId())
         });
     }
@@ -76,7 +134,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     void deleteClienteById (int id) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        db.delete(CLIENTE_TABLE, COLUMN_ID + " = ? ", new String[] {
+        db.delete(CLIENTE_TABLE, CLIENTE_ID + " = ? ", new String[] {
                 String.valueOf(id)
         });
     }
@@ -86,8 +144,8 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
         Cursor cursor = db.query(CLIENTE_TABLE,
                 new String[] {
-                        COLUMN_ID, COLUMN_NOME, COLUMN_TELEFONE},
-                        COLUMN_ID + " = ?",
+                        CLIENTE_ID, CLIENTE_NOME, CLIENTE_TELEFONE},
+                        CLIENTE_ID + " = ?",
                 new String[] { String.valueOf(codigo) },
                 null,
                 null,
@@ -109,7 +167,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     Cliente selectMaxCliente () {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM " + CLIENTE_TABLE + " WHERE " + COLUMN_ID + " = (SELECT MAX(" + COLUMN_ID + ") " + "FROM " + CLIENTE_TABLE + ")", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + CLIENTE_TABLE + " WHERE " + CLIENTE_ID + " = (SELECT MAX(" + CLIENTE_ID + ") " + "FROM " + CLIENTE_TABLE + ")", null);
 
         if (cursor != null)
             cursor.moveToFirst();
@@ -126,10 +184,10 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(COLUMN_NOME, cliente.getNome());
-        values.put(COLUMN_TELEFONE, cliente.getTelefone());
+        values.put(CLIENTE_NOME, cliente.getNome());
+        values.put(CLIENTE_TELEFONE, cliente.getTelefone());
 
-        db.update(CLIENTE_TABLE, values, COLUMN_ID + " = ?",
+        db.update(CLIENTE_TABLE, values, CLIENTE_ID + " = ?",
                 new String[] { String.valueOf(cliente.getId()) });
     }
 
@@ -155,7 +213,6 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
         return listClientes;
     }
-
 
 }
 
