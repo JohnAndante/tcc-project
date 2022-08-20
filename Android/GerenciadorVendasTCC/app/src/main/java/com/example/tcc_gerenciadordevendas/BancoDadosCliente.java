@@ -93,7 +93,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                 + TELEFONE_NUM      + " TEXT, "
                 + TELEFONE_CLIENTE  + " INTEGER, "
                 + "FOREIGN KEY ("   + TELEFONE_CLIENTE  + ") "
-                                    + "REFERENCES "     + CLIENTE_TABLE + " (" + TELEFONE_CLIENTE + "))";
+                + "REFERENCES "     + CLIENTE_TABLE     + " (" + TELEFONE_CLIENTE + "))";
 
         ESTADO_QUERY = "CREATE TABLE " + ESTADO_TABLE + "("
                 + ESTADO_ID + " INTEGER PRIMARY KEY, "
@@ -101,11 +101,23 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                 + ESTADO_UF + " TEXT)";
 
         CIDADE_QUERY = "CREATE TABLE " + CIDADE_TABLE + "("
-                + CIDADE_ID + " INTEGER PRIMARY KEY, "
-                + CIDADE_NOME + " TEXT, "
-                + CIDADE_ESTADO + " INTEGER)";
+                + CIDADE_ID         + " INTEGER PRIMARY KEY, "
+                + CIDADE_NOME       + " TEXT, "
+                + CIDADE_ESTADO     + " INTEGER, "
+                + "FOREIGN KEY ("   + CIDADE_ESTADO     + ") "
+                + "REFERENCES "     + ESTADO_TABLE      + " (" + CIDADE_ESTADO + "))";
 
-
+        ENDERECO_QUERY = "CREATE TABLE " + ENDERECO_TABLE + "("
+                + ENDERECO_ID       + " INTEGER PRIMARY KEY, "
+                + ENDERECO_RUA      + " TEXT, " // Mudar parar logradouro
+                + ENDERECO_NUM      + " TEXT, "
+                + ENDERECO_BAIRRO   + " TEXT, "
+                + ENDERECO_REF      + " TEXT, "
+                + ENDERECO_COMP     + " TEXT, "
+                + ENDERECO_CIDADE   + " INTEGER, "
+                + ENDERECO_CLIENTE  + " INTEGER, "
+                + "FOREIGN KEY ("   + ENDERECO_CLIENTE  + ") "
+                + "REFERENCES "     + CLIENTE_TABLE     + " (" + ENDERECO_CLIENTE + "))";
 
     }
 

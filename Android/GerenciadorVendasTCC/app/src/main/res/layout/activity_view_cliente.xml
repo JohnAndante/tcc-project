@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@color/dark_gray_01"
-    tools:context=".AddCliente">
+    tools:context=".viewCliente">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -27,7 +26,7 @@
                 android:src="@drawable/ic_baseline_person_outline_24_white" />
 
             <TextView
-                android:id="@+id/adicionarNomeCliente"
+                android:id="@+id/textNomeCliente"
                 android:layout_width="330dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
@@ -44,31 +43,28 @@
                 android:gravity="center_horizontal|center"
                 android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/editNomeCliente"
+                <TextView
+                    android:id="@+id/tvNomeCliente"
                     android:layout_width="290dp"
                     android:layout_height="45dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:backgroundTint="@color/light_gray_01"
                     android:ems="10"
-                    android:inputType="textPersonName"
                     android:textColor="@color/white"
-                    android:textSize="16dp"
                     android:textStyle="bold"
-                    android:hint="Nome do Cliente"
-                    android:textColorHint="@color/light_gray_02"
-                    android:nextFocusForward="@id/editTelefoneCliente"/>
+                    android:gravity="center|left"/>
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_baseline_edit_24_white" />
+                    android:src="@drawable/ic_baseline_edit_24_white"
+                    android:visibility="invisible"/>
 
             </LinearLayout>
 
             <TextView
-                android:id="@+id/adicionarTelefoneCliente"
+                android:id="@+id/textTelefoneCliente"
                 android:layout_width="330dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
@@ -86,31 +82,28 @@
                 android:gravity="center_horizontal|center"
                 android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/editTelefoneCliente"
+                <TextView
+                    android:id="@+id/tvTelefoneCliente"
                     android:layout_width="290dp"
                     android:layout_height="45dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:backgroundTint="@color/light_gray_01"
                     android:ems="10"
-                    android:inputType="phone"
                     android:textColor="@color/white"
                     android:textSize="16dp"
                     android:textStyle="bold"
-                    android:hint="(XX) 9 9999-9999"
-                    android:textColorHint="@color/light_gray_02"
-                    android:nextFocusForward="@id/editRuaEndereco"/>
+                    android:gravity="center|left"/>
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_baseline_add_24_white" />
+                    android:src="@drawable/ic_baseline_local_phone_24_white" />
 
             </LinearLayout>
 
             <TextView
-                android:id="@+id/adicionarEnderecoCliente"
+                android:id="@+id/textEnderecoCliente"
                 android:layout_width="330dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
@@ -135,26 +128,24 @@
                     android:gravity="center_horizontal|center"
                     android:orientation="horizontal">
 
-                    <EditText
-                        android:id="@+id/editRuaEndereco"
+                    <TextView
+                        android:id="@+id/tvRuaEndereco"
                         android:layout_width="290dp"
                         android:layout_height="45dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:backgroundTint="@color/light_gray_01"
                         android:ems="10"
-                        android:inputType="textCapWords"
                         android:textColor="@color/white"
                         android:textSize="16dp"
                         android:textStyle="bold"
-                        android:hint="Rua"
-                        android:textColorHint="@color/light_gray_02"
-                        android:nextFocusForward="@id/editNumEndereco"/>
+                        android:gravity="center|left"/>
 
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:src="@drawable/ic_baseline_edit_24_white" />
+                        android:src="@drawable/ic_baseline_edit_24_white"
+                        android:visibility="invisible" />
 
                 </LinearLayout>
 
@@ -170,26 +161,24 @@
                     android:gravity="center_horizontal|center"
                     android:orientation="horizontal">
 
-                    <EditText
-                        android:id="@+id/editNumEndereco"
+                    <TextView
+                        android:id="@+id/tvNumEndereco"
                         android:layout_width="290dp"
                         android:layout_height="45dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:backgroundTint="@color/light_gray_01"
                         android:ems="10"
-                        android:inputType="number"
                         android:textColor="@color/white"
                         android:textSize="16dp"
                         android:textStyle="bold"
-                        android:hint="Número"
-                        android:textColorHint="@color/light_gray_02"
-                        android:nextFocusForward="@id/editComplEndereco"/>
+                        android:gravity="center|left"/>
 
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:src="@drawable/ic_baseline_edit_24_white" />
+                        android:src="@drawable/ic_baseline_edit_24_white"
+                        android:visibility="invisible" />
 
                 </LinearLayout>
 
@@ -205,26 +194,24 @@
                     android:gravity="center_horizontal|center"
                     android:orientation="horizontal">
 
-                    <EditText
-                        android:id="@+id/editComplEndereco"
+                    <TextView
+                        android:id="@+id/tvComplEndereco"
                         android:layout_width="290dp"
                         android:layout_height="45dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:backgroundTint="@color/light_gray_01"
                         android:ems="10"
-                        android:inputType="text"
                         android:textColor="@color/white"
                         android:textSize="16dp"
                         android:textStyle="bold"
-                        android:hint="Complemento"
-                        android:textColorHint="@color/light_gray_02"
-                        android:nextFocusForward="@id/editBairroEndereco"/>
+                        android:gravity="center|left"/>
 
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:src="@drawable/ic_baseline_edit_24_white" />
+                        android:src="@drawable/ic_baseline_edit_24_white"
+                        android:visibility="invisible" />
 
                 </LinearLayout>
 
@@ -240,26 +227,24 @@
                     android:gravity="center_horizontal|center"
                     android:orientation="horizontal">
 
-                    <EditText
-                        android:id="@+id/editBairroEndereco"
+                    <TextView
+                        android:id="@+id/tvBairroEndereco"
                         android:layout_width="290dp"
                         android:layout_height="45dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:backgroundTint="@color/light_gray_01"
                         android:ems="10"
-                        android:inputType="textCapWords"
                         android:textColor="@color/white"
                         android:textSize="16dp"
                         android:textStyle="bold"
-                        android:hint="Bairro"
-                        android:textColorHint="@color/light_gray_02"
-                        android:nextFocusForward="@id/editUfEndereco"/>
+                        android:gravity="center|left"/>
 
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:src="@drawable/ic_baseline_edit_24_white" />
+                        android:src="@drawable/ic_baseline_edit_24_white"
+                        android:visibility="invisible" />
 
                 </LinearLayout>
 
@@ -275,26 +260,24 @@
                     android:gravity="center_horizontal|center"
                     android:orientation="horizontal">
 
-                    <EditText
-                        android:id="@+id/editUfEndereco"
+                    <TextView
+                        android:id="@+id/tvUfEndereco"
                         android:layout_width="290dp"
                         android:layout_height="45dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:backgroundTint="@color/light_gray_01"
                         android:ems="10"
-                        android:inputType="text"
                         android:textColor="@color/white"
                         android:textSize="16dp"
                         android:textStyle="bold"
-                        android:hint="UF"
-                        android:textColorHint="@color/light_gray_02"
-                        android:nextFocusForward="@id/editCidadeEndereco"/>
+                        android:gravity="center|left"/>
 
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:src="@drawable/ic_baseline_edit_24_white" />
+                        android:src="@drawable/ic_baseline_edit_24_white"
+                        android:visibility="invisible" />
 
                 </LinearLayout>
 
@@ -310,26 +293,24 @@
                     android:gravity="center_horizontal|center"
                     android:orientation="horizontal">
 
-                    <EditText
-                        android:id="@+id/editCidadeEndereco"
+                    <TextView
+                        android:id="@+id/tvCidadeEndereco"
                         android:layout_width="290dp"
                         android:layout_height="45dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:backgroundTint="@color/light_gray_01"
                         android:ems="10"
-                        android:inputType="text"
                         android:textColor="@color/white"
                         android:textSize="16dp"
                         android:textStyle="bold"
-                        android:hint="Cidade"
-                        android:textColorHint="@color/light_gray_02"
-                        android:nextFocusForward="@id/btClienteSalvar" />
+                        android:gravity="center|left"/>
 
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:src="@drawable/ic_baseline_edit_24_white" />
+                        android:src="@drawable/ic_baseline_edit_24_white"
+                        android:visibility="invisible" />
 
                 </LinearLayout>
 
@@ -352,15 +333,15 @@
         android:layout_alignParentBottom="true">
 
         <Button
-            android:id="@+id/btClienteSalvar"
+            android:id="@+id/btClienteEditar"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="50dp"
             android:focusable="false"
-            android:text="Salvar" />
+            android:text="Editar" />
 
         <Button
-            android:id="@+id/btClienteCancelar"
+            android:id="@+id/btClienteVoltar"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:focusable="false"
