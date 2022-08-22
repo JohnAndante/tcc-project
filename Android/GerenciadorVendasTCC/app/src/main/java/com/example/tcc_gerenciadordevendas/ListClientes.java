@@ -3,7 +3,9 @@ package com.example.tcc_gerenciadordevendas;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -123,21 +125,54 @@ public class ListClientes extends AppCompatActivity {
 
         if (!clientes.isEmpty()) {
             for (Cliente c : clientes) {
-                Log.d("Lista", "\nID: " + c.getId()
-                        + "\nNome: " + c.getNome()
-                        + "\nTelefone: " + c.getTelefone());
-
                 listaDinamicaClientes.add(c);
-
             }
         }
 
         adapter = new AdapterCliente(this, 0, listaDinamicaClientes);
 
         listViewClientes = (ListView) findViewById(R.id.listVClientes);
-        Log.d("wtf", "\n \nlistview: " + listViewClientes);
         listViewClientes.setAdapter(adapter);
 
+        listViewClientes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                openClienteData(i);
+                Log.d("WTF", "\n \n \n \n \n Entro no primero");
+            }
+        });
+
         adapter.notifyDataSetChanged();
+    }
+
+    private void openClienteData(int posicao) {
+
+        if (posicao < 0) {
+            posicao = listaDinamicaClientes.size() - 1;
+        }
+
+        int finalPosicao = posicao;
+
+        Intent intent = new Intent(ListClientes.this, viewCliente.class);
+        Bundle bundle = new Bundle();
+
+        bundle.putInt("posicao", finalPosicao);
+        intent.putExtras(bundle);
+
+        startActivityForResult(intent, ALTERAR_CLIENTE);
+    }
+
+    private void tryOnClickCard() {
+        // Não funcionou
+        setContentView(R.layout.card_cliente);
+
+        LinearLayout llViewCliente = (LinearLayout) findViewById(R.id.llCardCliente);
+        llViewCliente.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("WTF", "\n \n \n \n \n Entro no segundo");
+            }
+        });
+
     }
 }

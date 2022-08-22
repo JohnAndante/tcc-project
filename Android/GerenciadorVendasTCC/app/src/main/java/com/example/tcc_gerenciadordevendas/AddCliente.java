@@ -58,7 +58,7 @@ public class AddCliente extends AppCompatActivity {
     }
 
     private void initButtonsCfg(){
-        Salvar = (Button) findViewById(R.id.btClienteSalvar);
+        Salvar   = (Button) findViewById(R.id.btClienteSalvar);
         Cancelar = (Button) findViewById(R.id.btClienteCancelar);
     }
 

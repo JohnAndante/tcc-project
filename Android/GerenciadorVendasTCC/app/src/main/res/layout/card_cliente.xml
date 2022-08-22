@@ -6,6 +6,7 @@
     android:gravity="center_horizontal" >
 
     <LinearLayout
+        android:id="@+id/llCardCliente"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
