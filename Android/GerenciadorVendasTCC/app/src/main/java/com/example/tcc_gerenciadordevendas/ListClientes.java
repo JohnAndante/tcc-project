@@ -1,5 +1,7 @@
 package com.example.tcc_gerenciadordevendas;
 
+import static android.view.ViewGroup.FOCUS_BLOCK_DESCENDANTS;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,8 +45,8 @@ public class ListClientes extends AppCompatActivity {
 
     GestureDetector.SimpleOnGestureListener gestureListener = new GestureDetector.SimpleOnGestureListener() {
         @Override
+        // Método do Swipe
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            Log.i("OnFling","X1 = " + e1.getX() + "X2 = " + e2.getX() + "Velocidade" + velocityX);
             float diferencaX = e2.getX() - e1.getX();
             if(Math.abs(diferencaX) > LIMITE_SWIPE && Math.abs(velocityX) > LIMITE_VELOCIDADE){
                 if(diferencaX > 0){
@@ -54,7 +56,7 @@ public class ListClientes extends AppCompatActivity {
                     Log.i("MOVIMENTO", "Movimento para a esquerda");
                 }
             }
-            return true;
+        return true;
         }
     };
 
@@ -75,7 +77,34 @@ public class ListClientes extends AppCompatActivity {
         setContentView(R.layout.activity_list_clients_zero);
 
         initButtonsHub();
-        listClientes();
+
+
+        List<Cliente> clientes = db.listAllClientes();
+        listaDinamicaClientes = new ArrayList<Cliente>();
+        gestureDetector = new GestureDetector(this, gestureListener);
+
+        if (!clientes.isEmpty()) {
+            for (Cliente c : clientes) {
+                listaDinamicaClientes.add(c);
+            }
+        }
+
+        adapter = new AdapterCliente(this, 0, listaDinamicaClientes);
+
+        listViewClientes = (ListView) findViewById(R.id.listVClientes);
+        listViewClientes.setDescendantFocusability(FOCUS_BLOCK_DESCENDANTS);
+        listViewClientes.setAdapter(adapter);
+        listViewClientes.setOnTouchListener(touchListener);
+
+        listViewClientes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //openClienteData(i);
+                viewCounter = viewCounter + 1000;
+                Log.d("WTF", "\n \n \n \n \n Entrou no onItemClick");
+                Log.d("WTF", " " + viewCounter);
+            }
+        });
 
         imgbtIconeNovoCliente = (ImageButton) findViewById(R.id.imgbtIconeNovoCliente);
         imgbtIconeNovoCliente.setOnClickListener(new View.OnClickListener() {
@@ -153,46 +182,6 @@ public class ListClientes extends AppCompatActivity {
 
     private void listClientes(){
 
-        List<Cliente> clientes = db.listAllClientes();
-        listaDinamicaClientes = new ArrayList<Cliente>();
-        gestureDetector = new GestureDetector(this, gestureListener);
-
-        ListView listViewClientesTeste;
-
-        if (!clientes.isEmpty()) {
-            for (Cliente c : clientes) {
-                listaDinamicaClientes.add(c);
-            }
-        }
-
-        adapter = new AdapterCliente(this, 0, listaDinamicaClientes);
-
-        listViewClientes = (ListView) findViewById(R.id.listVClientes);
-        listViewClientes.setAdapter(adapter);
-        listViewClientes.setOnTouchListener(touchListener);
-
-        listViewClientes.setClickable(true);
-        listViewClientes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //openClienteData(i);
-                viewCounter = viewCounter + 1000;
-                Log.d("WTF", "\n \n \n \n \n Entrou no onItemClick");
-                Log.d("WTF", " " + viewCounter);
-            }
-        });
-
-        listViewClientes.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                viewCounter = viewCounter + 1;
-                Log.d("WTF", "\n \n \n \n \n Entrou no onClick Geral");
-                Log.d("WTF", " " + viewCounter);
-                return false;
-            }
-        });
-
-        adapter.notifyDataSetChanged();
     }
 
     private void openClienteData(int posicao) {
