@@ -2,9 +2,9 @@ package com.example.tcc_gerenciadordevendas;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -26,7 +26,9 @@ public class viewCliente extends AppCompatActivity {
 
     BancoDadosCliente db = new BancoDadosCliente(this);
 
-    int posicao;
+    int id_cliente;
+
+    public static final int ALTERAR_CLIENTE = 102;
 
 
     @Override
@@ -39,14 +41,29 @@ public class viewCliente extends AppCompatActivity {
         initButtonsOnClick();
 
         Intent intent = getIntent();
-        posicao = 0;
+        id_cliente = 0;
 
-        if (intent.hasExtra("posicao")) {
-            posicao = intent.getIntExtra("posicao", 0);
-            Cliente cliente = db.selectCliente(posicao);
+        if (intent.hasExtra("ID")) {
+            id_cliente = intent.getIntExtra("ID", 0);
+            Cliente cliente = db.selectCliente(id_cliente);
+            textNome.setText(cliente.getNome());
+            textTelefone.setText(cliente.getTelefone());
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //Alterando dados
+        if ((requestCode == ALTERAR_CLIENTE) && (resultCode == RESULT_OK)) {
+            Log.i("INFO", "\n\nDados Alterados");
+
+            Cliente cliente = db.selectCliente(id_cliente);
 
             textNome.setText(cliente.getNome());
             textTelefone.setText(cliente.getTelefone());
+
         }
     }
 
@@ -71,7 +88,12 @@ public class viewCliente extends AppCompatActivity {
         Editar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(viewCliente.this, AddCliente.class);
+                Bundle bundle = new Bundle();
 
+                bundle.putInt("ID", id_cliente);
+                intent.putExtras(bundle);
+                startActivityForResult(intent, ALTERAR_CLIENTE);
             }
         });
 

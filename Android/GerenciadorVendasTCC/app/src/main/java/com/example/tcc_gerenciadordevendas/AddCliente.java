@@ -2,6 +2,7 @@ package com.example.tcc_gerenciadordevendas;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,7 +28,9 @@ public class AddCliente extends AppCompatActivity {
 
     private LinearLayout llButtons;
 
-    int posicao;
+    BancoDadosCliente db = new BancoDadosCliente(this);
+
+    int id_cliente;
 
     private Boolean buttonsVisibility = true;
     private Boolean isEditTextFocused = false;
@@ -47,12 +50,18 @@ public class AddCliente extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        if (intent.hasExtra("posicao")) {
+        if (intent.hasExtra("ID")) {
             Salvar.setText("Alterar");
-            posicao = intent.getIntExtra("posicao", 0);
+            id_cliente = intent.getIntExtra("ID", 0);
 
-            editTextNome.setText(intent.getStringExtra("nome"));
-            editTextTelefone.setText(intent.getStringExtra("telefone"));
+            Cliente c = db.selectCliente(id_cliente);
+            Log.i("INFO CLIENTE", "ID: " + c.getId() +
+                    "\nNome: " + c.getNome() +
+                    "\nTelefone: " + c.getTelefone());
+
+            editTextNome.setText(c.getNome());
+            editTextTelefone.setText(c.getTelefone());
+
         }
 
     }
@@ -67,8 +76,15 @@ public class AddCliente extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
-                if (posicao > 0)
-                    bundle.putInt("posicao", posicao);
+                if (id_cliente > 0 && confereCampos()) {
+                    bundle.putInt("id", id_cliente);
+                    Cliente c = new Cliente();
+                    c.setId(id_cliente);
+                    c.setNome(editTextNome.getText().toString());
+                    c.setTelefone(editTextTelefone.getText().toString());
+
+                    db.updateCliente(c);
+                }
 
                 if (confereCampos()){
                     bundle.putString("nome", editTextNome.getText().toString());

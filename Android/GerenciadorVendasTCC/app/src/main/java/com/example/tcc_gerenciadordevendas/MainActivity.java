@@ -166,6 +166,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.floatingNovoCliente:
 
                 if (isMenuOpen) {
+                    startActivity(new Intent(MainActivity.this, AddCliente.class));
                     closeFabMenu();
                 } else {
                     openFabMenu();

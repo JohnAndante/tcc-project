@@ -40,6 +40,7 @@ public class ListClientes extends AppCompatActivity {
 
     public static final int NOVO_CLIENTE = 101;
     public static final int ALTERAR_CLIENTE = 102;
+    public static final int CONSULTAR_CLIENTE = 103;
 
     private int viewCounter = 0;
 
@@ -77,34 +78,7 @@ public class ListClientes extends AppCompatActivity {
         setContentView(R.layout.activity_list_clients_zero);
 
         initButtonsHub();
-
-
-        List<Cliente> clientes = db.listAllClientes();
-        listaDinamicaClientes = new ArrayList<Cliente>();
-        gestureDetector = new GestureDetector(this, gestureListener);
-
-        if (!clientes.isEmpty()) {
-            for (Cliente c : clientes) {
-                listaDinamicaClientes.add(c);
-            }
-        }
-
-        adapter = new AdapterCliente(this, 0, listaDinamicaClientes);
-
-        listViewClientes = (ListView) findViewById(R.id.listVClientes);
-        listViewClientes.setDescendantFocusability(FOCUS_BLOCK_DESCENDANTS);
-        listViewClientes.setAdapter(adapter);
-        listViewClientes.setOnTouchListener(touchListener);
-
-        listViewClientes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //openClienteData(i);
-                viewCounter = viewCounter + 1000;
-                Log.d("WTF", "\n \n \n \n \n Entrou no onItemClick");
-                Log.d("WTF", " " + viewCounter);
-            }
-        });
+        listClientes();
 
         imgbtIconeNovoCliente = (ImageButton) findViewById(R.id.imgbtIconeNovoCliente);
         imgbtIconeNovoCliente.setOnClickListener(new View.OnClickListener() {
@@ -164,7 +138,6 @@ public class ListClientes extends AppCompatActivity {
     private void initButtonsHub(){
         btClienteVoltar = findViewById(R.id.btClienteVoltar);
 
-        /*
         btClienteVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -172,7 +145,7 @@ public class ListClientes extends AppCompatActivity {
             }
         });
 
-         */
+
     }
 
     private void addNewCliente() {
@@ -182,36 +155,59 @@ public class ListClientes extends AppCompatActivity {
 
     private void listClientes(){
 
-    }
+        List<Cliente> clientes = db.listAllClientes();
+        listaDinamicaClientes = new ArrayList<Cliente>();
+        gestureDetector = new GestureDetector(this, gestureListener);
 
-    private void openClienteData(int posicao) {
-
-        if (posicao < 0) {
-            posicao = listaDinamicaClientes.size() - 1;
+        if (!clientes.isEmpty()) {
+            for (Cliente c : clientes) {
+                listaDinamicaClientes.add(c);
+            }
         }
 
-        int finalPosicao = posicao;
+        adapter = new AdapterCliente(this, 0, listaDinamicaClientes);
+
+        listViewClientes = (ListView) findViewById(R.id.listVClientes);
+        listViewClientes.setDescendantFocusability(FOCUS_BLOCK_DESCENDANTS);
+        listViewClientes.setAdapter(adapter);
+        listViewClientes.setOnTouchListener(touchListener);
+
+        listViewClientes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //openClienteData(i);
+                viewCounter = viewCounter + 1000;
+                Log.d("WTF", "\n \n \n \n \n Entrou no onItemClick \n" + viewCounter);
+                Log.d("WTF", " " + i);
+
+                try {
+                    Cliente c = (Cliente) listViewClientes.getItemAtPosition(i);
+                    Log.d("Cliente DATA///////",
+                            "\n \n ID: " + c.getId() +
+                                    "\n Nome: " + c.getNome() +
+                                    "\n Telefone: " + c.getTelefone());
+                    openClienteData(c);
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                    Log.e("ERROR", e.getMessage().toString());
+                }
+            }
+        });
+
+    }
+
+    private void openClienteData(Cliente c) {
+
+        if (c.getNome().isEmpty()) {
+            Log.i("OnClick INFO", "Cliente com nome vazio\n ID: " + c.getId());
+        }
 
         Intent intent = new Intent(ListClientes.this, viewCliente.class);
         Bundle bundle = new Bundle();
 
-        bundle.putInt("posicao", finalPosicao);
+        bundle.putInt("ID", c.id);
         intent.putExtras(bundle);
 
-        startActivityForResult(intent, ALTERAR_CLIENTE);
-    }
-
-    private void tryOnClickCard() {
-        // Não funcionou
-        setContentView(R.layout.card_cliente);
-
-        LinearLayout llViewCliente = (LinearLayout) findViewById(R.id.llCardCliente);
-        llViewCliente.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("WTF", "\n \n \n \n \n Entro no segundo");
-            }
-        });
-
+        startActivityForResult(intent, CONSULTAR_CLIENTE);
     }
 }

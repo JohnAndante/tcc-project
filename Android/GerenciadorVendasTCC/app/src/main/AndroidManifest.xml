@@ -22,6 +22,9 @@
             android:name=".ListClientes"
             android:exported="true" />
 
+        <activity android:name=".viewCliente"
+            android:exported="true" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
