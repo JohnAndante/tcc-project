@@ -226,6 +226,72 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return listClientes;
     }
 
+    // CRUD ENDEREÇO ////////////////////////////////////////////////////////////////////////////
+
+    void addTelefone (Telefone telefone) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(TELEFONE_NUM, telefone.getNum());
+        values.put(TELEFONE_CLIENTE, telefone.getCliente().getId());
+
+        db.insert(TELEFONE_TABLE, null, values);
+        db.close();
+    }
+
+    void deleteTelefone (Telefone telefone) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(TELEFONE_TABLE, TELEFONE_ID + " = ? ", new String[]{
+                String.valueOf(telefone.getId())
+        });
+    }
+
+    void deleteTelefoneById (int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(TELEFONE_TABLE, TELEFONE_ID + " = ? ", new String[] {
+                String.valueOf(id)
+        });
+    }
+
+    /*
+    Cliente selectTelefone (int codigo) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.query(TELEFONE_TABLE,
+            new String[] {
+                    TELEFONE_ID, TELEFONE_NUM, TELEFONE_CLIENTE },
+            TELEFONE_ID + " = ?",
+            new String[] { String.valueOf(codigo) },
+            null,
+            null,
+            null,
+            null
+        );
+
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        int id = cursor.getInt(2);
+
+        Telefone telefone1 = new Telefone(
+                Integer.parseInt(cursor.getString(0)),
+                cursor.getString(1),
+                cursor.getString(2));
+
+        return telefone1;
+    }
+    
+     */
+
+
+    // CRUD ENDEREÇO ////////////////////////////////////////////////////////////////////////////
+
+    void addEndereco () {
+    }
+
 }
 
 

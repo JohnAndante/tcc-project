@@ -29,6 +29,11 @@ public class viewCliente extends AppCompatActivity {
     int id_cliente;
 
     public static final int ALTERAR_CLIENTE = 102;
+    public static final int RESULT_ALT_CLIENTE = 202;
+
+    private boolean cliente_alterado;
+
+    private Cliente cliente;
 
 
     @Override
@@ -42,10 +47,11 @@ public class viewCliente extends AppCompatActivity {
 
         Intent intent = getIntent();
         id_cliente = 0;
+        cliente_alterado = false;
 
         if (intent.hasExtra("ID")) {
             id_cliente = intent.getIntExtra("ID", 0);
-            Cliente cliente = db.selectCliente(id_cliente);
+            cliente = db.selectCliente(id_cliente);
             textNome.setText(cliente.getNome());
             textTelefone.setText(cliente.getTelefone());
         }
@@ -58,8 +64,9 @@ public class viewCliente extends AppCompatActivity {
         //Alterando dados
         if ((requestCode == ALTERAR_CLIENTE) && (resultCode == RESULT_OK)) {
             Log.i("INFO", "\n\nDados Alterados");
+            cliente_alterado = true;
 
-            Cliente cliente = db.selectCliente(id_cliente);
+            cliente = db.selectCliente(id_cliente);
 
             textNome.setText(cliente.getNome());
             textTelefone.setText(cliente.getTelefone());
@@ -100,8 +107,18 @@ public class viewCliente extends AppCompatActivity {
         Voltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setResult(RESULT_CANCELED);
-                finish();
+                if (cliente_alterado) {
+                    Intent intent2 = new Intent();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("ID", cliente.getId());
+                    intent2.putExtras(bundle);
+
+                    setResult(RESULT_ALT_CLIENTE, intent2);
+                    finish();
+                } else {
+                    setResult(RESULT_CANCELED);
+                    finish();
+                }
             }
         });
     }

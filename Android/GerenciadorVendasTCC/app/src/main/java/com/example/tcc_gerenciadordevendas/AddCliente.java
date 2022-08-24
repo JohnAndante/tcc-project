@@ -61,7 +61,6 @@ public class AddCliente extends AppCompatActivity {
 
             editTextNome.setText(c.getNome());
             editTextTelefone.setText(c.getTelefone());
-
         }
 
     }

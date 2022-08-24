@@ -41,6 +41,7 @@ public class ListClientes extends AppCompatActivity {
     public static final int NOVO_CLIENTE = 101;
     public static final int ALTERAR_CLIENTE = 102;
     public static final int CONSULTAR_CLIENTE = 103;
+    public static final int RESULT_ALT_CLIENTE = 202;
 
     private int viewCounter = 0;
 
@@ -133,6 +134,11 @@ public class ListClientes extends AppCompatActivity {
             adapter.notifyDataSetChanged();
 
         }
+
+        if ((requestCode == CONSULTAR_CLIENTE) && (resultCode == RESULT_ALT_CLIENTE)) {
+            listClientes();
+            adapter.notifyDataSetChanged();
+        }
     }
 
     private void initButtonsHub(){
@@ -182,10 +188,7 @@ public class ListClientes extends AppCompatActivity {
 
                 try {
                     Cliente c = (Cliente) listViewClientes.getItemAtPosition(i);
-                    Log.d("Cliente DATA///////",
-                            "\n \n ID: " + c.getId() +
-                                    "\n Nome: " + c.getNome() +
-                                    "\n Telefone: " + c.getTelefone());
+                    Log.d("Cliente DATA///////","\n \n ID: " + c.getId() + "\n Nome: " + c.getNome() + "\n Telefone: " + c.getTelefone());
                     openClienteData(c);
                 } catch (Exception e) {
                     Toast.makeText(getApplicationContext(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
