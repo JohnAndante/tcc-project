@@ -38,44 +38,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         initFabMenu();
         initButtonsHub();
-
-
-        /* TESTE DO CRUD */
-
-        // INSERT OK
-        // db.addCliente(new Cliente("Angelo Corsa","4499969696"));
-        // db.addCliente(new Cliente("Mario Bro","4499969696"));
-        // db.addCliente(new Cliente("Bro mario","4499969696"));
-        // Toast.makeText(MainActivity.this, "Salvo com sucesso", Toast.LENGTH_SHORT).show();
-
-
-        // DELETE
-        // Cliente cliente = new Cliente();
-        // cliente.setId(3);
-        // db.deleteCliente(cliente);
-
-        // Toast.makeText(MainActivity.this, "Apagado com sucesso", Toast.LENGTH_SHORT).show();
-
-
-        // SELECT
-        // Cliente cliente = db.selectCliente(4);
-        //
-        // Log.d("Cliente Selecionado", "Codigo: " + cliente.getId());
-        // Log.d("Cliente Selecionado", "Nome: " + cliente.getNome());
-        // Log.d("Cliente Selecionado", "Telefone: " + cliente.getTelefone());
-        //
-        // Toast.makeText(MainActivity.this, "Selecionado com sucesso", Toast.LENGTH_SHORT).show();
-
-        // UPDATE
-        // Cliente cliente = new Cliente();
-        // cliente.setId(4);
-        // cliente.setNome("Alemão Caolho Monobola");
-        // cliente.setTelefone("444444444");
-        //
-        // db.updateCliente(cliente);
-        //
-        // Toast.makeText(MainActivity.this, "Atualizado com sucesso", Toast.LENGTH_SHORT).show();
-
     }
 
     private void initFabMenu(){
@@ -174,6 +136,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
         }
+    }
+
+    // INSERT DE DADOS TESTE ////////////////////////////////////////////////////////////////////
+
+    void insertTestData () {
+
+        Cliente c = new Cliente();
+
+        c = new Cliente("João Custódio", "44 9 9956-5032");
+        db.addCliente(c);
+        db.addTelefone(new Telefone("(44) 9 9956-5032", c));
+
+        c = new Cliente("André Marques", "42 9 8645-9833");
+        db.addCliente(c);
+        db.addTelefone(new Telefone("(42) 9 8645-9833", c));
+
+        c = new Cliente("Lurdes Pereira", "44 9 9953-5324");
+        db.addCliente(c);
+        db.addTelefone(new Telefone("(44) 9 9953-5324", c));
+
+        c = new Cliente("Maria Antonieta", "44 9 9123-5436");
+        db.addCliente(c);
+        db.addTelefone(new Telefone("(44) 9 9123-5436", c));
+
     }
 
 

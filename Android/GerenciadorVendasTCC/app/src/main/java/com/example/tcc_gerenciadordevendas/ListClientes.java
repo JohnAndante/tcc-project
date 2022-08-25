@@ -88,7 +88,6 @@ public class ListClientes extends AppCompatActivity {
                 addNewCliente();
             }
         });
-
     }
 
     @Override
@@ -115,13 +114,6 @@ public class ListClientes extends AppCompatActivity {
         //Criando novos dados
         if ((requestCode == NOVO_CLIENTE) && (resultCode == RESULT_OK)) {
 
-            String nome = data.getStringExtra("nome");
-            String telefone = data.getStringExtra("telefone");
-
-            Cliente cliente = new Cliente(nome, telefone);
-            db.addCliente(cliente);
-            db.close();
-
             Cliente clienteMax = new Cliente();
             try {
                 clienteMax = db.selectMaxCliente();
@@ -132,7 +124,6 @@ public class ListClientes extends AppCompatActivity {
             listaDinamicaClientes.add(clienteMax);
 
             adapter.notifyDataSetChanged();
-
         }
 
         if ((requestCode == CONSULTAR_CLIENTE) && (resultCode == RESULT_ALT_CLIENTE)) {
@@ -181,14 +172,8 @@ public class ListClientes extends AppCompatActivity {
         listViewClientes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //openClienteData(i);
-                viewCounter = viewCounter + 1000;
-                Log.d("WTF", "\n \n \n \n \n Entrou no onItemClick \n" + viewCounter);
-                Log.d("WTF", " " + i);
-
                 try {
                     Cliente c = (Cliente) listViewClientes.getItemAtPosition(i);
-                    Log.d("Cliente DATA///////","\n \n ID: " + c.getId() + "\n Nome: " + c.getNome() + "\n Telefone: " + c.getTelefone());
                     openClienteData(c);
                 } catch (Exception e) {
                     Toast.makeText(getApplicationContext(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
@@ -200,10 +185,6 @@ public class ListClientes extends AppCompatActivity {
     }
 
     private void openClienteData(Cliente c) {
-
-        if (c.getNome().isEmpty()) {
-            Log.i("OnClick INFO", "Cliente com nome vazio\n ID: " + c.getId());
-        }
 
         Intent intent = new Intent(ListClientes.this, viewCliente.class);
         Bundle bundle = new Bundle();

@@ -8,8 +8,13 @@ public class Telefone {
     String  num;
     Cliente cliente;
 
-    public Telefone(int id, String string, String cursorString) {
+    public Telefone () {
 
+    }
+
+    public Telefone (String _num, Cliente _cliente) {
+        this.num        = _num;
+        this.cliente    = _cliente;
     }
 
     public Telefone (int _id, String _num, Cliente _cliente) {

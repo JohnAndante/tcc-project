@@ -71,9 +71,8 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         createTables();
-
-        // executando strings
         db.execSQL(CLIENTE_QUERY);
+        db.execSQL(TELEFONE_QUERY);
     }
 
     @Override
@@ -141,6 +140,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.delete(CLIENTE_TABLE, CLIENTE_ID + " = ? ", new String[] {
                 String.valueOf(cliente.getId())
         });
+        db.close();
     }
 
     void deleteClienteById (int id) {
@@ -149,6 +149,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.delete(CLIENTE_TABLE, CLIENTE_ID + " = ? ", new String[] {
                 String.valueOf(id)
         });
+        db.close();
     }
 
     Cliente selectCliente (int codigo) {
@@ -173,6 +174,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                 cursor.getString(1),
                 cursor.getString(2));
 
+        db.close();
         return cliente1;
     }
 
@@ -189,6 +191,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                 cursor.getString(1),
                 cursor.getString(2));
 
+        db.close();
         return cliente1;
     }
 
@@ -201,6 +204,8 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
         db.update(CLIENTE_TABLE, values, CLIENTE_ID + " = ?",
                 new String[] { String.valueOf(cliente.getId()) });
+
+        db.close();
     }
 
     public List<Cliente> listAllClientes() {
@@ -223,6 +228,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
             } while (c.moveToNext());
         }
 
+        db.close();
         return listClientes;
     }
 
@@ -246,6 +252,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.delete(TELEFONE_TABLE, TELEFONE_ID + " = ? ", new String[]{
                 String.valueOf(telefone.getId())
         });
+        db.close();
     }
 
     void deleteTelefoneById (int id) {
@@ -254,10 +261,19 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.delete(TELEFONE_TABLE, TELEFONE_ID + " = ? ", new String[] {
                 String.valueOf(id)
         });
+        db.close();
     }
 
-    /*
-    Cliente selectTelefone (int codigo) {
+    void deleteTelefoneByCliente (Cliente cliente) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(TELEFONE_TABLE, TELEFONE_CLIENTE + " = ? ", new String[] {
+                String.valueOf(cliente.getId())
+        });
+        db.close();
+    }
+
+    Telefone selectTelefone (int codigo) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         Cursor cursor = db.query(TELEFONE_TABLE,
@@ -275,23 +291,117 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
             cursor.moveToFirst();
 
         int id = cursor.getInt(2);
+        Cliente c = selectCliente(id);
 
         Telefone telefone1 = new Telefone(
                 Integer.parseInt(cursor.getString(0)),
                 cursor.getString(1),
-                cursor.getString(2));
+                c);
 
+        db.close();
         return telefone1;
     }
-    
-     */
 
+    public Telefone selectTelefoneFirst(Cliente cliente) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String QUERY =  " SELECT" +
+                " T." + TELEFONE_ID + ", T." + TELEFONE_NUM + ", C." + CLIENTE_ID +
+                " FROM " + TELEFONE_TABLE + " T" +
+                " INNER JOIN " + CLIENTE_TABLE + " C" +
+                " ON T." + TELEFONE_CLIENTE + " = C." + CLIENTE_ID +
+                " WHERE C." + CLIENTE_ID + " = " + String.valueOf(cliente.getId()) +
+                " LIMIT 1";
+
+        Cursor c = db.rawQuery(QUERY, null);
+
+        int id = c.getInt(2);
+        cliente = selectCliente(id);
+
+        Telefone telefone = new Telefone();
+        telefone.setId(Integer.parseInt(c.getString(0)));
+        telefone.setNum(c.getString(1));
+        telefone.setCliente(cliente);
+
+        db.close();
+        return telefone;
+    }
+
+    void updateTelefone (Telefone telefone) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(TELEFONE_NUM, telefone.getNum());
+        values.put(TELEFONE_CLIENTE, telefone.getCliente().getId());
+
+        db.update(TELEFONE_TABLE, values, TELEFONE_ID + " = ? ",
+                new String[] {
+                        String.valueOf(telefone.getId())
+                });
+        db.close();
+    }
+
+    public List<Telefone> listAllTelefones() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Telefone> listTelefones = new ArrayList<Telefone>();
+
+        String QUERY = "SELECT * FROM " + TELEFONE_TABLE;
+        Cursor c = db.rawQuery(QUERY, null);
+
+        if (c.moveToFirst()) {
+            do {
+
+                int id = c.getInt(2);
+                Cliente cliente = selectCliente(id);
+
+                Telefone telefone = new Telefone();
+                telefone.setId(Integer.parseInt(c.getString(0)));
+                telefone.setNum(c.getString(1));
+                telefone.setCliente(cliente);
+
+                listTelefones.add(telefone);
+            } while (c.moveToNext());
+        }
+        db.close();
+        return listTelefones;
+    }
+
+    public List<Telefone> listTelefoneFromCliente() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Telefone> listTelefones = new ArrayList<Telefone>();
+
+        String QUERY =  " SELECT" +
+                " T." + TELEFONE_ID + ", T." + TELEFONE_NUM + ", C." + CLIENTE_ID +
+                " FROM " + TELEFONE_TABLE + " T" +
+                " INNER JOIN " + CLIENTE_TABLE + " C" +
+                " ON T." + TELEFONE_CLIENTE + " = C." + CLIENTE_ID;
+
+        Cursor c = db.rawQuery(QUERY, null);
+
+        if (c.moveToFirst()) {
+            do {
+
+                int id = c.getInt(2);
+                Cliente cliente = selectCliente(id);
+
+                Telefone telefone = new Telefone();
+                telefone.setId(Integer.parseInt(c.getString(0)));
+                telefone.setNum(c.getString(1));
+                telefone.setCliente(cliente);
+
+                listTelefones.add(telefone);
+            } while (c.moveToNext());
+        }
+        db.close();
+        return listTelefones;
+    }
 
     // CRUD ENDEREÇO ////////////////////////////////////////////////////////////////////////////
 
     void addEndereco () {
     }
-
 }
 
 

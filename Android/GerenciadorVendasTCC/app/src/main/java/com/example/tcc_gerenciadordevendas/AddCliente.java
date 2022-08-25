@@ -55,9 +55,6 @@ public class AddCliente extends AppCompatActivity {
             id_cliente = intent.getIntExtra("ID", 0);
 
             Cliente c = db.selectCliente(id_cliente);
-            Log.i("INFO CLIENTE", "ID: " + c.getId() +
-                    "\nNome: " + c.getNome() +
-                    "\nTelefone: " + c.getTelefone());
 
             editTextNome.setText(c.getNome());
             editTextTelefone.setText(c.getTelefone());
@@ -86,6 +83,33 @@ public class AddCliente extends AppCompatActivity {
                 }
 
                 if (confereCampos()){
+                    String nome = editTextNome.getText().toString();
+                    String telefone = editTextTelefone.getText().toString();
+
+                    // Refazer método quando possível
+                    boolean deubom = false;
+                    try {
+                        Cliente c = new Cliente(nome);
+                        Telefone t = new Telefone(telefone, c);
+
+                        db.addCliente(c);
+                        db.addTelefone(t);
+
+                        deubom = true;
+                    } catch (Exception e) {
+                        Log.e("ERROR", e.getMessage());
+                        deubom = false;
+                    }
+
+                    if (deubom) {
+                        setResult(RESULT_OK);
+                        finish();
+                    } else {
+                        Log.i("ERROR", "Erro ao salvar");
+                    }
+
+
+                    /* Processo antigo
                     bundle.putString("nome", editTextNome.getText().toString());
                     bundle.putString("telefone", editTextTelefone.getText().toString());
 
@@ -94,6 +118,8 @@ public class AddCliente extends AppCompatActivity {
 
                     setResult(RESULT_OK, intent);
                     finish();
+
+                     */
                 }
 
             }

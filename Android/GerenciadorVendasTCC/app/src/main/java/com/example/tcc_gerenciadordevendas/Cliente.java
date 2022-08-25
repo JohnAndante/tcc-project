@@ -21,6 +21,10 @@ public class Cliente {
         this.telefone   = _telefone;
     }
 
+    public Cliente (String _nome) {
+        this.nome = _nome;
+    }
+
     public int getId() {
         return id;
     }
