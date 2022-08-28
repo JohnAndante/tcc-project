@@ -4,9 +4,9 @@ import android.database.sqlite.SQLiteDatabase;
 
 public class Telefone {
 
-    int     id;
-    String  num;
-    Cliente cliente;
+    private int     id;
+    private String  num;
+    private Cliente cliente;
 
     public Telefone () {
 

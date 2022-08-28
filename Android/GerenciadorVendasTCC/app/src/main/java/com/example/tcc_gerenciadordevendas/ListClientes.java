@@ -189,7 +189,7 @@ public class ListClientes extends AppCompatActivity {
         Intent intent = new Intent(ListClientes.this, viewCliente.class);
         Bundle bundle = new Bundle();
 
-        bundle.putInt("ID", c.id);
+        bundle.putInt("ID", c.getId());
         intent.putExtras(bundle);
 
         startActivityForResult(intent, CONSULTAR_CLIENTE);

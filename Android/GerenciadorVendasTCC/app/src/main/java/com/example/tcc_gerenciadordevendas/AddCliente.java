@@ -75,53 +75,46 @@ public class AddCliente extends AppCompatActivity {
                 if (id_cliente > 0 && confereCampos()) {
                     bundle.putInt("id", id_cliente);
                     Cliente c = new Cliente();
+                    Telefone t = new Telefone();
+
                     c.setId(id_cliente);
                     c.setNome(editTextNome.getText().toString());
                     c.setTelefone(editTextTelefone.getText().toString());
 
-                    db.updateCliente(c);
-                }
+                    try {
+                        t = db.selectTelefoneFirst(c);
+                    } catch (Exception e) {
+                        Log.e("ERROR", e.getMessage());
+                    }
 
+                    if (t.getId() == 0 || t == null) {
+                        t.setCliente(c);
+                        t.setNum(c.getTelefone());
+                        db.addTelefone(t);
+                    }
+                    else if (t.getId() > 0) {
+                        t.setNum(c.getTelefone());
+                    }
+
+                    db.updateCliente(c);
+
+                    setResult(RESULT_OK);
+                    finish();
+
+                } else
                 if (confereCampos()){
                     String nome = editTextNome.getText().toString();
                     String telefone = editTextTelefone.getText().toString();
 
-                    // Refazer método quando possível
-                    boolean deubom = false;
-                    try {
-                        Cliente c = new Cliente(nome);
-                        Telefone t = new Telefone(telefone, c);
+                    Cliente c = new Cliente(nome, telefone);
+                    Telefone t = new Telefone(telefone, c);
 
-                        db.addCliente(c);
-                        db.addTelefone(t);
+                    db.addCliente(c);
+                    db.addTelefone(t);
 
-                        deubom = true;
-                    } catch (Exception e) {
-                        Log.e("ERROR", e.getMessage());
-                        deubom = false;
-                    }
-
-                    if (deubom) {
-                        setResult(RESULT_OK);
-                        finish();
-                    } else {
-                        Log.i("ERROR", "Erro ao salvar");
-                    }
-
-
-                    /* Processo antigo
-                    bundle.putString("nome", editTextNome.getText().toString());
-                    bundle.putString("telefone", editTextTelefone.getText().toString());
-
-                    Intent intent = new Intent();
-                    intent.putExtras(bundle);
-
-                    setResult(RESULT_OK, intent);
+                    setResult(RESULT_OK);
                     finish();
-
-                     */
                 }
-
             }
         });
         Cancelar.setOnClickListener(new View.OnClickListener() {

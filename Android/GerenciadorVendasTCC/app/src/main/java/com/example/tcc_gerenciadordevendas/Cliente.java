@@ -2,9 +2,9 @@ package com.example.tcc_gerenciadordevendas;
 
 public class Cliente {
 
-    int     id;
-    String  nome;
-    String  telefone;
+    private int     id;
+    private String  nome;
+    private String  telefone;
 
     public Cliente (){
 
