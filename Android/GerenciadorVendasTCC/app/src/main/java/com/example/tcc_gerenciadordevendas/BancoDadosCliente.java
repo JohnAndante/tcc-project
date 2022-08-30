@@ -313,24 +313,28 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
     public Telefone selectTelefoneFirst(Cliente cliente) {
         SQLiteDatabase db = this.getWritableDatabase();
+        Telefone telefone = new Telefone();
 
         String QUERY =  " SELECT" +
-                " T." + TELEFONE_ID + ", T." + TELEFONE_NUM + ", C." + CLIENTE_ID +
-                " FROM " + TELEFONE_TABLE + " T" +
-                " INNER JOIN " + CLIENTE_TABLE + " C" +
-                " ON T." + TELEFONE_CLIENTE + " = C." + CLIENTE_ID +
-                " WHERE C." + CLIENTE_ID + " = " + String.valueOf(cliente.getId()) +
+                " T."           + TELEFONE_ID + ", T." + TELEFONE_NUM + ", C." + CLIENTE_ID +
+                " FROM "        + TELEFONE_TABLE    + " T" +
+                " INNER JOIN "  + CLIENTE_TABLE     + " C" +
+                " ON T."        + TELEFONE_CLIENTE  + " = C." + CLIENTE_ID +
+                " WHERE C."     + CLIENTE_ID        + " = " + String.valueOf(cliente.getId()) +
                 " LIMIT 1";
+
 
         Cursor c = db.rawQuery(QUERY, null);
 
-        int id = c.getInt(2);
-        cliente = selectCliente(id);
+        c.moveToFirst();
 
-        Telefone telefone = new Telefone();
-        telefone.setId(Integer.parseInt(c.getString(0)));
-        telefone.setNum(c.getString(1));
-        telefone.setCliente(cliente);
+        if (c.getCount() > 0) {
+            telefone.setId(Integer.parseInt(c.getString(0)));
+            telefone.setNum(c.getString(1));
+            telefone.setCliente(cliente);
+        } else {
+            telefone = null;
+        }
 
         db.close();
         return telefone;
@@ -453,14 +457,19 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                 null
         );
 
-        if (cursor != null)
+        Estado estado = new Estado();
+
+        if (cursor != null) {
             cursor.moveToFirst();
 
-        Estado estado = new Estado (
-                cursor.getInt(0),
-                cursor.getString(1),
-                cursor.getString(2)
-        );
+            estado = new Estado(
+                    cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getString(2)
+            );
+        } else {
+            estado = null;
+        }
 
         db.close();
         return estado;
@@ -503,9 +512,103 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return listEstados;
     }
 
+    // CRUD CIDADE //////////////////////////////////////////////////////////////////////////////
+
+    public void addCidade (Cidade cidade) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(CIDADE_NOME, cidade.getNome());
+        values.put(CIDADE_ESTADO, cidade.getEstado().toString());
+
+        db.insert(CIDADE_TABLE, null, values);
+        db.close();
+    }
+
+    public void deleteCidade (Cidade cidade) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(CIDADE_TABLE, CIDADE_ID + " = ? ", new String[]{
+                String.valueOf(cidade.getId())
+        });
+        db.close();
+    }
+
+    public void deleteCidadeById (int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(CIDADE_TABLE, CIDADE_ID + " = ? ", new String[] {
+                String.valueOf(id)
+        });
+        db.close();
+    }
+
+    public Cidade selectCidade (int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.query(CIDADE_TABLE,
+                new String[] {
+                        CIDADE_ID, CIDADE_NOME, CIDADE_ESTADO },
+                ESTADO_ID + " = ?",
+                new String[] { String.valueOf(id) },
+                null,
+                null,
+                null,
+                null
+        );
+
+        Cidade cidade = new Cidade();
+        Estado estado = new Estado();
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+
+            cidade = new Cidade(
+                    cursor.getInt(0),
+                    cursor.getString(1),
+                    estado = selectEstado(cursor.getInt(2))
+            );
+        } else {
+            cidade = null;
+        }
+
+        db.close();
+        return cidade;
+    }
+
+    public void updateCidade (Cidade cidade) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(CIDADE_NOME, cidade.getNome());
+        values.put(CIDADE_ESTADO, cidade.getEstado().getId());
+
+        db.update(CIDADE_TABLE, values, CIDADE_ID + " = ? ",
+                new String[] {
+                        String.valueOf(cidade.getId())
+                });
+        db.close();
+    }
+
+
     // CRUD ENDEREÇO ////////////////////////////////////////////////////////////////////////////
 
     void addEndereco () {
+    }
+
+    // Preenchimento estados e cidades //////////////////////////////////////////////////////////
+
+    void addAllEstados () {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String QUERY = "SELECT * FROM " + ESTADO_TABLE;
+        Cursor c = db.rawQuery(QUERY, null);
+        Log.e("INFO DB ESTADOS", String.valueOf(c.getCount()));
+
+        QUERY = "SELECT * FROM " + CLIENTE_TABLE;
+        c = db.rawQuery(QUERY, null);
+        Log.e("INFO DB CLIENTES", String.valueOf(c.getCount()));
     }
 }
 

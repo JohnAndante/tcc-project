@@ -8,53 +8,64 @@
     tools:context=".ListClientes">
 
     <LinearLayout
-        android:id="@+id/llAdicionarCliente"
-        android:layout_width="380dp"
+        android:id="@+id/llPaiAdicionarCliente"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal|center"
-        android:layout_margin="10dp"
-        android:padding="5dp"
-        android:background="@drawable/cardbg_roundcorners_lightgray"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:gravity="center_horizontal|center" >
 
-        <ImageButton
-            android:id="@+id/imgbtIconeNovoCliente"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:layout_marginLeft="0dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/iconbg_roundcorners_lightgray_01_stroke"
-            android:src="@drawable/ic_baseline_add_24_white"
-            />
-
-        <TextView
-            android:id="@+id/tvNovoCliente"
-            android:layout_width="260dp"
+        <LinearLayout
+            android:id="@+id/llAdicionarCliente"
+            android:layout_width="380dp"
             android:layout_height="wrap_content"
-            android:textSize="18dp"
-            android:text="Adicionar Cliente"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            />
+            android:orientation="horizontal"
+            android:gravity="center_horizontal|center"
+            android:layout_margin="10dp"
+            android:padding="5dp"
+            android:background="@drawable/cardbg_roundcorners_lightgray"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
-        <ImageButton
-            android:id="@+id/imgbtDadosCliente"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/ic_baseline_arrow_forward_ios_24_white"
-            android:background="@null"/>
+            <ImageButton
+                android:id="@+id/imgbtIconeNovoCliente"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/iconbg_roundcorners_lightgray_01_stroke"
+                android:src="@drawable/ic_baseline_add_24_white"
+                />
+
+            <TextView
+                android:id="@+id/tvNovoCliente"
+                android:layout_width="260dp"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:text="Adicionar Cliente"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                />
+
+            <ImageButton
+                android:id="@+id/imgbtDadosCliente"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/ic_baseline_arrow_forward_ios_24_white"
+                android:background="@null"/>
+
+        </LinearLayout>
 
     </LinearLayout>
+
 
     <ListView
         android:id="@+id/listVClientes"
         android:layout_width="match_parent"
-        android:layout_height="540dp"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        app:layout_constraintTop_toBottomOf="@id/llPaiAdicionarCliente" />
 
     <Button
         android:id="@+id/btClienteVoltar"

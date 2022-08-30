@@ -88,6 +88,8 @@ public class ListClientes extends AppCompatActivity {
                 addNewCliente();
             }
         });
+
+        addDefaultValues();
     }
 
     @Override
@@ -193,5 +195,45 @@ public class ListClientes extends AppCompatActivity {
         intent.putExtras(bundle);
 
         startActivityForResult(intent, CONSULTAR_CLIENTE);
+    }
+
+    private void addDefaultValues(){
+        // Verificando e adicionando estados
+        List<Estado> estados = db.listAllEstados();
+        Log.i("INFO ESTADOS LISTCLIENTES ONCREATE", String.valueOf(estados.size()));
+        if (estados.isEmpty()) {
+            db.addAllEstados();
+
+            db.addEstado(new Estado(1, "Acre", "AC"));
+            db.addEstado(new Estado(2, "Alagoas", "AL"));
+            db.addEstado(new Estado(3, "Amazonas", "AM"));
+            db.addEstado(new Estado(4, "Amapá", "AP"));
+            db.addEstado(new Estado(5, "Bahia", "BA"));
+            db.addEstado(new Estado(6, "Ceará", "CE"));
+            db.addEstado(new Estado(7, "Distrito Federal", "DF"));
+            db.addEstado(new Estado(8, "Espírito Santo", "ES"));
+            db.addEstado(new Estado(9, "Goiás", "GO"));
+            db.addEstado(new Estado(10, "Maranhão", "MA"));
+            db.addEstado(new Estado(11, "Minas Gerais", "MG"));
+            db.addEstado(new Estado(12, "Mato Grosso do Sul", "MS"));
+            db.addEstado(new Estado(13, "Mato Grosso", "MT"));
+            db.addEstado(new Estado(14, "Pará", "PA"));
+            db.addEstado(new Estado(15, "Paraíba", "PB"));
+            db.addEstado(new Estado(16, "Pernambuco", "PE"));
+            db.addEstado(new Estado(17, "Piauí", "PI"));
+            db.addEstado(new Estado(18, "Paraná", "PR"));
+            db.addEstado(new Estado(19, "Rio de Janeiro", "RJ"));
+            db.addEstado(new Estado(20, "Rio Grande do Norte", "RN"));
+            db.addEstado(new Estado(21, "Rondônia", "RO"));
+            db.addEstado(new Estado(22, "Roraima", "RR"));
+            db.addEstado(new Estado(23, "Rio Grande do Sul", "RS"));
+            db.addEstado(new Estado(24, "Santa Catarina", "SC"));
+            db.addEstado(new Estado(25, "Sergipe", "SE"));
+            db.addEstado(new Estado(26, "São Paulo", "SP"));
+            db.addEstado(new Estado(27, "Tocantins", "TO"));
+
+            estados = db.listAllEstados();
+            Log.i("INFO ESTADOS LISTCLIENTES ONCREATE PÒS DATA", String.valueOf(estados.size()));
+        }
     }
 }

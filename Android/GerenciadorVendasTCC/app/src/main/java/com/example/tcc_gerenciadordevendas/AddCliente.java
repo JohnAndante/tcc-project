@@ -55,9 +55,15 @@ public class AddCliente extends AppCompatActivity {
             id_cliente = intent.getIntExtra("ID", 0);
 
             Cliente c = db.selectCliente(id_cliente);
+            Telefone t = db.selectTelefoneFirst(c);
 
             editTextNome.setText(c.getNome());
-            editTextTelefone.setText(c.getTelefone());
+
+            if (t != null) {
+                editTextTelefone.setText(t.getNum());
+            } else {
+                editTextTelefone.setText(c.getTelefone());
+            }
         }
 
     }
@@ -73,6 +79,7 @@ public class AddCliente extends AppCompatActivity {
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
                 if (id_cliente > 0 && confereCampos()) {
+                    // Se o cliente já existe, e os campos estão preenchidos
                     bundle.putInt("id", id_cliente);
                     Cliente c = new Cliente();
                     Telefone t = new Telefone();
@@ -81,19 +88,19 @@ public class AddCliente extends AppCompatActivity {
                     c.setNome(editTextNome.getText().toString());
                     c.setTelefone(editTextTelefone.getText().toString());
 
-                    try {
-                        t = db.selectTelefoneFirst(c);
-                    } catch (Exception e) {
-                        Log.e("ERROR", e.getMessage());
-                    }
+                    t = db.selectTelefoneFirst(c);
 
-                    if (t.getId() == 0 || t == null) {
+                    if (t == null) {
+                        t = new Telefone();
                         t.setCliente(c);
                         t.setNum(c.getTelefone());
                         db.addTelefone(t);
                     }
                     else if (t.getId() > 0) {
                         t.setNum(c.getTelefone());
+                        db.updateTelefone(t);
+                    } else {
+                        Log.e("ERROR onCLICK TELEFONE", "Não entrou em nenhum dos IF's");
                     }
 
                     db.updateCliente(c);

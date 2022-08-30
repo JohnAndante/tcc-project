@@ -29,7 +29,9 @@ public class AdapterCliente extends ArrayAdapter {
     @NonNull
     @Override
     public View getView (int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+
         /*
+
         // Método com erro
         // Descobrir o que fazer para exibir o telefone dentro do adapter
 
