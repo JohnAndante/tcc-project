@@ -89,6 +89,14 @@ public class ListClientes extends AppCompatActivity {
             }
         });
 
+        llAdicionarCliente = (LinearLayout) findViewById(R.id.llAdicionarCliente);
+        llAdicionarCliente.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addNewCliente();
+            }
+        });
+
         addDefaultValues();
     }
 
