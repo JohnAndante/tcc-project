@@ -489,7 +489,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.close();
     }
 
-    public  List<Estado> listAllEstados() {
+    public List<Estado> listAllEstados() {
         SQLiteDatabase db = this.getWritableDatabase();
 
         List<Estado> listEstados = new ArrayList<Estado>();
@@ -577,6 +577,62 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return cidade;
     }
 
+    public List<Cidade> listAllCidades () {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Cidade> listCidades = new ArrayList<Cidade>();
+
+        String QUERY = "SELECT * FROM " + CIDADE_TABLE;
+        Cursor c = db.rawQuery(QUERY, null);
+
+        if (c.moveToFirst()) {
+            do {
+                Cidade cidade = new Cidade();
+                Estado estado = new Estado();
+
+                estado = selectEstado(c.getInt(2));
+
+                cidade.setId(c.getInt(0));
+                cidade.setNome(c.getString(1));
+                cidade.setEstado(estado);
+
+                listCidades.add(cidade);
+            } while (c.moveToNext());
+        }
+
+        db.close();
+        return listCidades;
+    }
+
+    public List<Cidade> listAllCidadesByEstado (Estado estado) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Cidade> listCidades = new ArrayList<Cidade>();
+
+        String QUERY =  " SELECT" +
+                " C." + CIDADE_ID + ", C." + CIDADE_NOME + ", E." + ESTADO_ID +
+                " FROM " + CIDADE_TABLE + " C" +
+                " INNER JOIN " + ESTADO_TABLE + " E" +
+                " ON C." + CIDADE_ESTADO + " = E." + ESTADO_ID;
+
+        Cursor c = db.rawQuery(QUERY, null);
+
+        if (c.moveToFirst()) {
+            do {
+                Cidade cidade = new Cidade();
+
+                cidade.setId(c.getInt(0));
+                cidade.setNome(c.getString(1));
+                cidade.setEstado(estado);
+
+                listCidades.add(cidade);
+            } while (c.moveToNext());
+        }
+
+        db.close();
+        return listCidades;
+    }
+
     public void updateCidade (Cidade cidade) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -609,6 +665,49 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         QUERY = "SELECT * FROM " + CLIENTE_TABLE;
         c = db.rawQuery(QUERY, null);
         Log.e("INFO DB CLIENTES", String.valueOf(c.getCount()));
+    }
+
+    void addAllCidades () {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        try {
+            /*
+            String QUERY =
+                    "INSERT INTO " + CIDADE_TABLE + " ('" + CIDADE_ID + "', `" + CIDADE_NOME + "`, `" + CIDADE_ESTADO + "`) VALUES " +
+                            "(2842, 'Campo do Tenente', 18)," +
+                            "(2843, 'Campo Largo', 18)," +
+                            "(2844, 'Campo Magro', 18)," +
+                            "(2845, 'Campo Mourão', 18)," +
+                            "(2846, 'Cândido de Abreu', 18)," +
+                            "(2847, 'Candói', 18)," +
+                            "(2848, 'Cantagalo', 18)," +
+                            "(2849, 'Capanema', 18)," +
+                            "(2850, 'Capitão Leônidas Marques', 18);";
+
+             */
+
+            //db.rawQuery(QUERY, null);
+
+            String QUERY2 =
+                    "INSERT INTO " + CIDADE_TABLE + " VALUES (?, ?, ?)";
+
+            db.execSQL(QUERY2, new String[]{String.valueOf(2843), "Campo Largo", String.valueOf(18)});
+            db.execSQL(QUERY2, new String[]{String.valueOf(2844), "Campo Magro", String.valueOf(18)});
+            db.execSQL(QUERY2, new String[]{String.valueOf(2845), "Campo Mourão", String.valueOf(18)});
+            db.execSQL(QUERY2, new String[]{String.valueOf(2846), "Cândido de Abreu", String.valueOf(18)});
+            db.execSQL(QUERY2, new String[]{String.valueOf(2847), "Candói", String.valueOf(18)});
+            db.execSQL(QUERY2, new String[]{String.valueOf(2848), "Cantagalo", String.valueOf(18)});
+            db.execSQL(QUERY2, new String[]{String.valueOf(2849), "Capanema", String.valueOf(18)});
+            db.execSQL(QUERY2, new String[]{String.valueOf(2850), "Capitão Leônidas Marques", String.valueOf(18)});
+
+
+            Log.i("INFO DB CIDADE", "QUERY REALIZADA???");
+
+
+        } catch (Exception e) {
+            Log.e("ERROR DB CIDADE", e.getMessage());
+        }
+
     }
 }
 

@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private LinearLayout linearFabMain;
@@ -112,6 +114,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.floatingNovoPagamento:
                 if (isMenuOpen) {
                     closeFabMenu();
+                    db.addAllCidades();
+                    List<Cidade> cidades = db.listAllCidades();
+                    Log.i("INFO ONCLICK MAIN", String.valueOf(cidades.size()));
                 } else {
                     openFabMenu();
                 }
