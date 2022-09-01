@@ -30,25 +30,6 @@ public class AdapterCliente extends ArrayAdapter {
     @Override
     public View getView (int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-        /*
-
-        // Método com erro
-        // Descobrir o que fazer para exibir o telefone dentro do adapter
-
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.card_cliente, null);
-        Cliente c = data.get(position);
-        Telefone t = db.selectTelefoneFirst(c);
-
-        TextView tvNome = (TextView) view.findViewById(R.id.tvNomeCliente);
-        TextView tvTelefone = (TextView) view.findViewById(R.id.tvTelefoneCliente);
-
-        tvNome.setText(c.getNome());
-        tvTelefone.setText(t.getNum());
-
-         */
-
-        // Método antigo
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.card_cliente, null);
 

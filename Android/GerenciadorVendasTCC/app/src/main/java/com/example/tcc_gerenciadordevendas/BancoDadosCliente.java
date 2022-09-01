@@ -220,7 +220,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     public List<Cliente> listAllClientes() {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        List<Cliente> listClientes = new ArrayList<Cliente>();
+        List<Cliente> listClientes = new ArrayList<>();
 
         String QUERY = "SELECT * FROM " + CLIENTE_TABLE;
         Cursor c = db.rawQuery(QUERY, null);
@@ -320,7 +320,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                 " FROM "        + TELEFONE_TABLE    + " T" +
                 " INNER JOIN "  + CLIENTE_TABLE     + " C" +
                 " ON T."        + TELEFONE_CLIENTE  + " = C." + CLIENTE_ID +
-                " WHERE C."     + CLIENTE_ID        + " = " + String.valueOf(cliente.getId()) +
+                " WHERE C."     + CLIENTE_ID        + " = " + cliente.getId() +
                 " LIMIT 1";
 
 
@@ -520,7 +520,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
 
         values.put(CIDADE_NOME, cidade.getNome());
-        values.put(CIDADE_ESTADO, cidade.getEstado().toString());
+        values.put(CIDADE_ESTADO, cidade.getEstado().getId());
 
         db.insert(CIDADE_TABLE, null, values);
         db.close();
@@ -607,13 +607,15 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     public List<Cidade> listAllCidadesByEstado (Estado estado) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        List<Cidade> listCidades = new ArrayList<Cidade>();
+        List<Cidade> listCidades = new ArrayList<>();
 
+        // Corrigir em um outro momento
         String QUERY =  " SELECT" +
                 " C." + CIDADE_ID + ", C." + CIDADE_NOME + ", E." + ESTADO_ID +
                 " FROM " + CIDADE_TABLE + " C" +
                 " INNER JOIN " + ESTADO_TABLE + " E" +
-                " ON C." + CIDADE_ESTADO + " = E." + ESTADO_ID;
+                " ON C." + CIDADE_ESTADO + " = E." + ESTADO_ID +
+                " WHERE E." + ESTADO_ID + " = " + estado.getId();
 
         Cursor c = db.rawQuery(QUERY, null);
 
@@ -655,7 +657,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
     // Preenchimento estados e cidades //////////////////////////////////////////////////////////
 
-    void addAllEstados () {
+    void listDataEstadosCidades () {
         SQLiteDatabase db = this.getWritableDatabase();
 
         String QUERY = "SELECT * FROM " + ESTADO_TABLE;
@@ -671,23 +673,6 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         try {
-            /*
-            String QUERY =
-                    "INSERT INTO " + CIDADE_TABLE + " ('" + CIDADE_ID + "', `" + CIDADE_NOME + "`, `" + CIDADE_ESTADO + "`) VALUES " +
-                            "(2842, 'Campo do Tenente', 18)," +
-                            "(2843, 'Campo Largo', 18)," +
-                            "(2844, 'Campo Magro', 18)," +
-                            "(2845, 'Campo Mourão', 18)," +
-                            "(2846, 'Cândido de Abreu', 18)," +
-                            "(2847, 'Candói', 18)," +
-                            "(2848, 'Cantagalo', 18)," +
-                            "(2849, 'Capanema', 18)," +
-                            "(2850, 'Capitão Leônidas Marques', 18);";
-
-             */
-
-            //db.rawQuery(QUERY, null);
-
             String QUERY2 =
                     "INSERT INTO " + CIDADE_TABLE + " VALUES (?, ?, ?)";
 
@@ -700,14 +685,11 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
             db.execSQL(QUERY2, new String[]{String.valueOf(2849), "Capanema", String.valueOf(18)});
             db.execSQL(QUERY2, new String[]{String.valueOf(2850), "Capitão Leônidas Marques", String.valueOf(18)});
 
-
             Log.i("INFO DB CIDADE", "QUERY REALIZADA???");
-
 
         } catch (Exception e) {
             Log.e("ERROR DB CIDADE", e.getMessage());
         }
-
     }
 }
 
