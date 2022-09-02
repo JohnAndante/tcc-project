@@ -275,7 +275,7 @@
                     android:gravity="center_horizontal|center"
                     android:orientation="horizontal">
 
-                    <EditText
+                    <TextView
                         android:id="@+id/editUfEndereco"
                         android:layout_width="290dp"
                         android:layout_height="45dp"
@@ -283,13 +283,13 @@
                         android:layout_marginRight="5dp"
                         android:backgroundTint="@color/light_gray_01"
                         android:ems="10"
-                        android:inputType="text"
                         android:textColor="@color/white"
                         android:textSize="16dp"
                         android:textStyle="bold"
-                        android:hint="UF"
+                        android:hint=" UF"
                         android:textColorHint="@color/light_gray_02"
-                        android:nextFocusForward="@id/editCidadeEndereco"/>
+                        android:nextFocusForward="@id/editCidadeEndereco"
+                        android:gravity="center|left"/>
 
                     <ImageView
                         android:layout_width="20dp"
