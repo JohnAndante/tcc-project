@@ -2,12 +2,19 @@ package com.example.tcc_gerenciadordevendas;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AddCliente extends AppCompatActivity {
 
@@ -27,13 +35,18 @@ public class AddCliente extends AppCompatActivity {
     private EditText editTextNum;
     private EditText editTextCompl;
     private EditText editTextBairro;
-    private EditText editTextUf;
-    private EditText editTextCidade;
+    private TextView textUf;
+    private TextView textCidade;
+
+    //private EditText editTextUf;
+    //private EditText editTextCidade;
+
 
     // Variáveis utilizadas no spinner do estado, ajustar depois para seguir o padrão
-    private TextView textView;
     private ArrayList<String> arrayList;
     Dialog dialog;
+
+    private Estado estadoSelecionado = null;
 
 
     private LinearLayout llButtons;
@@ -78,6 +91,7 @@ public class AddCliente extends AppCompatActivity {
             }
         }
 
+        testeSelecionarEstado2();
     }
 
     private void initButtonsCfg(){
@@ -168,8 +182,8 @@ public class AddCliente extends AppCompatActivity {
         editTextNum         = (EditText) findViewById(R.id.editNumEndereco);
         editTextCompl       = (EditText) findViewById(R.id.editComplEndereco);
         editTextBairro      = (EditText) findViewById(R.id.editBairroEndereco);
-        editTextUf          = (EditText) findViewById(R.id.editUfEndereco);
-        editTextCidade      = (EditText) findViewById(R.id.editCidadeEndereco);
+        textUf              = (TextView) findViewById(R.id.editUfEndereco);
+        textCidade          = (TextView) findViewById(R.id.editCidadeEndereco);
     }
 
     private void initEditOnFocus(){
@@ -209,14 +223,14 @@ public class AddCliente extends AppCompatActivity {
             }
         });
 
-        editTextUf.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        textUf.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
                 changellButtons();
             }
         });
 
-        editTextCidade.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        textCidade.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
                 changellButtons();
@@ -251,83 +265,125 @@ public class AddCliente extends AppCompatActivity {
 
     private void testeSelecionarEstado2 () {
         // Alterar depois
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
 
-            // assign variable
-            textview=findViewById(R.id.testView);
+        // initialize array list
+        arrayList = new ArrayList<>();
 
-            // initialize array list
-            arrayList=new ArrayList<>();
+        // set value in array list
+        List<Estado> estados = db.listAllEstados();
 
-            // set value in array list
-            arrayList.add("DSA Self Paced");
-            arrayList.add("Complete Interview Prep");
-            arrayList.add("Amazon SDE Test Series");
-            arrayList.add("Compiler Design");
-            arrayList.add("Git & Github");
-            arrayList.add("Python foundation");
-            arrayList.add("Operating systems");
-            arrayList.add("Theory of Computation");
-
-            textview.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Initialize dialog
-                    dialog=new Dialog(MainActivity.this);
-
-                    // set custom dialog
-                    dialog.setContentView(R.layout.dialog_searchable_spinner);
-
-                    // set custom height and width
-                    dialog.getWindow().setLayout(650,800);
-
-                    // set transparent background
-                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-                    // show dialog
-                    dialog.show();
-
-                    // Initialize and assign variable
-                    EditText editText=dialog.findViewById(R.id.edit_text);
-                    ListView listView=dialog.findViewById(R.id.list_view);
-
-                    // Initialize array adapter
-                    ArrayAdapter<String> adapter=new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1,arrayList);
-
-                    // set adapter
-                    listView.setAdapter(adapter);
-                    editText.addTextChangedListener(new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            adapter.getFilter().filter(s);
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-
-                        }
-                    });
-
-                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            // when item selected from list
-                            // set selected item on textView
-                            textview.setText(adapter.getItem(position));
-
-                            // Dismiss dialog
-                            dialog.dismiss();
-                        }
-                    });
-                }
-            });
+        for (Estado e : estados) {
+            arrayList.add(e.getNome());
         }
+
+        textUf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Initialize dialog
+                dialog = new Dialog(AddCliente.this);
+                dialog.setContentView(R.layout.spinner_estado);
+                dialog.getWindow().setLayout(650,800);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                dialog.show();
+
+                // Initialize and assign variable
+                EditText editText=dialog.findViewById(R.id.edit_text);
+                ListView listView=dialog.findViewById(R.id.list_view);
+
+                // Initialize array adapter
+                ArrayAdapter<String> adapter=new ArrayAdapter<>(
+                        AddCliente.this, android.R.layout.simple_list_item_1,arrayList
+                );
+
+                // set adapter
+                listView.setAdapter(adapter);
+                editText.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        adapter.getFilter().filter(s);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                    }
+                });
+
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        // when item selected from list
+                        // set selected item on textView
+                        textUf.setText(adapter.getItem(position));
+                        estadoSelecionado = db.selectEstado(position + 1);
+                        // Dismiss dialog
+                        dialog.dismiss();
+                        testeCidadeDropdown();
+                    }
+                });
+            }
+        });
+    }
+
+    private void testeCidadeDropdown () {
+
+        arrayList = new ArrayList<>();
+        List<Cidade> cidades = db.listAllCidadesByEstado(estadoSelecionado);
+
+        textCidade.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Inicializando o Dialog
+                dialog = new Dialog(AddCliente.this);
+                dialog.setContentView(R.layout.spinner_estado);
+                dialog.getWindow().setLayout(650, 800); // Alterar isso para algo melhor futuramente
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                dialog.show();
+
+                TextView textView = dialog.findViewById(R.id.spinnerMainText);
+                EditText editText = dialog.findViewById(R.id.edit_text);
+                ListView listView = dialog.findViewById(R.id.list_view);
+
+                ArrayAdapter<Cidade> adapter = new ArrayAdapter<>(
+                        AddCliente.this, android.R.layout.simple_list_item_1, cidades
+                );
+
+                listView.setAdapter(adapter);
+                editText.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        adapter.getFilter().filter(charSequence);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                    }
+                });
+
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        textCidade.setText(adapter.getItem(i).getNome());
+                        dialog.dismiss();
+                    }
+                });
+
+            }
+        });
+
+
     }
 }

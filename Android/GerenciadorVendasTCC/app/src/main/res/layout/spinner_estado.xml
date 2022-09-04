@@ -5,14 +5,16 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="@android:color/white">
+    android:background="@drawable/cardbg_roundcorners_lightgray">
 <!-- XML TESTE, ARRUMAR DEPOIS COM O TEMA DA APLICAÇÃO -->
 
     <TextView
+        android:id="@+id/spinnerMainText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Selecione o Estado"
-        android:textSize="20sp"
+        android:textColor="@color/light_gray_02"
+        android:textSize="20dp"
         android:textStyle="bold"
         />
 
@@ -25,13 +27,19 @@
         android:singleLine="true"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@android:drawable/editbox_background"
+        android:textColor="@color/dark_gray_01"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:background="@drawable/cardbg_roundcorners_lightgray2"
         />
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/list_view"
+        android:textColor="@color/light_gray_01"
+        android:textSize="15dp"
+        android:textStyle="bold"
         />
 
 </LinearLayout>
