@@ -635,6 +635,38 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return listCidades;
     }
 
+    public List<Cidade> listAllCidadesByEstadoAndNome (Estado estado, String nome) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Cidade> listCidades = new ArrayList<>();
+
+        // Corrigir em um outro momento
+        String QUERY =  " SELECT" +
+                " C." + CIDADE_ID + ", C." + CIDADE_NOME + ", E." + ESTADO_ID +
+                " FROM " + CIDADE_TABLE + " C" +
+                " INNER JOIN " + ESTADO_TABLE + " E" +
+                " ON C." + CIDADE_ESTADO + " = E." + ESTADO_ID +
+                " WHERE E." + ESTADO_ID + " = " + estado.getId() +
+                " AND C." + CIDADE_NOME + " LIKE " + nome;
+
+        Cursor c = db.rawQuery(QUERY, null);
+
+        if (c.moveToFirst()) {
+            do {
+                Cidade cidade = new Cidade();
+
+                cidade.setId(c.getInt(0));
+                cidade.setNome(c.getString(1));
+                cidade.setEstado(estado);
+
+                listCidades.add(cidade);
+            } while (c.moveToNext());
+        }
+
+        db.close();
+        return listCidades;
+    }
+
     public void updateCidade (Cidade cidade) {
         SQLiteDatabase db = this.getWritableDatabase();
 

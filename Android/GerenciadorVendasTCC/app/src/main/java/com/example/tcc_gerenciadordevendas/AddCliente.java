@@ -9,6 +9,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -43,11 +44,16 @@ public class AddCliente extends AppCompatActivity {
 
 
     // Variáveis utilizadas no spinner do estado, ajustar depois para seguir o padrão
-    private ArrayList<String> arrayList;
-    Dialog dialog;
-
+    private ArrayList<String> arrayListEstado;
+    private ArrayList<String> arrayListCidade;
+    Dialog dialogEstado;
+    Dialog dialogCidade;
     private Estado estadoSelecionado = null;
+    private Cidade cidadeSelecionada = null;
 
+    private ArrayList<Cidade> listaDinamicaCidade;
+    private AdapterCidade adapterCidade;
+    private ListView listViewCidades = null;
 
     private LinearLayout llButtons;
 
@@ -71,8 +77,6 @@ public class AddCliente extends AppCompatActivity {
         changellButtons();
         initEditOnFocus();
 
-        testeSelecionarEstado();
-
         Intent intent = getIntent();
 
         if (intent.hasExtra("ID")) {
@@ -91,7 +95,7 @@ public class AddCliente extends AppCompatActivity {
             }
         }
 
-        testeSelecionarEstado2();
+        testeEstadoDropdown();
     }
 
     private void initButtonsCfg(){
@@ -255,45 +259,38 @@ public class AddCliente extends AppCompatActivity {
         */
     }
 
-    private void testeSelecionarEstado () {
-        // Initialize variable
-        TextView textview;
-        ArrayList<String> arrayList;
-        Dialog dialog;
 
-    }
-
-    private void testeSelecionarEstado2 () {
+    private void testeEstadoDropdown () {
         // Alterar depois
 
         // initialize array list
-        arrayList = new ArrayList<>();
+        arrayListEstado = new ArrayList<>();
 
         // set value in array list
         List<Estado> estados = db.listAllEstados();
 
         for (Estado e : estados) {
-            arrayList.add(e.getNome());
+            arrayListEstado.add(e.getNome());
         }
 
         textUf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Initialize dialog
-                dialog = new Dialog(AddCliente.this);
-                dialog.setContentView(R.layout.spinner_estado);
-                dialog.getWindow().setLayout(650,800);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialogEstado = new Dialog(AddCliente.this);
+                dialogEstado.setContentView(R.layout.spinner_estado);
+                dialogEstado.getWindow().setLayout(650,800);
+                dialogEstado.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-                dialog.show();
+                dialogEstado.show();
 
                 // Initialize and assign variable
-                EditText editText=dialog.findViewById(R.id.edit_text);
-                ListView listView=dialog.findViewById(R.id.list_view);
+                EditText editText = dialogEstado.findViewById(R.id.editTextSpinnerEstado);
+                ListView listView = dialogEstado.findViewById(R.id.lvSpinnerEstado);
 
                 // Initialize array adapter
-                ArrayAdapter<String> adapter=new ArrayAdapter<>(
-                        AddCliente.this, android.R.layout.simple_list_item_1,arrayList
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                        AddCliente.this, android.R.layout.simple_list_item_1, arrayListEstado
                 );
 
                 // set adapter
@@ -321,10 +318,11 @@ public class AddCliente extends AppCompatActivity {
                         // when item selected from list
                         // set selected item on textView
                         textUf.setText(adapter.getItem(position));
+                        textCidade.setText(null);
                         estadoSelecionado = db.selectEstado(position + 1);
                         // Dismiss dialog
-                        dialog.dismiss();
-                        testeCidadeDropdown();
+                        dialogEstado.dismiss();
+                        testeCidadeDropdown2();
                     }
                 });
             }
@@ -333,23 +331,23 @@ public class AddCliente extends AppCompatActivity {
 
     private void testeCidadeDropdown () {
 
-        arrayList = new ArrayList<>();
+        arrayListCidade = new ArrayList<>();
         List<Cidade> cidades = db.listAllCidadesByEstado(estadoSelecionado);
 
         textCidade.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Inicializando o Dialog
-                dialog = new Dialog(AddCliente.this);
-                dialog.setContentView(R.layout.spinner_estado);
-                dialog.getWindow().setLayout(650, 800); // Alterar isso para algo melhor futuramente
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialogCidade = new Dialog(AddCliente.this);
+                dialogCidade.setContentView(R.layout.spinner_cidade);
+                dialogCidade.getWindow().setLayout(650, 800); // Alterar isso para algo melhor futuramente
+                dialogCidade.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-                dialog.show();
+                dialogCidade.show();
 
-                TextView textView = dialog.findViewById(R.id.spinnerMainText);
-                EditText editText = dialog.findViewById(R.id.edit_text);
-                ListView listView = dialog.findViewById(R.id.list_view);
+                TextView textView = dialogCidade.findViewById(R.id.tvSpinnerCidade);
+                EditText editText = dialogCidade.findViewById(R.id.editTextSpinnerCidade);
+                ListView listView = dialogCidade.findViewById(R.id.lvSpinnerCidade);
 
                 ArrayAdapter<Cidade> adapter = new ArrayAdapter<>(
                         AddCliente.this, android.R.layout.simple_list_item_1, cidades
@@ -377,13 +375,81 @@ public class AddCliente extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         textCidade.setText(adapter.getItem(i).getNome());
-                        dialog.dismiss();
+                        cidadeSelecionada = (adapter.getItem(i));
+                        dialogCidade.dismiss();
                     }
                 });
 
             }
         });
 
+
+    }
+
+    private void testeCidadeDropdown2 () {
+
+        textCidade.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                List<Cidade> cidades = db.listAllCidadesByEstado(estadoSelecionado);
+                listaDinamicaCidade = new ArrayList<Cidade>();
+
+                if (!cidades.isEmpty()) {
+                    for (Cidade c : cidades)
+                        listaDinamicaCidade.add(c);
+                }
+
+                dialogCidade = new Dialog(AddCliente.this);
+                dialogCidade.setContentView(R.layout.spinner_cidade);
+
+                adapterCidade = new AdapterCidade(dialogCidade.getContext(), 0, listaDinamicaCidade);
+
+                dialogCidade.getWindow().setLayout(650, 800); // Alterar isso para algo melhor futuramente
+                dialogCidade.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                dialogCidade.show();
+
+                TextView textView = dialogCidade.findViewById(R.id.tvSpinnerCidade);
+                EditText editText = dialogCidade.findViewById(R.id.editTextSpinnerCidade);
+
+                listViewCidades = (ListView) dialogCidade.findViewById(R.id.lvSpinnerCidade);
+                listViewCidades.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+                listViewCidades.setAdapter(adapterCidade);
+
+                editText.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        adapterCidade.getFilter().filter(charSequence);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                    }
+                });
+
+                listViewCidades.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        try {
+                            Cidade c = (Cidade) listViewCidades.getItemAtPosition(i);
+                            textCidade.setText(c.getNome());
+                            cidadeSelecionada = (c);
+                            dialogCidade.dismiss();
+                        } catch (Exception e) {
+                            Toast.makeText(getApplicationContext(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                            Log.e("ERROR", e.getMessage().toString());
+                        }
+                    }
+                });
+            }
+        });
 
     }
 }

@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:descendantFocusability="blocksDescendants">
+
+    <LinearLayout
+        android:id="@+id/llCardCliente"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:padding="5dp"
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:background="@drawable/cardbg_roundcorners_lightgray">
+
+        <TextView
+            android:id="@+id/tvNomeCidade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:text="Nome Cidade"
+            android:textSize="18dp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"/>
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

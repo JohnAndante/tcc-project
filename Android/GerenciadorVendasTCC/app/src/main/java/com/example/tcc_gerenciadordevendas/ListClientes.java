@@ -168,9 +168,8 @@ public class ListClientes extends AppCompatActivity {
         gestureDetector = new GestureDetector(this, gestureListener);
 
         if (!clientes.isEmpty()) {
-            for (Cliente c : clientes) {
+            for (Cliente c : clientes)
                 listaDinamicaClientes.add(c);
-            }
         }
 
         adapter = new AdapterCliente(this, 0, listaDinamicaClientes);

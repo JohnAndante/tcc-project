@@ -279,6 +279,7 @@
                         android:id="@+id/editUfEndereco"
                         android:layout_width="290dp"
                         android:layout_height="45dp"
+                        android:paddingLeft="4dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:backgroundTint="@color/light_gray_01"
@@ -286,7 +287,7 @@
                         android:textColor="@color/white"
                         android:textSize="16dp"
                         android:textStyle="bold"
-                        android:hint=" UF"
+                        android:hint="UF"
                         android:textColorHint="@color/light_gray_02"
                         android:nextFocusForward="@id/editCidadeEndereco"
                         android:gravity="center|left"/>
@@ -314,6 +315,7 @@
                         android:id="@+id/editCidadeEndereco"
                         android:layout_width="290dp"
                         android:layout_height="45dp"
+                        android:paddingLeft="4dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:backgroundTint="@color/light_gray_01"
@@ -324,7 +326,8 @@
                         android:textStyle="bold"
                         android:hint="Cidade"
                         android:textColorHint="@color/light_gray_02"
-                        android:nextFocusForward="@id/btClienteSalvar" />
+                        android:nextFocusForward="@id/btClienteSalvar"
+                        android:gravity="center|left" />
 
                     <ImageView
                         android:layout_width="20dp"
