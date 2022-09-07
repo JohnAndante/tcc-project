@@ -52,8 +52,25 @@ public class viewCliente extends AppCompatActivity {
         if (intent.hasExtra("ID")) {
             id_cliente = intent.getIntExtra("ID", 0);
             cliente = db.selectCliente(id_cliente);
+
             textNome.setText(cliente.getNome());
             textTelefone.setText(cliente.getTelefone());
+
+            Endereco e = db.selectEnderecoByCliente(cliente);
+            Log.e("INFO ENDEREÇO", String.valueOf(e.getId()));
+
+            if (e.getId() != 0) {
+                textRua.setText(e.getRua());
+                textNum.setText(e.getNum());
+                textCompl.setText(e.getComp());
+                textBairro.setText(e.getBairro());
+
+                Estado estado  = e.getCidade().getEstado();
+                Cidade cidade = e.getCidade();
+
+                textUf.setText(estado.getNome());
+                textCidade.setText(cidade.getNome());
+            }
         }
     }
 
@@ -70,6 +87,21 @@ public class viewCliente extends AppCompatActivity {
 
             textNome.setText(cliente.getNome());
             textTelefone.setText(cliente.getTelefone());
+
+            Endereco e = db.selectEnderecoByCliente(cliente);
+
+            if (e.getId() != 0) {
+                textRua.setText(e.getRua());
+                textNum.setText(e.getNum());
+                textCompl.setText(e.getComp());
+                textBairro.setText(e.getBairro());
+
+                Estado estado = e.getCidade().getEstado();
+                Cidade cidade = e.getCidade();
+
+                textUf.setText(estado.getNome());
+                textCidade.setText(estado.getNome());
+            }
 
         }
     }

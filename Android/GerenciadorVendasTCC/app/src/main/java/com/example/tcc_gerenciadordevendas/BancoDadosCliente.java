@@ -602,7 +602,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         Cursor cursor = db.query(CIDADE_TABLE,
                 new String[] {
                         CIDADE_ID, CIDADE_NOME, CIDADE_ESTADO },
-                ESTADO_ID + " = ?",
+                CIDADE_ID + " = ?",
                 new String[] { String.valueOf(id) },
                 null,
                 null,
@@ -746,6 +746,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         values.put(ENDERECO_COMP, endereco.getComp());
         values.put(ENDERECO_BAIRRO, endereco.getBairro());
         values.put(ENDERECO_CIDADE, endereco.getCidade().getId());
+        values.put(ENDERECO_CLIENTE, endereco.getCliente().getId());
 
         db.insert(ENDERECO_TABLE, null, values);
     }
@@ -768,15 +769,98 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.close();
     }
 
-    /*
     public Endereco selectEndereco (int id) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         Cursor cursor = db.query(ENDERECO_TABLE,
-                )
+                new String[] {
+                        ENDERECO_ID, ENDERECO_NUM, ENDERECO_RUA, ENDERECO_BAIRRO, ENDERECO_COMP,
+                        ENDERECO_REF, ENDERECO_CIDADE, ENDERECO_CLIENTE },
+                ENDERECO_ID + " = ?",
+                new String[] { String.valueOf(id) },
+                null,
+                null,
+                null,
+                null
+        );
+
+        Endereco endereco = new Endereco();
+        Cidade cidade = new Cidade();
+        Cliente cliente = new Cliente();
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+
+            endereco = new Endereco(
+                    cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getString(3),
+                    cursor.getString(4),
+                    cursor.getString(5),
+                    cidade = selectCidade(cursor.getInt(6)),
+                    cliente = selectCliente(cursor.getInt(7))
+
+            );
+        } else {
+            endereco = null;
+        }
+
+        cursor.close();
+        db.close();
+        return endereco;
     }
 
-     */
+    public Endereco selectEnderecoByCliente (Cliente _cliente) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String QUERY = " SELECT " +
+                " E." + ENDERECO_ID + ", E." + ENDERECO_NUM + ", E." + ENDERECO_RUA +
+                ", E." + ENDERECO_BAIRRO + ", E." + ENDERECO_COMP + ", E." + ENDERECO_REF +
+                ", E." + ENDERECO_CIDADE + ", E." + ENDERECO_CLIENTE +
+                " FROM " + ENDERECO_TABLE + " E" +
+                " WHERE E." + ENDERECO_CLIENTE + " = " + _cliente.getId();
+
+        Cursor c = db.rawQuery(QUERY, null);
+
+        Endereco endereco = new Endereco();
+        Cidade cidade = new Cidade();
+        Cliente cliente = new Cliente();
+
+        if (c.moveToFirst()) {
+            endereco = new Endereco(
+                    c.getInt(0),
+                    c.getString(1),
+                    c.getString(2),
+                    c.getString(3),
+                    c.getString(4),
+                    c.getString(5),
+                    cidade = selectCidade(c.getInt(6)),
+                    cliente = selectCliente(c.getInt(7)));
+        }
+
+        c.close();
+        db.close();
+        return endereco;
+    }
+
+    public void updateEndereco (Endereco endereco) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(ENDERECO_RUA, endereco.getRua());
+        values.put(ENDERECO_NUM, endereco.getNum());
+        values.put(ENDERECO_COMP, endereco.getComp());
+        values.put(ENDERECO_BAIRRO, endereco.getBairro());
+        values.put(ENDERECO_CIDADE, endereco.getCidade().getId());
+        values.put(ENDERECO_CLIENTE, endereco.getCliente().getId());
+
+        db.update(ENDERECO_TABLE, values, ENDERECO_ID + " = ? ",
+                new String[] {
+                        String.valueOf(endereco.getId())
+                });
+        db.close();
+    }
 
     // Preenchimento estados e cidades //////////////////////////////////////////////////////////
 

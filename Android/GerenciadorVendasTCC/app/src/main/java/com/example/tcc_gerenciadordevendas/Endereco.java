@@ -18,8 +18,9 @@ public class Endereco {
 
     }
 
-    public Endereco (int _id,@Nullable  String _num,
-                     @Nullable  String _rua,
+    public Endereco (@Nullable int _id,
+                     @Nullable String _num,
+                     @Nullable String _rua,
                      @Nullable String _bairro,
                      @Nullable String _comp,
                      @Nullable String _ref,

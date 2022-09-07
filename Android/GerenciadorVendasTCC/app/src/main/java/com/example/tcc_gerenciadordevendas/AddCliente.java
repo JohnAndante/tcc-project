@@ -91,6 +91,7 @@ public class AddCliente extends AppCompatActivity {
 
             Cliente c = db.selectCliente(id_cliente);
             Telefone t = db.selectTelefoneFirst(c);
+            Endereco e = db.selectEnderecoByCliente(c);
 
             editTextNome.setText(c.getNome());
 
@@ -98,6 +99,19 @@ public class AddCliente extends AppCompatActivity {
                 editTextTelefone.setText(t.getNum());
             } else {
                 editTextTelefone.setText(c.getTelefone());
+            }
+
+            if (e != null && e.getCidade() != null) {
+                editTextRua.setText(e.getRua());
+                editTextNum.setText(e.getNum());
+                editTextCompl.setText(e.getComp());
+                editTextBairro.setText(e.getBairro());
+
+                estadoSelecionado = e.getCidade().getEstado();
+                cidadeSelecionada = e.getCidade();
+
+                textUf.setText(estadoSelecionado.getNome());
+                textCidade.setText(cidadeSelecionada.getNome());
             }
         }
 
@@ -114,11 +128,12 @@ public class AddCliente extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
-                if (id_cliente > 0 && confereCampos()) {
+                if (id_cliente > 0 && confereCampos() && confereCamposEndereco()) {
                     // Se o cliente já existe, e os campos estão preenchidos
                     bundle.putInt("id", id_cliente);
-                    Cliente c = new Cliente();
-                    Telefone t = new Telefone();
+                    Cliente c = db.selectCliente(id_cliente);
+                    Telefone t = db.selectTelefoneFirst(c);
+                    Endereco e = db.selectEnderecoByCliente(c);
 
                     c.setId(id_cliente);
                     c.setNome(editTextNome.getText().toString());
@@ -141,22 +156,48 @@ public class AddCliente extends AppCompatActivity {
 
                     db.updateCliente(c);
 
+                    if (!editTextRua.getText().toString().isEmpty()) {
+                        if (e.getId() == 0)
+                            e = new Endereco();
+
+                        e.setRua(editTextRua.getText().toString());
+                        e.setNum(editTextNum.getText().toString());
+                        e.setComp(editTextCompl.getText().toString());
+                        e.setRef(null);
+                        e.setBairro(editTextBairro.getText().toString());
+                        e.setCidade(cidadeSelecionada);
+                        e.setCliente(c);
+
+                        db.updateEndereco(e);
+                    }
+
                     setResult(RESULT_OK);
                     finish();
 
                 } else
-                if (confereCampos()){
+                if (confereCampos() && confereCamposEndereco()){
                     String nome = editTextNome.getText().toString();
                     String telefone = editTextTelefone.getText().toString();
 
                     Cliente c = new Cliente(nome, telefone);
-                    Telefone t = new Telefone(telefone, c);
-
-                    // COLOCAR AQUI A INSERÇÃO/CRIAÇÃO DE ESTADO
-                    // FUNÇÕES DEVEM SER CRIADAS NA CLASSE DE BANCO DE DADOS
-
                     db.addCliente(c);
+
+                    c = db.selectMaxCliente();
+
+                    Telefone t = new Telefone(telefone, c);
                     db.addTelefone(t);
+
+                    if (cidadeSelecionada != null) {
+                        Endereco e = new Endereco();
+                        String rua = editTextRua.getText().toString();
+                        String num = editTextNum.getText().toString();
+                        String compl = editTextCompl.getText().toString();
+                        String ref = null;
+                        String bairro = editTextBairro.getText().toString();
+                        Cidade cidade = cidadeSelecionada;
+
+                        db.addEndereco(e);
+                    }
 
                     setResult(RESULT_OK);
                     finish();
@@ -186,6 +227,41 @@ public class AddCliente extends AppCompatActivity {
             return false;
         } else
             return true;
+    }
+
+    private boolean confereCamposEndereco() {
+        String clienteRua = editTextRua.getText().toString();
+        String clienteNum = editTextNum.getText().toString();
+        String clienteBairro = editTextBairro.getText().toString();
+        Estado clienteEstado = estadoSelecionado;
+        Cidade clienteCidade = cidadeSelecionada;
+
+        if (clienteRua.isEmpty() && clienteNum.isEmpty() && clienteBairro.isEmpty() && clienteEstado == null && clienteCidade == null) {
+            Toast.makeText(getApplicationContext(), "Regularize o endereço do cliente quando possível", Toast.LENGTH_SHORT).show();
+            return true;
+        } else
+        if (clienteRua.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Insira a rua ao endereço", Toast.LENGTH_SHORT).show();
+            return false;
+        } else
+        if (clienteNum.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Insira o número ao endereço", Toast.LENGTH_SHORT).show();
+            return false;
+        } else
+        if (clienteBairro.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Insira o bairro ao endereço", Toast.LENGTH_SHORT).show();
+            return false;
+        } else
+        if (clienteEstado == null) {
+            Toast.makeText(getApplicationContext(), "Insira o estado ao endereço", Toast.LENGTH_SHORT).show();
+            return false;
+        } else
+        if (clienteCidade == null) {
+            Toast.makeText(getApplicationContext(), "Insira a cidade ao endereço", Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            return true;
+        }
     }
 
     private void initEditTexts(){
