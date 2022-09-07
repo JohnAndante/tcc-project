@@ -508,9 +508,61 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
             } while (c.moveToNext());
         }
 
+        c.close();
         db.close();
         return listEstados;
     }
+
+   public List<Estado> listAllEstadosOrdered () {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Estado> listEstados = new ArrayList<Estado>();
+
+        String QUERY = "SELECT * FROM " + ESTADO_TABLE + " ORDER BY " + ESTADO_NOME;
+        Cursor c = db.rawQuery(QUERY, null);
+
+       if (c.moveToFirst()) {
+           do {
+               Estado estado = new Estado();
+               estado.setId(c.getInt(0));
+               estado.setNome(c.getString(1));
+               estado.setUf(c.getString(2));
+
+               listEstados.add(estado);
+           } while (c.moveToNext());
+       }
+
+       c.close();
+       db.close();
+       return listEstados;
+   }
+
+   public List<Estado> listAllEstadosByName (String nome) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+       List<Estado> listEstados = new ArrayList<Estado>();
+
+       String QUERY = "SELECT * FROM " + ESTADO_TABLE +
+                " WHERE " + ESTADO_NOME + " LIKE '%" + nome + "%'" +
+                " ORDER BY " + ESTADO_NOME;
+
+       Cursor c = db.rawQuery(QUERY, null);
+
+       if (c.moveToFirst()) {
+           do {
+               Estado estado = new Estado();
+               estado.setId(c.getInt(0));
+               estado.setNome(c.getString(1));
+               estado.setUf(c.getString(2));
+
+               listEstados.add(estado);
+           } while (c.moveToNext());
+       }
+
+       c.close();
+       db.close();
+       return listEstados;
+   }
 
     // CRUD CIDADE //////////////////////////////////////////////////////////////////////////////
 
@@ -647,7 +699,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                 " INNER JOIN " + ESTADO_TABLE + " E" +
                 " ON C." + CIDADE_ESTADO + " = E." + ESTADO_ID +
                 " WHERE E." + ESTADO_ID + " = " + estado.getId() +
-                " AND C." + CIDADE_NOME + " LIKE " + nome;
+                " AND C." + CIDADE_NOME + " LIKE '%" + nome + "%'";
 
         Cursor c = db.rawQuery(QUERY, null);
 
@@ -684,8 +736,47 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
     // CRUD ENDEREÇO ////////////////////////////////////////////////////////////////////////////
 
-    void addEndereco () {
+    public void addEndereco (Endereco endereco) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(ENDERECO_RUA, endereco.getRua());
+        values.put(ENDERECO_NUM, endereco.getNum());
+        values.put(ENDERECO_COMP, endereco.getComp());
+        values.put(ENDERECO_BAIRRO, endereco.getBairro());
+        values.put(ENDERECO_CIDADE, endereco.getCidade().getId());
+
+        db.insert(ENDERECO_TABLE, null, values);
     }
+
+    public void deleteEndereco (Endereco endereco) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(ENDERECO_TABLE, ENDERECO_ID + " = ? ", new String[]{
+                String.valueOf(endereco.getId())
+        });
+        db.close();
+    }
+
+    public void deleteEnderecoById (int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(ENDERECO_TABLE, ENDERECO_ID + " = ? ", new String[]{
+                String.valueOf(id)
+        });
+        db.close();
+    }
+
+    /*
+    public Endereco selectEndereco (int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.query(ENDERECO_TABLE,
+                )
+    }
+
+     */
 
     // Preenchimento estados e cidades //////////////////////////////////////////////////////////
 
@@ -723,6 +814,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
             Log.e("ERROR DB CIDADE", e.getMessage());
         }
     }
+
 }
 
 

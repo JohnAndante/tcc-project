@@ -1,6 +1,7 @@
 package com.example.tcc_gerenciadordevendas;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -28,6 +29,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Float translationY = 100f;
     private Boolean isMenuOpen = false;
 
+    public final int deviceHeight   = Resources.getSystem().getDisplayMetrics().heightPixels;
+    public final int deviceWidth    = Resources.getSystem().getDisplayMetrics().widthPixels;
+
     BancoDadosCliente db = new BancoDadosCliente(this);
 
     OvershootInterpolator interpolator = new OvershootInterpolator();
@@ -40,6 +44,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         initFabMenu();
         initButtonsHub();
+
+        Log.e("INFO DEVICE SIZE", String.valueOf(deviceHeight) + " x " + String.valueOf(deviceWidth));
+
     }
 
     private void initFabMenu(){
