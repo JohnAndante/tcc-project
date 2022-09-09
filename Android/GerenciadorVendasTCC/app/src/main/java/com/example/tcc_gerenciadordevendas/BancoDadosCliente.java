@@ -837,6 +837,12 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                     c.getString(5),
                     cidade = selectCidade(c.getInt(6)),
                     cliente = selectCliente(c.getInt(7)));
+
+            Log.e("INFO DB SELECT ENDERECO", String.valueOf(endereco.getId()) + " " + endereco.getCliente().getNome());
+        } else {
+            c.close();
+            db.close();
+            return null;
         }
 
         c.close();
@@ -891,8 +897,6 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
             db.execSQL(QUERY2, new String[]{String.valueOf(2848), "Cantagalo", String.valueOf(18)});
             db.execSQL(QUERY2, new String[]{String.valueOf(2849), "Capanema", String.valueOf(18)});
             db.execSQL(QUERY2, new String[]{String.valueOf(2850), "Capitão Leônidas Marques", String.valueOf(18)});
-
-            Log.i("INFO DB CIDADE", "QUERY REALIZADA???");
 
         } catch (Exception e) {
             Log.e("ERROR DB CIDADE", e.getMessage());

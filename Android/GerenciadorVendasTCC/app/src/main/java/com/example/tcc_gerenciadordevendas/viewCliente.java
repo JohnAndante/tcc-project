@@ -57,9 +57,8 @@ public class viewCliente extends AppCompatActivity {
             textTelefone.setText(cliente.getTelefone());
 
             Endereco e = db.selectEnderecoByCliente(cliente);
-            Log.e("INFO ENDEREÇO", String.valueOf(e.getId()));
 
-            if (e.getId() != 0) {
+            if (e != null) {
                 textRua.setText(e.getRua());
                 textNum.setText(e.getNum());
                 textCompl.setText(e.getComp());
@@ -70,6 +69,8 @@ public class viewCliente extends AppCompatActivity {
 
                 textUf.setText(estado.getNome());
                 textCidade.setText(cidade.getNome());
+
+                Log.e("INFO DB SELECT ENDERECO VIEW CLIENTE", String.valueOf(e.getId()) + " " + e.getCliente().getNome());
             }
         }
     }
@@ -80,7 +81,6 @@ public class viewCliente extends AppCompatActivity {
 
         //Alterando dados
         if ((requestCode == ALTERAR_CLIENTE) && (resultCode == RESULT_OK)) {
-            Log.i("INFO", "\n\nDados Alterados");
             cliente_alterado = true;
 
             cliente = db.selectCliente(id_cliente);
@@ -90,7 +90,7 @@ public class viewCliente extends AppCompatActivity {
 
             Endereco e = db.selectEnderecoByCliente(cliente);
 
-            if (e.getId() != 0) {
+            if (e != null) {
                 textRua.setText(e.getRua());
                 textNum.setText(e.getNum());
                 textCompl.setText(e.getComp());

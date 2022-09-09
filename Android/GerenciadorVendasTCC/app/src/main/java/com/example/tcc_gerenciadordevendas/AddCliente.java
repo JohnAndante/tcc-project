@@ -50,6 +50,7 @@ public class AddCliente extends AppCompatActivity {
     Dialog dialogCidade;
     private Estado estadoSelecionado = null;
     private Cidade cidadeSelecionada = null;
+    private Boolean enderecoNovo = false;
 
     private ArrayList<Estado> listaDinamicaEstado;
     private ArrayList<Cidade> listaDinamicaCidade;
@@ -128,8 +129,11 @@ public class AddCliente extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
+
+                // Se o cliente já existe, e os campos estão preenchidos
                 if (id_cliente > 0 && confereCampos() && confereCamposEndereco()) {
-                    // Se o cliente já existe, e os campos estão preenchidos
+
+                    setContentView(R.layout.activity_add_cliente);
                     bundle.putInt("id", id_cliente);
                     Cliente c = db.selectCliente(id_cliente);
                     Telefone t = db.selectTelefoneFirst(c);
@@ -139,36 +143,50 @@ public class AddCliente extends AppCompatActivity {
                     c.setNome(editTextNome.getText().toString());
                     c.setTelefone(editTextTelefone.getText().toString());
 
-                    t = db.selectTelefoneFirst(c);
-
+                    // Em algum momento, verificar se este if está filtrando, e fazer o possível pra simplificar ele
                     if (t == null) {
                         t = new Telefone();
                         t.setCliente(c);
                         t.setNum(c.getTelefone());
                         db.addTelefone(t);
+                        Log.e("INFO ENTROU NO IF DO TELEFONE NULO", "ADICIONOU TELEFONE");
                     }
                     else if (t.getId() > 0) {
                         t.setNum(c.getTelefone());
                         db.updateTelefone(t);
+                        Log.e("INFO ENTROU NO IF DO ID DO TELEFONE MAIOR QUE ZERO", "ATUALIZOU TELEFONE");
                     } else {
                         Log.e("ERROR onCLICK TELEFONE", "Não entrou em nenhum dos IF's");
                     }
 
                     db.updateCliente(c);
 
-                    if (!editTextRua.getText().toString().isEmpty()) {
-                        if (e.getId() == 0)
+                    if (cidadeSelecionada != null) {
+                        if (e == null) {
                             e = new Endereco();
+                            enderecoNovo = true;
+                        }
 
-                        e.setRua(editTextRua.getText().toString());
-                        e.setNum(editTextNum.getText().toString());
-                        e.setComp(editTextCompl.getText().toString());
-                        e.setRef(null);
-                        e.setBairro(editTextBairro.getText().toString());
-                        e.setCidade(cidadeSelecionada);
+                        String rua = editTextRua.getText().toString();
+                        String num = editTextNum.getText().toString();
+                        String compl = editTextCompl.getText().toString();
+                        String ref = null;
+                        String bairro = editTextBairro.getText().toString();
+                        Cidade cidade = cidadeSelecionada;
+
+                        e.setRua(rua);
+                        e.setNum(num);
+                        e.setComp(compl);
+                        e.setRef(ref);
+                        e.setBairro(bairro);
+                        e.setCidade(cidade);
                         e.setCliente(c);
 
-                        db.updateEndereco(e);
+                        if (enderecoNovo) {
+                            db.addEndereco(e);
+                        } else {
+                            db.updateEndereco(e);
+                        }
                     }
 
                     setResult(RESULT_OK);
@@ -195,6 +213,14 @@ public class AddCliente extends AppCompatActivity {
                         String ref = null;
                         String bairro = editTextBairro.getText().toString();
                         Cidade cidade = cidadeSelecionada;
+
+                        e.setRua(rua);
+                        e.setNum(num);
+                        e.setComp(compl);
+                        e.setRef(ref);
+                        e.setBairro(bairro);
+                        e.setCidade(cidade);
+                        e.setCliente(c);
 
                         db.addEndereco(e);
                     }
