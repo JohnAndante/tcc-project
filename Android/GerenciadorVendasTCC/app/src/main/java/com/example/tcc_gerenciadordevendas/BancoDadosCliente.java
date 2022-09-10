@@ -1015,6 +1015,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
             marca = null;
         }
 
+        cursor.close();
         db.close();
         return marca;
     }
@@ -1106,46 +1107,191 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     }
 
     // CRUD LINHA ///////////////////////////////////////////////////////////////////////////////
-    /*
-    private static final String LINHA_ID            = "id_linha";
-    private static final String LINHA_DESC          = "desc";
-    private static final String LINHA_MARCA         = "id_marca";
-     */
 
-    public void addLinha () {
+    public void addLinha (Linha linha) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        ContentValues values = new ContentValues();
+
+        values.put(LINHA_DESC, linha.getDescricao());
+
+        db.insert(LINHA_TABLE, null, values);
+        db.close();
     }
 
-    public void deleteLinha () {
+    public void deleteLinha (Linha linha) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        db.delete(LINHA_TABLE, LINHA_ID + " = ? ", new String[]{
+                String.valueOf(linha.getId())
+        });
+        db.close();
     }
 
-    public void deleteLinhaById () {
+    public void deleteLinhaById (int _id) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        db.delete(LINHA_TABLE, LINHA_ID + " = ? ", new String[] {
+                String.valueOf(_id)
+        });
+        db.close();
     }
 
     public Linha selectLinha (int _id) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        Cursor cursor = db.query(LINHA_TABLE,
+                new String[] {
+                        LINHA_ID, LINHA_DESC, LINHA_MARCA },
+                LINHA_ID + " = ?",
+                new String[] { String.valueOf(_id) },
+                null,
+                null,
+                null,
+                null
+        );
+
+        Linha linha = new Linha();
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+
+            linha = new Linha (
+                    cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getInt(2)
+            );
+        } else {
+            linha = null;
+        }
+
+        cursor.close();
+        db.close();
+        return linha;
     }
 
     public void updateLinha (Linha linha) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        ContentValues values = new ContentValues();
+        values.put(LINHA_DESC, linha.getDescricao());
+
+        db.update(LINHA_TABLE, values, LINHA_ID + " = ? ",
+                new String[] {
+                        String.valueOf(linha.getId())
+                });
+        db.close();
     }
 
     public List<Linha> listLinhas () {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        List<Linha> linhas = new ArrayList<Linha>();
+
+        String QUERY = "SELECT * FROM " + LINHA_TABLE;
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Linha linha = new Linha();
+
+                linha.setId(cursor.getInt(0));
+                linha.setDescricao(cursor.getString(1));
+                linha.setIdMarca(cursor.getInt(2));
+
+                linhas.add(linha);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+        return linhas;
     }
 
     public List<Linha> listLinhasByMarca (Marca marca) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        List<Linha> linhas = new ArrayList<Linha>();
+
+        String QUERY = " SELECT " +
+                " L." + LINHA_ID + ", L." + LINHA_DESC + " M." + MARCA_ID +
+                " FROM " + LINHA_TABLE + " L" +
+                " WHERE M." + MARCA_TABLE + " = " + marca.getId();
+
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Linha linha = new Linha();
+
+                linha.setId(cursor.getInt(0));
+                linha.setDescricao(cursor.getString(1));
+                linha.setIdMarca(cursor.getInt(2));
+
+                linhas.add(linha);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+        return linhas;
     }
 
     public List<Linha> listLinhasByMarcaOrdered (Marca marca) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        List<Linha> linhas = new ArrayList<Linha>();
+
+        String QUERY = " SELECT " +
+                " L." + LINHA_ID + ", L." + LINHA_DESC + " M." + MARCA_ID +
+                " FROM " + LINHA_TABLE + " L" +
+                " WHERE M." + MARCA_TABLE + " = " + marca.getId() +
+                " ORDER BY L." + LINHA_DESC;
+
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Linha linha = new Linha();
+
+                linha.setId(cursor.getInt(0));
+                linha.setDescricao(cursor.getString(1));
+                linha.setIdMarca(cursor.getInt(2));
+
+                linhas.add(linha);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+        return linhas;
     }
 
-    public List<List> listLinhasByDesc (String _descricao) {
+    public List<Linha> listLinhasByMarcaDesc (Marca marca, String _descricao) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        List<Linha> linhas = new ArrayList<Linha>();
+
+        String QUERY = " SELECT " +
+                " L." + LINHA_ID + ", L." + LINHA_DESC + " M." + MARCA_ID +
+                " FROM " + LINHA_TABLE + " L" +
+                " WHERE M." + MARCA_TABLE + " = " + marca.getId() +
+                " && L." + LINHA_DESC + " LIKE '%" + _descricao + "%'" +
+                " ORDER BY L." + LINHA_DESC;
+
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Linha linha = new Linha();
+
+                linha.setId(cursor.getInt(0));
+                linha.setDescricao(cursor.getString(1));
+                linha.setIdMarca(cursor.getInt(2));
+
+                linhas.add(linha);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+        return linhas;
     }
 
     // CRUD CATEGORIA ///////////////////////////////////////////////////////////////////////////
