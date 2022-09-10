@@ -105,7 +105,8 @@ public class ListClientes extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        //Alterando dados
+        //-- Alterando dados
+        //-- Verificar se ainda é útil
         if ((requestCode == ALTERAR_CLIENTE) && (resultCode == RESULT_OK)) {
 
             int id          = data.getIntExtra("posicao", 0);
@@ -122,7 +123,7 @@ public class ListClientes extends AppCompatActivity {
 
         }
 
-        //Criando novos dados
+        //-- Criando novos dados
         if ((requestCode == NOVO_CLIENTE) && (resultCode == RESULT_OK)) {
 
             Cliente clienteMax = new Cliente();
@@ -209,7 +210,7 @@ public class ListClientes extends AppCompatActivity {
 
         // Verificando e adicionando estados
         List<Estado> estados = db.listAllEstados();
-        Log.i("INFO ESTADOS LISTCLIENTES ONCREATE", String.valueOf(estados.size()));
+        //Log.i("INFO ESTADOS LISTCLIENTES ONCREATE", String.valueOf(estados.size()));
         if (estados.isEmpty()) {
             db.listDataEstadosCidades();
 
@@ -251,7 +252,7 @@ public class ListClientes extends AppCompatActivity {
         int i = 0;
         // Verificando e adicionando cidades
         List<Cidade> cidades = db.listAllCidades();
-        Log.i("INFO CIDADES LISTCLIENTES ONCREATE PRE DATA", String.valueOf(cidades.size()));
+        //Log.i("INFO CIDADES LISTCLIENTES ONCREATE PRE DATA", String.valueOf(cidades.size()));
         if (cidades.isEmpty()) {
             db.listDataEstadosCidades();
             //db.addCidade(new Cidade(9999, "Cidade Teste", db.selectEstado(4)));
@@ -260,8 +261,8 @@ public class ListClientes extends AppCompatActivity {
         // Adicionando cidades do estado de Acre - ID 1
         i++;
         cidades = db.listAllCidadesByEstado(db.selectEstado(1));
-        Log.e("ERRO INSERT CIDADE ???", "PRE INSERT TENTATIVA " + i);
-        Log.e("ERRO INSERT CIDADE ???", "RESULTADO DA QUERY " + cidades.size());
+        //Log.e("ERRO INSERT CIDADE ???", "PRE INSERT TENTATIVA " + i);
+        //Log.e("ERRO INSERT CIDADE ???", "RESULTADO DA QUERY " + cidades.size());
         if (cidades.isEmpty()) {
             try {
                 Log.i("INFO CIDADES TRY CIDADES", "INICIANDO INSERT Nº " + i);
@@ -290,21 +291,21 @@ public class ListClientes extends AppCompatActivity {
                 db.addCidade(new Cidade(100, "Xapuri", db.selectEstado(1)));
 
                 cidades = db.listAllCidades();
-                Log.i("INFO CIDADES TRY CIDADES", "FINALIZADO INSERT Nº " + i);
-                Log.i("INFO CIDADES LISTCIDADES", String.valueOf(cidades.size()));
+                //Log.i("INFO CIDADES TRY CIDADES", "FINALIZADO INSERT Nº " + i);
+                //Log.i("INFO CIDADES LISTCIDADES", String.valueOf(cidades.size()));
             } catch (Exception e) {
-                Log.e("INFO INSERT CIDADES Nº " + i, e.getMessage());
+                //Log.e("INFO INSERT CIDADES Nº " + i, e.getMessage());
             }
         }
 
         // Adicionando cidades do estado de Alagoas - ID 2
         i++;
         cidades = db.listAllCidadesByEstado(db.selectEstado(2));
-        Log.e("ERRO INSERT CIDADE ???", "PRE INSERT TENTATIVA " + i);
-        Log.e("ERRO INSERT CIDADE ???", "RESULTADO DA QUERY " + cidades.size());
+        //Log.e("ERRO INSERT CIDADE ???", "PRE INSERT TENTATIVA " + i);
+        //Log.e("ERRO INSERT CIDADE ???", "RESULTADO DA QUERY " + cidades.size());
         if (cidades.isEmpty()) {
             try {
-                Log.i("INFO CIDADES TRY CIDADES", "INICIANDO INSERT Nº " + i);
+                //Log.i("INFO CIDADES TRY CIDADES", "INICIANDO INSERT Nº " + i);
 
                 db.addCidade(new Cidade(101, "Água Branca", db.selectEstado(2)));
                 db.addCidade(new Cidade(102, "Anadia", db.selectEstado(2)));
@@ -410,21 +411,21 @@ public class ListClientes extends AppCompatActivity {
                 db.addCidade(new Cidade(202, "Viçosa", db.selectEstado(2)));
 
                 cidades = db.listAllCidades();
-                Log.i("INFO CIDADES TRY CIDADES", "FINALIZADO INSERT Nº " + i);
-                Log.i("INFO CIDADES LISTCIDADES", String.valueOf(cidades.size()));
+                //Log.i("INFO CIDADES TRY CIDADES", "FINALIZADO INSERT Nº " + i);
+                //Log.i("INFO CIDADES LISTCIDADES", String.valueOf(cidades.size()));
             } catch (Exception e) {
-                Log.e("INFO INSERT CIDADES Nº " + i, e.getMessage());
+                //Log.e("INFO INSERT CIDADES Nº " + i, e.getMessage());
             }
         }
 
         // Adicionando cidades do estado de Amazonas - ID 3
         i++;
         cidades = db.listAllCidadesByEstado(db.selectEstado(3));
-        Log.e("ERRO INSERT CIDADE ???", "PRE INSERT TENTATIVA " + i);
-        Log.e("ERRO INSERT CIDADE ???", "RESULTADO DA QUERY " + cidades.size());
+        //Log.e("ERRO INSERT CIDADE ???", "PRE INSERT TENTATIVA " + i);
+        //Log.e("ERRO INSERT CIDADE ???", "RESULTADO DA QUERY " + cidades.size());
         if (cidades.isEmpty()) {
             try {
-                Log.i("INFO CIDADES TRY CIDADES", "INICIANDO INSERT Nº " + i);
+                //Log.i("INFO CIDADES TRY CIDADES", "INICIANDO INSERT Nº " + i);
 
                 db.addCidade(new Cidade(219, "Alvarães", db.selectEstado(3)));
                 db.addCidade(new Cidade(220, "Amaturá", db.selectEstado(3)));
@@ -490,21 +491,21 @@ public class ListClientes extends AppCompatActivity {
                 db.addCidade(new Cidade(280, "Urucurituba", db.selectEstado(3)));
 
                 cidades = db.listAllCidades();
-                Log.i("INFO CIDADES TRY CIDADES", "FINALIZADO INSERT Nº " + i);
-                Log.i("INFO CIDADES LISTCIDADES", String.valueOf(cidades.size()));
+                //Log.i("INFO CIDADES TRY CIDADES", "FINALIZADO INSERT Nº " + i);
+                //Log.i("INFO CIDADES LISTCIDADES", String.valueOf(cidades.size()));
             } catch (Exception e) {
-                Log.e("INFO INSERT CIDADES Nº " + i, e.getMessage());
+                //Log.e("INFO INSERT CIDADES Nº " + i, e.getMessage());
             }
         }
 
         // Adicionando cidades do estado de Amapá - ID 4
         i++;
         cidades = db.listAllCidadesByEstado(db.selectEstado(4));
-        Log.e("ERRO INSERT CIDADE ???", "PRE INSERT TENTATIVA " + i);
-        Log.e("ERRO INSERT CIDADE ???", "RESULTADO DA QUERY " + cidades.size());
+        //Log.e("ERRO INSERT CIDADE ???", "PRE INSERT TENTATIVA " + i);
+        //Log.e("ERRO INSERT CIDADE ???", "RESULTADO DA QUERY " + cidades.size());
         if (cidades.isEmpty()) {
             try {
-                Log.i("INFO CIDADES TRY CIDADES", "INICIANDO INSERT Nº " + i);
+                //Log.i("INFO CIDADES TRY CIDADES", "INICIANDO INSERT Nº " + i);
 
                 db.addCidade(new Cidade(203, "Amapá", db.selectEstado(4)));
                 db.addCidade(new Cidade(204, "Calçoene", db.selectEstado(4)));
@@ -524,21 +525,21 @@ public class ListClientes extends AppCompatActivity {
                 db.addCidade(new Cidade(218, "Vitória do Jari", db.selectEstado(4)));
 
                 cidades = db.listAllCidades();
-                Log.i("INFO CIDADES TRY CIDADES", "FINALIZADO INSERT Nº " + i);
-                Log.i("INFO CIDADES LISTCIDADES", String.valueOf(cidades.size()));
+                //Log.i("INFO CIDADES TRY CIDADES", "FINALIZADO INSERT Nº " + i);
+                //Log.i("INFO CIDADES LISTCIDADES", String.valueOf(cidades.size()));
             } catch (Exception e) {
-                Log.e("INFO INSERT CIDADES Nº " + i, e.getMessage());
+                //Log.e("INFO INSERT CIDADES Nº " + i, e.getMessage());
             }
         }
 
         // Adicionando cidades do estado de Espírito Santo - ID 8
         i++;
         cidades = db.listAllCidadesByEstado(db.selectEstado(8));
-        Log.e("ERRO INSERT CIDADE ???", "PRE INSERT TENTATIVA " + i);
-        Log.e("ERRO INSERT CIDADE ???", "RESULTADO DA QUERY " + cidades.size());
+        //Log.e("ERRO INSERT CIDADE ???", "PRE INSERT TENTATIVA " + i);
+        //Log.e("ERRO INSERT CIDADE ???", "RESULTADO DA QUERY " + cidades.size());
         if (cidades.isEmpty()) {
             try {
-                Log.i("INFO CIDADES TRY CIDADES", "INICIANDO INSERT Nº " + i);
+                //Log.i("INFO CIDADES TRY CIDADES", "INICIANDO INSERT Nº " + i);
 
                 db.addCidade(new Cidade(1, "Afonso Cláudio", db.selectEstado(8)));
                 db.addCidade(new Cidade(2, "Água Doce do Norte", db.selectEstado(8)));
@@ -620,21 +621,21 @@ public class ListClientes extends AppCompatActivity {
                 db.addCidade(new Cidade(78, "Vitória", db.selectEstado(8)));
 
                 cidades = db.listAllCidades();
-                Log.i("INFO CIDADES TRY CIDADES", "FINALIZADO INSERT Nº " + i);
-                Log.i("INFO CIDADES LISTCIDADES", String.valueOf(cidades.size()));
+                //Log.i("INFO CIDADES TRY CIDADES", "FINALIZADO INSERT Nº " + i);
+                //Log.i("INFO CIDADES LISTCIDADES", String.valueOf(cidades.size()));
             } catch (Exception e) {
-                Log.e("INFO INSERT CIDADES Nº " + i, e.getMessage());
+                //Log.e("INFO INSERT CIDADES Nº " + i, e.getMessage());
             }
         }
 
         // Adicionando cidades do estado de Paraná - ID 18
         i++;
         cidades = db.listAllCidadesByEstado(db.selectEstado(18));
-        Log.e("ERRO INSERT CIDADE ???", "PRE INSERT TENTATIVA " + i);
-        Log.e("ERRO INSERT CIDADE ???", "RESULTADO DA QUERY " + cidades.size());
+        //Log.e("ERRO INSERT CIDADE ???", "PRE INSERT TENTATIVA " + i);
+        //Log.e("ERRO INSERT CIDADE ???", "RESULTADO DA QUERY " + cidades.size());
         if (cidades.isEmpty()) {
             try {
-                Log.i("INFO CIDADES TRY CIDADES", "INICIANDO INSERT Nº " + i);
+                //Log.i("INFO CIDADES TRY CIDADES", "INICIANDO INSERT Nº " + i);
 
                 db.addCidade(new Cidade(2784, "Abatiá", db.selectEstado(18)));
                 db.addCidade(new Cidade(2785, "Adrianópolis", db.selectEstado(18)));
@@ -1037,10 +1038,10 @@ public class ListClientes extends AppCompatActivity {
                 db.addCidade(new Cidade(3182, "Xambrê", db.selectEstado(18)));
 
                 cidades = db.listAllCidades();
-                Log.i("INFO CIDADES TRY CIDADES", "FINALIZADO INSERT Nº " + i);
-                Log.i("INFO CIDADES LISTCIDADES", String.valueOf(cidades.size()));
+                //Log.i("INFO CIDADES TRY CIDADES", "FINALIZADO INSERT Nº " + i);
+                //Log.i("INFO CIDADES LISTCIDADES", String.valueOf(cidades.size()));
             } catch (Exception e) {
-                Log.e("INFO INSERT CIDADES Nº " + i, e.getMessage());
+                //Log.e("INFO INSERT CIDADES Nº " + i, e.getMessage());
             }
         }
 

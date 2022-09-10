@@ -26,6 +26,12 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     private static final String TELEFONE_TABLE      = "telefone_tb";
     private static final String CIDADE_TABLE        = "cidade_tb";
     private static final String ESTADO_TABLE        = "estado_tb";
+    private static final String PRODUTO_TABLE       = "produto_tb";
+    private static final String MARCA_TABLE         = "marca_tb";
+    private static final String LINHA_TABLE         = "linha_tb";
+    private static final String CATEGORIA_TABLE     = "categoria_tb";
+    private static final String SUBCAT_TABLE        = "subcat_tb";
+    private static final String PROD_SUBCAT_TABLE   = "prod_subcat_tb";
 
     // Colunas da tabela cliente
     private static final String CLIENTE_ID          = "id_cliente";
@@ -57,12 +63,47 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     private static final String ESTADO_NOME         = "nome";
     private static final String ESTADO_UF           = "uf";
 
+    // Colunas da tabela marca
+    private static final String MARCA_ID            = "id_marca";
+    private static final String MARCA_DESC          = "desc";
+
+    // Colunas da tabela linha
+    private static final String LINHA_ID            = "id_linha";
+    private static final String LINHA_DESC          = "desc";
+    private static final String LINHA_MARCA         = "id_marca";
+
+    // Colunas da tabela categoria
+    private static final String CATEGORIA_ID        = "id_categoria";
+    private static final String CATEGORIA_DESC      = "desc";
+    private static final String CATEGORIA_COR       = "cor";
+
+    // Colunas da tabela subcategoria
+    private static final String SUBCAT_ID           = "id_subcat";
+    private static final String SUBCAT_DESC         = "desc";
+    private static final String SUBCAT_CATEGORIA    = "id_categoria";
+
+    // Colunas da tabela produto
+    private static final String PRODUTO_ID          = "id_produto";
+    private static final String PRODUTO_DESC        = "desc";
+    private static final String PRODUTO_VALOR       = "valor";
+    private static final String PRODUTO_LINHA       = "id_linha";
+
+    // Colunas da tabela produto x subcategoria
+    private static final String PROD_SUBCAT_PROD    = "id_produto";
+    private static final String PROD_SUBCAT_SUBCAT  = "id_subcat";
+
     // Strings para query de criação
-    private String CLIENTE_QUERY    = "SELECT * FROM " + CLIENTE_TABLE;
-    private String ENDERECO_QUERY   = "SELECT * FROM " + ENDERECO_TABLE;
-    private String TELEFONE_QUERY   = "SELECT * FROM " + TELEFONE_TABLE;
-    private String CIDADE_QUERY     = "SELECT * FROM " + CIDADE_TABLE;
-    private String ESTADO_QUERY     = "SELECT * FROM " + ESTADO_TABLE;
+    private String CLIENTE_QUERY        = "SELECT * FROM " + CLIENTE_TABLE;
+    private String ENDERECO_QUERY       = "SELECT * FROM " + ENDERECO_TABLE;
+    private String TELEFONE_QUERY       = "SELECT * FROM " + TELEFONE_TABLE;
+    private String CIDADE_QUERY         = "SELECT * FROM " + CIDADE_TABLE;
+    private String ESTADO_QUERY         = "SELECT * FROM " + ESTADO_TABLE;
+    private String MARCA_QUERY          = "SELECT * FROM " + MARCA_TABLE;
+    private String LINHA_QUERY          = "SELECT * FROM " + LINHA_TABLE;
+    private String CATEGORIA_QUERY      = "SELECT * FROM " + CATEGORIA_TABLE;
+    private String SUBCAT_QUERY         = "SELECT * FROM " + SUBCAT_TABLE;
+    private String PRODUTO_QUERY        = "SELECT * FROM " + PRODUTO_TABLE;
+    private String PROD_SUBCAT_QUERY    = "SELECT * FROM " + PROD_SUBCAT_TABLE;
 
     public BancoDadosCliente(@Nullable Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -77,6 +118,12 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.execSQL(ENDERECO_QUERY);
         db.execSQL(CIDADE_QUERY);
         db.execSQL(ESTADO_QUERY);
+        db.execSQL(MARCA_QUERY);
+        db.execSQL(LINHA_QUERY);
+        db.execSQL(CATEGORIA_QUERY);
+        db.execSQL(SUBCAT_QUERY);
+        db.execSQL(PRODUTO_QUERY);
+        db.execSQL(PROD_SUBCAT_QUERY);
     }
 
     @Override
@@ -121,7 +168,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                 + ENDERECO_CLIENTE  + " INTEGER, "
                 + "FOREIGN KEY ("   + ENDERECO_CLIENTE  + ") "
                 + "REFERENCES "     + CLIENTE_TABLE     + " (" + ENDERECO_CLIENTE + "))";
-
+        
         Log.i("DATABASE INFO", CLIENTE_QUERY);
         Log.i("DATABASE INFO", TELEFONE_QUERY);
         Log.i("DATABASE INFO", ENDERECO_QUERY);

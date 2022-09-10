@@ -354,20 +354,6 @@ public class AddCliente extends AppCompatActivity {
     }
 
     private void changellButtons(){
-       /*
-        if (    !editTextNome.isFocused()       &&
-                !editTextTelefone.isFocused()   &&
-                !editTextRua.isFocused()        &&
-                !editTextNum.isFocused()        &&
-                !editTextBairro.isFocused()     &&
-                !editTextCompl.isFocused()      &&
-                !editTextUf.isFocused()         &&
-                !editTextCidade.isFocused())
-            llButtons.setVisibility(View.VISIBLE);
-        else
-            llButtons.setVisibility(View.GONE);
-
-        */
     }
 
     private void estadoDropdown () {

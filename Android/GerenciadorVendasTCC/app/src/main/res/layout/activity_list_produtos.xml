@@ -8,13 +8,13 @@
     tools:context=".ListProdutos">
 
     <LinearLayout
-        android:id="@+id/llPaiAdicionarCliente"
+        android:id="@+id/llPaiAdicionarProduto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal|center" >
 
         <LinearLayout
-            android:id="@+id/llAdicionarCliente"
+            android:id="@+id/llAdicionarProduto"
             android:layout_width="380dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -27,7 +27,7 @@
             app:layout_constraintEnd_toEndOf="parent">
 
             <ImageButton
-                android:id="@+id/imgbtIconeNovoCliente"
+                android:id="@+id/imgbtIconeNovoProduto"
                 android:layout_width="38dp"
                 android:layout_height="38dp"
                 android:layout_marginLeft="0dp"
@@ -37,17 +37,17 @@
                 />
 
             <TextView
-                android:id="@+id/tvNovoCliente"
+                android:id="@+id/tvNovoProduto"
                 android:layout_width="260dp"
                 android:layout_height="wrap_content"
                 android:textSize="18dp"
-                android:text="Adicionar Cliente"
+                android:text="Adicionar Produto"
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 />
 
             <ImageButton
-                android:id="@+id/imgbtDadosCliente"
+                android:id="@+id/imgbtDadosProduto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -60,15 +60,15 @@
 
 
     <ListView
-        android:id="@+id/listVClientes"
+        android:id="@+id/listVProdutos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:divider="@null"
         android:dividerHeight="0dp"
-        app:layout_constraintTop_toBottomOf="@id/llPaiAdicionarCliente" />
+        app:layout_constraintTop_toBottomOf="@id/llPaiAdicionarProduto" />
 
     <Button
-        android:id="@+id/btClienteVoltar"
+        android:id="@+id/btProdutoVoltar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Voltar"

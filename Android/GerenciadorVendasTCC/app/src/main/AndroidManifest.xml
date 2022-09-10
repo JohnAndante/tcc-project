@@ -25,6 +25,9 @@
         <activity android:name=".viewCliente"
             android:exported="true" />
 
+        <activity android:name=".ListProdutos"
+            android:exported="true" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
