@@ -65,26 +65,26 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
     // Colunas da tabela marca
     private static final String MARCA_ID            = "id_marca";
-    private static final String MARCA_DESC          = "desc";
+    private static final String MARCA_DESC          = "descricao";
 
     // Colunas da tabela linha
     private static final String LINHA_ID            = "id_linha";
-    private static final String LINHA_DESC          = "desc";
+    private static final String LINHA_DESC          = "descricao";
     private static final String LINHA_MARCA         = "id_marca";
 
     // Colunas da tabela categoria
     private static final String CATEGORIA_ID        = "id_categoria";
-    private static final String CATEGORIA_DESC      = "desc";
+    private static final String CATEGORIA_DESC      = "descricao";
     private static final String CATEGORIA_COR       = "cor";
 
     // Colunas da tabela subcategoria
     private static final String SUBCAT_ID           = "id_subcat";
-    private static final String SUBCAT_DESC         = "desc";
+    private static final String SUBCAT_DESC         = "descricao";
     private static final String SUBCAT_CATEGORIA    = "id_categoria";
 
     // Colunas da tabela produto
     private static final String PRODUTO_ID          = "id_produto";
-    private static final String PRODUTO_DESC        = "desc";
+    private static final String PRODUTO_DESC        = "descricao";
     private static final String PRODUTO_VALOR       = "valor";
     private static final String PRODUTO_LINHA       = "id_linha";
 
@@ -133,31 +133,31 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
     private void createTables(){
         // Preparando strings de criação de tabelas
-        CLIENTE_QUERY = "CREATE TABLE " + CLIENTE_TABLE + "("
+        CLIENTE_QUERY       = "CREATE TABLE " + CLIENTE_TABLE + "("
                 + CLIENTE_ID        + " INTEGER PRIMARY KEY, "
                 + CLIENTE_NOME      + " TEXT, "
                 + CLIENTE_TELEFONE  + " TEXT)";
 
-        TELEFONE_QUERY = "CREATE TABLE " + TELEFONE_TABLE + "("
+        TELEFONE_QUERY      = "CREATE TABLE " + TELEFONE_TABLE + "("
                 + TELEFONE_ID       + " INTEGER PRIMARY KEY, "
                 + TELEFONE_NUM      + " TEXT, "
                 + TELEFONE_CLIENTE  + " INTEGER, "
                 + "FOREIGN KEY ("   + TELEFONE_CLIENTE  + ") "
                 + "REFERENCES "     + CLIENTE_TABLE     + " (" + TELEFONE_CLIENTE + "))";
 
-        ESTADO_QUERY = "CREATE TABLE " + ESTADO_TABLE + "("
+        ESTADO_QUERY        = "CREATE TABLE " + ESTADO_TABLE + "("
                 + ESTADO_ID + " INTEGER PRIMARY KEY, "
                 + ESTADO_NOME + " TEXT,"
                 + ESTADO_UF + " TEXT)";
 
-        CIDADE_QUERY = "CREATE TABLE " + CIDADE_TABLE + "("
+        CIDADE_QUERY        = "CREATE TABLE " + CIDADE_TABLE + "("
                 + CIDADE_ID         + " INTEGER PRIMARY KEY, "
                 + CIDADE_NOME       + " TEXT, "
                 + CIDADE_ESTADO     + " INTEGER, "
                 + "FOREIGN KEY ("   + CIDADE_ESTADO     + ") "
                 + "REFERENCES "     + ESTADO_TABLE      + " (" + CIDADE_ESTADO + "))";
 
-        ENDERECO_QUERY = "CREATE TABLE " + ENDERECO_TABLE + "("
+        ENDERECO_QUERY      = "CREATE TABLE " + ENDERECO_TABLE + "("
                 + ENDERECO_ID       + " INTEGER PRIMARY KEY, "
                 + ENDERECO_RUA      + " TEXT, " // Mudar parar logradouro
                 + ENDERECO_NUM      + " TEXT, "
@@ -168,12 +168,54 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                 + ENDERECO_CLIENTE  + " INTEGER, "
                 + "FOREIGN KEY ("   + ENDERECO_CLIENTE  + ") "
                 + "REFERENCES "     + CLIENTE_TABLE     + " (" + ENDERECO_CLIENTE + "))";
-        
+
+        MARCA_QUERY         = "CREATE TABLE " + MARCA_TABLE + "( "
+                + MARCA_ID          + " INTEGER PRIMARY KEY, "
+                + MARCA_DESC        + " TEXT )";
+
+        LINHA_QUERY         = "CREATE TABLE " + LINHA_TABLE + "( "
+                + LINHA_ID          + " INTEGER PRIMARY KEY, "
+                + LINHA_DESC        + " TEXT )";
+
+        CATEGORIA_QUERY     = "CREATE TABLE " + CATEGORIA_TABLE + "( "
+                + CATEGORIA_ID      + " INTEGER PRIMARY KEY, "
+                + CATEGORIA_DESC    + " TEXT )";
+
+        SUBCAT_QUERY        = "CREATE TABLE " + SUBCAT_TABLE + "( "
+                + SUBCAT_ID         + " INTEGER PRIMARY KEY, "
+                + SUBCAT_DESC       + " TEXT, "
+                + SUBCAT_CATEGORIA  + " INTEGER, "
+                + "FOREIGN KEY ("   + SUBCAT_CATEGORIA  + ") "
+                + "REFERENCES "     + CATEGORIA_TABLE   + " (" + SUBCAT_CATEGORIA + "))";
+
+        PRODUTO_QUERY       = "CREATE TABLE " + PRODUTO_TABLE + "( "
+                + PRODUTO_ID        + " INTEGER PRIMARY KEY, "
+                + PRODUTO_DESC      + " TEXT, "
+                + PRODUTO_VALOR     + " DECIMAL(8, 2), "
+                + PRODUTO_LINHA     + "INTEGER, "
+                + "FOREIGN KEY ("   + PRODUTO_LINHA     + ") "
+                + "REFERENCES "     + LINHA_TABLE       + " (" + PRODUTO_LINHA + "))";
+
+        PROD_SUBCAT_QUERY   = "CREATE TABLE " + PROD_SUBCAT_TABLE + "( "
+                + PROD_SUBCAT_PROD   + " INTEGER, "
+                + PROD_SUBCAT_SUBCAT + " INTEGER, "
+                + "FOREIGN KEY ("    + PROD_SUBCAT_PROD   + ") "
+                + "REFERENCES "      + PRODUTO_TABLE      + " (" + PROD_SUBCAT_PROD   + "), "
+                + "FOREIGN KEY ("    + PROD_SUBCAT_SUBCAT + ") "
+                + "REFERENCES "      + SUBCAT_TABLE       + " (" + PROD_SUBCAT_SUBCAT + "))";
+
         Log.i("DATABASE INFO", CLIENTE_QUERY);
         Log.i("DATABASE INFO", TELEFONE_QUERY);
         Log.i("DATABASE INFO", ENDERECO_QUERY);
         Log.i("DATABASE INFO", CIDADE_QUERY);
         Log.i("DATABASE INFO", ESTADO_QUERY);
+        Log.i("DATABASE INFO", MARCA_QUERY);
+        Log.i("DATABASE INFO", LINHA_QUERY);
+        Log.i("DATABASE INFO", CATEGORIA_QUERY);
+        Log.i("DATABASE INFO", SUBCAT_QUERY);
+        Log.i("DATABASE INFO", PRODUTO_QUERY);
+        Log.i("DATABASE INFO", PROD_SUBCAT_QUERY);
+
     }
 
     // CRUD CLIENTE ////////////////////////////////////////////////////////////////////////////
@@ -587,16 +629,16 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
    public List<Estado> listAllEstadosByName (String nome) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-       List<Estado> listEstados = new ArrayList<Estado>();
+        List<Estado> listEstados = new ArrayList<Estado>();
 
-       String QUERY = "SELECT * FROM " + ESTADO_TABLE +
+        String QUERY = "SELECT * FROM " + ESTADO_TABLE +
                 " WHERE " + ESTADO_NOME + " LIKE '%" + nome + "%'" +
                 " ORDER BY " + ESTADO_NOME;
 
-       Cursor c = db.rawQuery(QUERY, null);
+        Cursor c = db.rawQuery(QUERY, null);
 
-       if (c.moveToFirst()) {
-           do {
+        if (c.moveToFirst()) {
+            do {
                Estado estado = new Estado();
                estado.setId(c.getInt(0));
                estado.setNome(c.getString(1));
@@ -606,9 +648,9 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
            } while (c.moveToNext());
        }
 
-       c.close();
-       db.close();
-       return listEstados;
+           c.close();
+           db.close();
+           return listEstados;
    }
 
     // CRUD CIDADE //////////////////////////////////////////////////////////////////////////////
@@ -914,6 +956,225 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                 });
         db.close();
     }
+
+    // CRUD MARCA ///////////////////////////////////////////////////////////////////////////////
+
+    public void addMarca (Marca marca) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(MARCA_DESC, marca.getDescricao());
+
+        db.insert(MARCA_TABLE, null, values);
+        db.close();
+    }
+
+    public void deleteMarca (Marca marca) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(MARCA_TABLE, MARCA_ID + " = ? ", new String[]{
+                String.valueOf(marca.getId())
+        });
+        db.close();
+    }
+
+    public void deleteMarcaById (int _id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(MARCA_TABLE, MARCA_ID + " = ? ", new String[] {
+                String.valueOf(_id)
+        });
+        db.close();
+    }
+
+    public Marca selectMarca (int _id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.query(MARCA_TABLE,
+                new String[] {
+                        MARCA_ID, MARCA_DESC },
+                        MARCA_ID + " = ?",
+                new String[] { String.valueOf(_id) },
+                null,
+                null,
+                null,
+                null
+        );
+
+        Marca marca = new Marca();
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+
+            marca = new Marca (
+                    cursor.getInt(0),
+                    cursor.getString(1)
+            );
+        } else {
+            marca = null;
+        }
+
+        db.close();
+        return marca;
+    }
+
+    public void updateMarca (Marca marca) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(MARCA_DESC, marca.getDescricao());
+
+        db.update(MARCA_TABLE, values, MARCA_ID + " = ? ",
+                new String[] {
+                        String.valueOf(marca.getId())
+                });
+        db.close();
+    }
+
+    public List<Marca> listMarcas () {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Marca> marcas = new ArrayList<Marca>();
+
+        String QUERY = "SELECT * FROM " + MARCA_TABLE;
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Marca marca = new Marca();
+
+                marca.setId(cursor.getInt(0));
+                marca.setDescricao(cursor.getString(1));
+
+                marcas.add(marca);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+        return marcas;
+    }
+
+    public List<Marca> listMarcasOrdered () {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Marca> marcas = new ArrayList<Marca>();
+
+        String QUERY = "SELECT * FROM " + MARCA_TABLE +
+                " ORDER BY " + MARCA_DESC;
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Marca marca = new Marca();
+
+                marca.setId(cursor.getInt(0));
+                marca.setDescricao(cursor.getString(1));
+
+                marcas.add(marca);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+        return marcas;
+    }
+
+    public List<Marca> listMarcasByDesc (String _descricao) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Marca> marcas = new ArrayList<Marca>();
+
+        String QUERY = "SELECT * FROM " + MARCA_TABLE +
+                " WHERE " + MARCA_DESC + " LIKE '%" + _descricao + "%'" +
+                " ORDER BY " + MARCA_DESC;
+
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Marca marca = new Marca();
+
+                marca.setId(cursor.getInt(0));
+                marca.setDescricao(cursor.getString(1));
+
+                marcas.add(marca);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+        return marcas;
+    }
+
+    // CRUD LINHA ///////////////////////////////////////////////////////////////////////////////
+    /*
+    private static final String LINHA_ID            = "id_linha";
+    private static final String LINHA_DESC          = "desc";
+    private static final String LINHA_MARCA         = "id_marca";
+     */
+
+    public void addLinha () {
+
+    }
+
+    public void deleteLinha () {
+
+    }
+
+    public void deleteLinhaById () {
+
+    }
+
+    public Linha selectLinha (int _id) {
+
+    }
+
+    public void updateLinha (Linha linha) {
+
+    }
+
+    public List<Linha> listLinhas () {
+
+    }
+
+    public List<Linha> listLinhasByMarca (Marca marca) {
+
+    }
+
+    public List<Linha> listLinhasByMarcaOrdered (Marca marca) {
+
+    }
+
+    public List<List> listLinhasByDesc (String _descricao) {
+
+    }
+
+    // CRUD CATEGORIA ///////////////////////////////////////////////////////////////////////////
+    /*
+     private static final String CATEGORIA_ID        = "id_categoria";
+    private static final String CATEGORIA_DESC      = "desc";
+    private static final String CATEGORIA_COR       = "cor";
+     */
+
+    // CRUD SUBCATEGORIA ////////////////////////////////////////////////////////////////////////
+    /*
+     private static final String SUBCAT_ID           = "id_subcat";
+    private static final String SUBCAT_DESC         = "desc";
+    private static final String SUBCAT_CATEGORIA    = "id_categoria";
+     */
+
+    // CRUD PRODUTO /////////////////////////////////////////////////////////////////////////////
+    /*
+    private static final String PRODUTO_ID          = "id_produto";
+    private static final String PRODUTO_DESC        = "desc";
+    private static final String PRODUTO_VALOR       = "valor";
+    private static final String PRODUTO_LINHA       = "id_linha";
+     */
+
+    // CRUD PROD_SUBCAT /////////////////////////////////////////////////////////////////////////
+    /*
+    private static final String PROD_SUBCAT_PROD    = "id_produto";
+    private static final String PROD_SUBCAT_SUBCAT  = "id_subcat";
+     */
 
     // Preenchimento estados e cidades //////////////////////////////////////////////////////////
 
