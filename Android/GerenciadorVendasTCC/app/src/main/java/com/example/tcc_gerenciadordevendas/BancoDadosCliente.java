@@ -1216,9 +1216,9 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         List<Linha> linhas = new ArrayList<Linha>();
 
         String QUERY = " SELECT " +
-                " L." + LINHA_ID + ", L." + LINHA_DESC + " M." + MARCA_ID +
+                " L." + LINHA_ID + ", L." + LINHA_DESC + " L." + LINHA_MARCA +
                 " FROM " + LINHA_TABLE + " L" +
-                " WHERE M." + MARCA_TABLE + " = " + marca.getId();
+                " WHERE L." + LINHA_MARCA + " = " + marca.getId();
 
         Cursor cursor = db.rawQuery(QUERY, null);
 
@@ -1244,9 +1244,9 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         List<Linha> linhas = new ArrayList<Linha>();
 
         String QUERY = " SELECT " +
-                " L." + LINHA_ID + ", L." + LINHA_DESC + " M." + MARCA_ID +
+                " L." + LINHA_ID + ", L." + LINHA_DESC + " L." + LINHA_MARCA +
                 " FROM " + LINHA_TABLE + " L" +
-                " WHERE M." + MARCA_TABLE + " = " + marca.getId() +
+                " WHERE L." + LINHA_MARCA + " = " + marca.getId() +
                 " ORDER BY L." + LINHA_DESC;
 
         Cursor cursor = db.rawQuery(QUERY, null);
@@ -1273,9 +1273,9 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         List<Linha> linhas = new ArrayList<Linha>();
 
         String QUERY = " SELECT " +
-                " L." + LINHA_ID + ", L." + LINHA_DESC + " M." + MARCA_ID +
+                " L." + LINHA_ID + ", L." + LINHA_DESC + " L." + LINHA_MARCA +
                 " FROM " + LINHA_TABLE + " L" +
-                " WHERE M." + MARCA_TABLE + " = " + marca.getId() +
+                " WHERE L." + LINHA_MARCA + " = " + marca.getId() +
                 " && L." + LINHA_DESC + " LIKE '%" + _descricao + "%'" +
                 " ORDER BY L." + LINHA_DESC;
 
@@ -1641,7 +1641,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.close();
         return subcats;
     }
-    
+
     // CRUD PRODUTO /////////////////////////////////////////////////////////////////////////////
     /*
     private static final String PRODUTO_ID          = "id_produto";
