@@ -1052,6 +1052,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
+        cursor.close();
         db.close();
         return marcas;
     }
@@ -1300,6 +1301,161 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     private static final String CATEGORIA_DESC      = "desc";
     private static final String CATEGORIA_COR       = "cor";
      */
+
+    public void addCategoria (Categoria categoria) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(CATEGORIA_DESC, categoria.getDescricao());
+        values.put(CATEGORIA_COR, categoria.getCor());
+
+        db.insert(CATEGORIA_TABLE, null, values);
+        db.close();
+    }
+
+    public void deleteCategoria (Categoria categoria) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(CATEGORIA_TABLE, CATEGORIA_ID + " = ? ", new String[]{
+                String.valueOf(categoria.getId())
+        });
+        db.close();
+    }
+
+    public void deleteCategoriaById (int _id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(CATEGORIA_TABLE, CATEGORIA_ID + " = ? ", new String[] {
+                String.valueOf(_id)
+        });
+        db.close();
+    }
+
+    public Categoria selectCategoria (int _id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.query(CATEGORIA_TABLE,
+                new String[] {
+                        CATEGORIA_ID, CATEGORIA_DESC, CATEGORIA_COR },
+                CATEGORIA_ID + " = ?",
+                new String[] { String.valueOf(_id) },
+                null,
+                null,
+                null,
+                null
+        );
+
+        Categoria categoria = new Categoria();
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+
+            categoria = new Categoria(
+                    cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getString(2)
+            );
+        } else {
+            categoria = null;
+        }
+
+        cursor.close();
+        db.close();
+        return categoria;
+    }
+
+    public void updateCategoria (Categoria categoria) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(CATEGORIA_DESC, categoria.getDescricao());
+        values.put(CATEGORIA_COR, categoria.getCor());
+
+        db.update(CATEGORIA_TABLE, values, CATEGORIA_ID + " = ? ",
+                new String[] {
+                        String.valueOf(categoria.getId())
+                });
+        db.close();
+    }
+
+    public List<Categoria> listCategorias () {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Categoria> categorias = new ArrayList<Categoria>();
+
+        String QUERY = "SELECT * FROM " + CATEGORIA_TABLE;
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Categoria categoria = new Categoria();
+
+                categoria.setId(cursor.getInt(0));
+                categoria.setDescricao(cursor.getString(1));
+                categoria.setCor(cursor.getString(2));
+
+                categorias.add(categoria);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return categorias;
+    }
+
+    public List<Categoria> listCategoriasOrdered () {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Categoria> categorias = new ArrayList<Categoria>();
+
+        String QUERY = "SELECT * FROM " + CATEGORIA_TABLE +
+                " ORDER BY " + CATEGORIA_DESC;
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Categoria categoria = new Categoria();
+
+                categoria.setId(cursor.getInt(0));
+                categoria.setDescricao(cursor.getString(1));
+                categoria.setCor(cursor.getString(2));
+
+                categorias.add(categoria);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return categorias;
+    }
+
+    public List<Categoria> listCategoriasByDesc (String _descricao) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Categoria> categorias = new ArrayList<Categoria>();
+
+        String QUERY = "SELECT * FROM " + CATEGORIA_TABLE +
+                " WHERE " + CATEGORIA_DESC + " LIKE '%" + _descricao + "%'" +
+                " ORDER BY " + CATEGORIA_DESC;
+
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Categoria categoria = new Categoria();
+
+                categoria.setId(cursor.getInt(0));
+                categoria.setDescricao(cursor.getString(1));
+
+                categorias.add(categoria);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return categorias;
+    }
 
     // CRUD SUBCATEGORIA ////////////////////////////////////////////////////////////////////////
     /*
