@@ -177,11 +177,15 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
         LINHA_QUERY         = "CREATE TABLE " + LINHA_TABLE + "( "
                 + LINHA_ID          + " INTEGER PRIMARY KEY, "
-                + LINHA_DESC        + " TEXT )";
+                + LINHA_DESC        + " TEXT,  "
+                + LINHA_MARCA       + " INTEGER, "
+                + "FOREIGN KEY ("   + LINHA_MARCA       + ") "
+                + "REFERENCES "     + MARCA_TABLE       + " (" + LINHA_MARCA + "))";
 
         CATEGORIA_QUERY     = "CREATE TABLE " + CATEGORIA_TABLE + "( "
                 + CATEGORIA_ID      + " INTEGER PRIMARY KEY, "
-                + CATEGORIA_DESC    + " TEXT )";
+                + CATEGORIA_DESC    + " TEXT, "
+                + CATEGORIA_COR     + " TEXT )";
 
         SUBCAT_QUERY        = "CREATE TABLE " + SUBCAT_TABLE + "( "
                 + SUBCAT_ID         + " INTEGER PRIMARY KEY, "
@@ -194,7 +198,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                 + PRODUTO_ID        + " INTEGER PRIMARY KEY, "
                 + PRODUTO_DESC      + " TEXT, "
                 + PRODUTO_VALOR     + " DECIMAL(8, 2), "
-                + PRODUTO_LINHA     + "INTEGER, "
+                + PRODUTO_LINHA     + " INTEGER, "
                 + "FOREIGN KEY ("   + PRODUTO_LINHA     + ") "
                 + "REFERENCES "     + LINHA_TABLE       + " (" + PRODUTO_LINHA + "))";
 
@@ -1117,7 +1121,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
 
         values.put(LINHA_DESC, linha.getDescricao());
-        values.put(LINHA_DESC, linha.getMarca().getId());
+        values.put(LINHA_MARCA, linha.getMarca().getId());
 
         db.insert(LINHA_TABLE, null, values);
         db.close();
@@ -1180,6 +1184,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(LINHA_DESC, linha.getDescricao());
+        values.put(LINHA_MARCA, linha.getMarca().getId());
 
         db.update(LINHA_TABLE, values, LINHA_ID + " = ? ",
                 new String[] {
@@ -1447,6 +1452,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
                 categoria.setId(cursor.getInt(0));
                 categoria.setDescricao(cursor.getString(1));
+                categoria.setCor(cursor.getString(2));
 
                 categorias.add(categoria);
             } while (cursor.moveToNext());
@@ -1464,8 +1470,8 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
 
-        values.put(SUBCAT_TABLE, subcat.getDescricao());
-        values.put(SUBCAT_TABLE, subcat.getCategoria().getId());
+        values.put(SUBCAT_DESC, subcat.getDescricao());
+        values.put(SUBCAT_CATEGORIA, subcat.getCategoria().getId());
 
         db.insert(SUBCAT_TABLE, null, values);
         db.close();
@@ -1528,6 +1534,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(SUBCAT_DESC, subcat.getDescricao());
+        values.put(SUBCAT_CATEGORIA, subcat.getCategoria().getId());
 
         db.update(SUBCAT_TABLE, values, SUBCAT_ID + " = ? ",
                 new String[] {
@@ -1729,6 +1736,8 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
                 produto.setId(cursor.getInt(0));
                 produto.setDescricao(cursor.getString(1));
+                produto.setValor(cursor.getDouble(2));
+                produto.setLinha(selectLinha(cursor.getInt(3)));
 
                 produtos.add(produto);
             } while (cursor.moveToNext());
@@ -1756,12 +1765,11 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 Produto produto = new Produto();
-                Linha linha = selectLinha(cursor.getInt(3));
 
                 produto.setId(cursor.getInt(0));
                 produto.setDescricao(cursor.getString(1));
                 produto.setValor(cursor.getDouble(2));
-                produto.setLinha(linha);
+                produto.setLinha(selectLinha(cursor.getInt(3)));
 
                 produtos.add(produto);
             } while (cursor.moveToNext());
@@ -1791,12 +1799,11 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 Produto produto = new Produto();
-                Linha linha = selectLinha(cursor.getInt(3));
 
                 produto.setId(cursor.getInt(0));
                 produto.setDescricao(cursor.getString(1));
                 produto.setValor(cursor.getDouble(2));
-                produto.setLinha(linha);
+                produto.setLinha(selectLinha(cursor.getInt(3)));
 
                 produtos.add(produto);
             } while (cursor.moveToNext());
@@ -1824,12 +1831,11 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 Produto produto = new Produto();
-                Linha linha = selectLinha(cursor.getInt(3));
 
                 produto.setId(cursor.getInt(0));
                 produto.setDescricao(cursor.getString(1));
                 produto.setValor(cursor.getDouble(2));
-                produto.setLinha(linha);
+                produto.setLinha(selectLinha(cursor.getInt(3)));
 
                 produtos.add(produto);
             } while (cursor.moveToNext());
@@ -1857,12 +1863,11 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 Produto produto = new Produto();
-                Linha linha = selectLinha(cursor.getInt(3));
 
                 produto.setId(cursor.getInt(0));
                 produto.setDescricao(cursor.getString(1));
                 produto.setValor(cursor.getDouble(2));
-                produto.setLinha(linha);
+                produto.setLinha(selectLinha(cursor.getInt(3)));
 
                 produtos.add(produto);
             } while (cursor.moveToNext());
@@ -1888,12 +1893,11 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 Produto produto = new Produto();
-                Linha linha = selectLinha(cursor.getInt(3));
 
                 produto.setId(cursor.getInt(0));
                 produto.setDescricao(cursor.getString(1));
                 produto.setValor(cursor.getDouble(2));
-                produto.setLinha(linha);
+                produto.setLinha(selectLinha(cursor.getInt(3)));
 
                 produtos.add(produto);
             } while (cursor.moveToNext());
@@ -1927,6 +1931,29 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
         db.rawQuery(QUERY, null);
         db.close();
+    }
+
+    public ProdSubcat selectFirstProdSubcatByProd (Produto produto) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ProdSubcat prodSubcat = new ProdSubcat();
+
+        String QUERY = "SELECT * FROM " + PROD_SUBCAT_TABLE +
+                " WHERE " + PROD_SUBCAT_PROD + " == " + produto.getId();
+
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            prodSubcat = new ProdSubcat();
+            Subcat subcat = selectSubcat(cursor.getInt(1));
+
+            prodSubcat.setProduto(produto);
+            prodSubcat.setSubcat(subcat);
+
+            return prodSubcat;
+        } else {
+            return null;
+        }
     }
 
     public List<ProdSubcat> listAllProdSubcats () {

@@ -22,10 +22,16 @@
             android:name=".ListClientes"
             android:exported="true" />
 
-        <activity android:name=".viewCliente"
+        <activity android:name=".ViewCliente"
+            android:exported="true" />
+
+        <activity android:name=".AddProduto"
             android:exported="true" />
 
         <activity android:name=".ListProdutos"
+            android:exported="true" />
+
+        <activity android:name=".ViewProduto"
             android:exported="true" />
 
         <activity

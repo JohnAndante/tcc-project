@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class viewCliente extends AppCompatActivity {
+public class ViewCliente extends AppCompatActivity {
 
     private Button Editar;
     private Button Voltar;
@@ -26,7 +26,7 @@ public class viewCliente extends AppCompatActivity {
 
     BancoDadosCliente db = new BancoDadosCliente(this);
 
-    int id_cliente;
+    private int id_cliente;
 
     public static final int ALTERAR_CLIENTE = 102;
     public static final int RESULT_ALT_CLIENTE = 202;
@@ -69,8 +69,6 @@ public class viewCliente extends AppCompatActivity {
 
                 textUf.setText(estado.getNome());
                 textCidade.setText(cidade.getNome());
-
-                Log.e("INFO DB SELECT ENDERECO VIEW CLIENTE", String.valueOf(e.getId()) + " " + e.getCliente().getNome());
             }
         }
     }
@@ -127,7 +125,7 @@ public class viewCliente extends AppCompatActivity {
         Editar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(viewCliente.this, AddCliente.class);
+                Intent intent = new Intent(ViewCliente.this, AddCliente.class);
                 Bundle bundle = new Bundle();
 
                 bundle.putInt("ID", id_cliente);

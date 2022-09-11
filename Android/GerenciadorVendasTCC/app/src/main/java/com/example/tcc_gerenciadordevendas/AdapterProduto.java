@@ -11,12 +11,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class AdapterProduto extends ArrayAdapter {
 
     private final Context context;
     private final ArrayList<Produto> data;
+    private static final DecimalFormat df = new DecimalFormat("0.00");
 
     BancoDadosCliente db = new BancoDadosCliente(null);
 
@@ -37,7 +39,7 @@ public class AdapterProduto extends ArrayAdapter {
         // Adicionar aqui a alteração de cor do ícone
 
         tvNomeProduto.setText(data.get(position).getDescricao());
-        tvNomeProduto.setText("R$ " + data.get(position).getValor());
+        tvValorProduto.setText("R$ " + df.format(data.get(position).getValor()));
 
         return view;
     }

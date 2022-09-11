@@ -63,7 +63,7 @@ public class ListClientes extends AppCompatActivity {
     };
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
+    public boolean onTouchEvent (MotionEvent event) {
         return gestureDetector.onTouchEvent(event);
     }
 
@@ -197,7 +197,7 @@ public class ListClientes extends AppCompatActivity {
 
     private void openClienteData(Cliente c) {
 
-        Intent intent = new Intent(ListClientes.this, viewCliente.class);
+        Intent intent = new Intent(ListClientes.this, ViewCliente.class);
         Bundle bundle = new Bundle();
 
         bundle.putInt("ID", c.getId());
