@@ -4,21 +4,21 @@ public class Subcat {
 
     private int id;
     private String descricao;
-    private int idCategoria;
+    private Categoria categoria;
 
     public Subcat () {
 
     }
 
-    public Subcat (int _id, String _descricao, int _idCategoria) {
+    public Subcat (int _id, String _descricao, Categoria _categoria) {
         this.id = _id;
         this.descricao = _descricao;
-        this.idCategoria = _idCategoria;
+        this.categoria = _categoria;
     }
 
-    public Subcat (String _descricao, int _idCategoria) {
+    public Subcat (String _descricao, Categoria _categoria) {
         this.descricao = _descricao;
-        this.idCategoria = _idCategoria;
+        this.categoria = _categoria;
     }
 
     public int getId() {
@@ -37,11 +37,11 @@ public class Subcat {
         this.descricao = descricao;
     }
 
-    public int getIdCategoria() {
-        return idCategoria;
+    public Categoria getCategoria() {
+        return categoria;
     }
 
-    public void setIdCategoria(int idCategoria) {
-        this.idCategoria = idCategoria;
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 }

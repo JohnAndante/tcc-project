@@ -3,21 +3,21 @@ package com.example.tcc_gerenciadordevendas;
 public class Linha {
     private int id;
     private String descricao;
-    private int idMarca;
+    private Marca marca;
 
     public Linha () {
 
     }
 
-    public Linha (int _id, String _descricao, int _idMarca) {
+    public Linha (int _id, String _descricao, Marca _marca) {
         this.id = _id;
         this.descricao = _descricao;
-        this.idMarca = _idMarca;
+        this.marca = _marca;
     }
 
-    public Linha (String _descricao, int _idMarca) {
+    public Linha (String _descricao, Marca _marca) {
         this.descricao = _descricao;
-        this.idMarca = _idMarca;
+        this.marca = _marca;
     }
 
     public int getId() {
@@ -36,11 +36,11 @@ public class Linha {
         this.descricao = descricao;
     }
 
-    public int getIdMarca() {
-        return idMarca;
+    public Marca getMarca() {
+        return marca;
     }
 
-    public void setIdMarca(int idMarca) {
-        this.idMarca = idMarca;
+    public void setMarca(Marca marca) {
+        this.marca = marca;
     }
 }

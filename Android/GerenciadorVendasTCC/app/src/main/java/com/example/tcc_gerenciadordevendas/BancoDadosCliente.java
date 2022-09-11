@@ -1117,6 +1117,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
 
         values.put(LINHA_DESC, linha.getDescricao());
+        values.put(LINHA_DESC, linha.getMarca().getId());
 
         db.insert(LINHA_TABLE, null, values);
         db.close();
@@ -1155,6 +1156,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         );
 
         Linha linha = new Linha();
+        Marca marca = new Marca();
 
         if (cursor != null) {
             cursor.moveToFirst();
@@ -1162,7 +1164,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
             linha = new Linha (
                     cursor.getInt(0),
                     cursor.getString(1),
-                    cursor.getInt(2)
+                    marca = selectMarca(cursor.getInt(2))
             );
         } else {
             linha = null;
@@ -1197,10 +1199,11 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 Linha linha = new Linha();
+                Marca marca = new Marca();
 
                 linha.setId(cursor.getInt(0));
                 linha.setDescricao(cursor.getString(1));
-                linha.setIdMarca(cursor.getInt(2));
+                linha.setMarca(marca = selectMarca(cursor.getInt(2)));
 
                 linhas.add(linha);
             } while (cursor.moveToNext());
@@ -1228,7 +1231,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
                 linha.setId(cursor.getInt(0));
                 linha.setDescricao(cursor.getString(1));
-                linha.setIdMarca(cursor.getInt(2));
+                linha.setMarca(marca);
 
                 linhas.add(linha);
             } while (cursor.moveToNext());
@@ -1257,7 +1260,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
                 linha.setId(cursor.getInt(0));
                 linha.setDescricao(cursor.getString(1));
-                linha.setIdMarca(cursor.getInt(2));
+                linha.setMarca(marca);
 
                 linhas.add(linha);
             } while (cursor.moveToNext());
@@ -1287,7 +1290,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
                 linha.setId(cursor.getInt(0));
                 linha.setDescricao(cursor.getString(1));
-                linha.setIdMarca(cursor.getInt(2));
+                linha.setMarca(marca);
 
                 linhas.add(linha);
             } while (cursor.moveToNext());
@@ -1462,6 +1465,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
 
         values.put(SUBCAT_TABLE, subcat.getDescricao());
+        values.put(SUBCAT_TABLE, subcat.getCategoria().getId());
 
         db.insert(SUBCAT_TABLE, null, values);
         db.close();
@@ -1500,6 +1504,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         );
 
         Subcat subcat = new Subcat();
+        Categoria categoria = new Categoria();
 
         if (cursor != null) {
             cursor.moveToFirst();
@@ -1507,7 +1512,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
             subcat = new Subcat (
                     cursor.getInt(0),
                     cursor.getString(1),
-                    cursor.getInt(2)
+                    categoria = selectCategoria(cursor.getInt(2))
             );
         } else {
             subcat = null;
@@ -1542,10 +1547,11 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 Subcat subcat = new Subcat();
+                Categoria categoria = new Categoria();
 
                 subcat.setId(cursor.getInt(0));
                 subcat.setDescricao(cursor.getString(1));
-                subcat.setIdCategoria(cursor.getInt(2));
+                subcat.setCategoria(categoria = selectCategoria(cursor.getInt(2)));
 
                 subcats.add(subcat);
             } while (cursor.moveToNext());
@@ -1573,7 +1579,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
                 subcat.setId(cursor.getInt(0));
                 subcat.setDescricao(cursor.getString(1));
-                subcat.setIdCategoria(cursor.getInt(2));
+                subcat.setCategoria(_categoria);
 
                 subcats.add(subcat);
             } while (cursor.moveToNext());
@@ -1602,7 +1608,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
                 subcat.setId(cursor.getInt(0));
                 subcat.setDescricao(cursor.getString(1));
-                subcat.setIdCategoria(cursor.getInt(2));
+                subcat.setCategoria(_categoria);
 
                 subcats.add(subcat);
             } while (cursor.moveToNext());
@@ -1632,7 +1638,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
                 subcat.setId(cursor.getInt(0));
                 subcat.setDescricao(cursor.getString(1));
-                subcat.setIdCategoria(cursor.getInt(2));
+                subcat.setCategoria(_categoria);
 
                 subcats.add(subcat);
             } while (cursor.moveToNext());
@@ -1649,6 +1655,260 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     private static final String PRODUTO_VALOR       = "valor";
     private static final String PRODUTO_LINHA       = "id_linha";
      */
+
+    public void addProduto (Produto _produto) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(PRODUTO_DESC, _produto.getDescricao());
+        values.put(PRODUTO_VALOR, _produto.getValor());
+        values.put(PRODUTO_LINHA, _produto.getLinha().getId());
+
+        db.insert(PRODUTO_TABLE, null, values);
+    }
+
+    public void deleteProduto (Produto _produto) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(PRODUTO_TABLE, PRODUTO_ID + " = ? ", new String[]{
+                String.valueOf(_produto.getId())
+        });
+        db.close();
+    }
+
+    public void deleteProdutoById (int _id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(PRODUTO_TABLE, PRODUTO_ID + " = ? ", new String[]{
+                String.valueOf(_id)
+        });
+        db.close();
+    }
+
+    public Produto selectProduto (int _id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.query(PRODUTO_TABLE,
+                new String[] {
+                        PRODUTO_ID, PRODUTO_DESC, PRODUTO_VALOR, PRODUTO_LINHA },
+                PRODUTO_ID + " = ?",
+                new String[] { String.valueOf(_id) },
+                null,
+                null,
+                null,
+                null
+        );
+
+        Produto produto = new Produto();
+        Linha linha = new Linha();
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+
+            produto = new Produto(
+                    cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getDouble(2),
+                    linha = selectLinha(cursor.getInt(3))
+            );
+        } else {
+            produto = null;
+        }
+
+        cursor.close();
+        db.close();
+        return produto;
+    }
+
+    public List<Produto> listAllProdutos () {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Produto> produtos = new ArrayList<Produto>();
+
+        String QUERY = "SELECT * FROM " + PRODUTO_TABLE;
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Produto produto = new Produto();
+
+                produto.setId(cursor.getInt(0));
+                produto.setDescricao(cursor.getString(1));
+
+                produtos.add(produto);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return produtos;
+    }
+
+    public List<Produto> listAllProdutosByDesc (String _descricao) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Produto> produtos = new ArrayList<Produto>();
+
+        String QUERY = " SELECT " +
+                " P." + PRODUTO_ID + ", P." + PRODUTO_DESC +
+                ", P." + PRODUTO_VALOR + ", P." + PRODUTO_LINHA +
+                " FROM " + PRODUTO_TABLE + " P" +
+                " WHERE P." + PRODUTO_DESC + " LIKE '%" + _descricao + "%'" +
+                " ORDER BY P." + PRODUTO_DESC;
+
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Produto produto = new Produto();
+                Linha linha = selectLinha(cursor.getInt(3));
+
+                produto.setId(cursor.getInt(0));
+                produto.setDescricao(cursor.getString(1));
+                produto.setValor(cursor.getDouble(2));
+                produto.setLinha(linha);
+
+                produtos.add(produto);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return produtos;
+    }
+
+    public List<Produto> listProdutosFromCategoria (Categoria _categoria) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Produto> produtos = new ArrayList<Produto>();
+
+        String QUERY = "SELECT P." + PRODUTO_ID + ", P." + PRODUTO_DESC +
+                ", P." + PRODUTO_VALOR + ", P." + PRODUTO_LINHA +
+                " FROM " + PRODUTO_TABLE + " P" +
+                " JOIN " + PROD_SUBCAT_TABLE + " PS" +
+                " ON P." + PRODUTO_ID + " == PS." + PROD_SUBCAT_PROD +
+                " JOIN " + SUBCAT_TABLE + " S" +
+                " ON S." + SUBCAT_ID + " == PS." + PROD_SUBCAT_SUBCAT +
+                " WHERE S." + SUBCAT_CATEGORIA + " == " + _categoria;
+
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Produto produto = new Produto();
+                Linha linha = selectLinha(cursor.getInt(3));
+
+                produto.setId(cursor.getInt(0));
+                produto.setDescricao(cursor.getString(1));
+                produto.setValor(cursor.getDouble(2));
+                produto.setLinha(linha);
+
+                produtos.add(produto);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return produtos;
+    }
+
+    public List<Produto> listProdutosFromSubcat (Subcat _subcat) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Produto> produtos = new ArrayList<Produto>();
+
+        String QUERY = "SELECT P." + PRODUTO_ID + ", P." + PRODUTO_DESC +
+                ", P." + PRODUTO_VALOR + ", P." + PRODUTO_LINHA +
+                " FROM " + PRODUTO_TABLE + " P" +
+                " JOIN " + PROD_SUBCAT_TABLE + " PS" +
+                " ON P." + PRODUTO_ID + " == PS." + PROD_SUBCAT_PROD +
+                " WHERE PS." + PROD_SUBCAT_SUBCAT + " == " + _subcat;
+
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Produto produto = new Produto();
+                Linha linha = selectLinha(cursor.getInt(3));
+
+                produto.setId(cursor.getInt(0));
+                produto.setDescricao(cursor.getString(1));
+                produto.setValor(cursor.getDouble(2));
+                produto.setLinha(linha);
+
+                produtos.add(produto);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return produtos;
+    }
+
+    public List<Produto> listProdutosByMarca (Marca _marca) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Produto> produtos = new ArrayList<Produto>();
+
+        String QUERY = "SELECT P." + PRODUTO_ID + ", P." + PRODUTO_DESC +
+                ", P." + PRODUTO_VALOR + ", P." + PRODUTO_LINHA +
+                " FROM " + PRODUTO_TABLE + " P" +
+                " JOIN " + LINHA_TABLE + " L" +
+                " ON P." + PRODUTO_LINHA + " == L." + LINHA_ID +
+                " WHERE L." + LINHA_MARCA + " == " + _marca;
+
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Produto produto = new Produto();
+                Linha linha = selectLinha(cursor.getInt(3));
+
+                produto.setId(cursor.getInt(0));
+                produto.setDescricao(cursor.getString(1));
+                produto.setValor(cursor.getDouble(2));
+                produto.setLinha(linha);
+
+                produtos.add(produto);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return produtos;
+    }
+
+    public List<Produto> listProdutosByLinha (Linha _linha) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Produto> produtos = new ArrayList<Produto>();
+
+        String QUERY = "SELECT P." + PRODUTO_ID + ", P." + PRODUTO_DESC +
+                ", P." + PRODUTO_VALOR + ", P." + PRODUTO_LINHA +
+                " FROM " + PRODUTO_TABLE + " P" +
+                " WHERE P." + PRODUTO_LINHA + " == " + _linha;
+
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Produto produto = new Produto();
+                Linha linha = selectLinha(cursor.getInt(3));
+
+                produto.setId(cursor.getInt(0));
+                produto.setDescricao(cursor.getString(1));
+                produto.setValor(cursor.getDouble(2));
+                produto.setLinha(linha);
+
+                produtos.add(produto);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return produtos;
+    }
 
     // CRUD PROD_SUBCAT /////////////////////////////////////////////////////////////////////////
     /*
