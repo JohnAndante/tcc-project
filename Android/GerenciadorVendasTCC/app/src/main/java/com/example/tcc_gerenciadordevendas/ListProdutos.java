@@ -120,7 +120,7 @@ public class ListProdutos extends AppCompatActivity {
     private void listProdutos () {
 
         List<Produto> produtos = db.listAllProdutos();
-        listaDinamicaProdutos = new ArrayList<Produtos>();
+        listaDinamicaProdutos = new ArrayList<Produto>();
 
         if (!produtos.isEmpty()) {
             for (Produto p : produtos)

@@ -19,7 +19,7 @@ public class AdapterEstado extends ArrayAdapter {
 
     BancoDadosCliente db = new BancoDadosCliente(null);
 
-    public AdapterEstado(Context context, int layoutId, ArrayList<Estado> list) {
+    public AdapterEstado (Context context, int layoutId, ArrayList<Estado> list) {
         super (context, layoutId, list);
         this.context = context;
         this.data = list;
