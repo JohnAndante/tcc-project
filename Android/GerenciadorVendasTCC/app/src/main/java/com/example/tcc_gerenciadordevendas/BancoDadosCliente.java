@@ -12,6 +12,8 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.security.auth.Subject;
+
 public class BancoDadosCliente extends SQLiteOpenHelper {
 
     //Versão do banco
@@ -1296,11 +1298,6 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     }
 
     // CRUD CATEGORIA ///////////////////////////////////////////////////////////////////////////
-    /*
-     private static final String CATEGORIA_ID        = "id_categoria";
-    private static final String CATEGORIA_DESC      = "desc";
-    private static final String CATEGORIA_COR       = "cor";
-     */
 
     public void addCategoria (Categoria categoria) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -1458,12 +1455,193 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     }
 
     // CRUD SUBCATEGORIA ////////////////////////////////////////////////////////////////////////
-    /*
-     private static final String SUBCAT_ID           = "id_subcat";
-    private static final String SUBCAT_DESC         = "desc";
-    private static final String SUBCAT_CATEGORIA    = "id_categoria";
-     */
 
+    public void addSubcat (Subcat subcat) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(SUBCAT_TABLE, subcat.getDescricao());
+
+        db.insert(SUBCAT_TABLE, null, values);
+        db.close();
+    }
+
+    public void deleteSubcat (Subcat subcat) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(SUBCAT_TABLE, SUBCAT_ID + " = ? ", new String[]{
+                String.valueOf(subcat.getId())
+        });
+        db.close();
+    }
+
+    public void deleteSubcatById (int _id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(SUBCAT_TABLE, SUBCAT_ID + " = ? ", new String[] {
+                String.valueOf(_id)
+        });
+        db.close();
+    }
+
+    public Subcat selectSubcat (int _id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.query(SUBCAT_TABLE,
+                new String[] {
+                        SUBCAT_ID, SUBCAT_DESC, SUBCAT_CATEGORIA },
+                SUBCAT_ID + " = ?",
+                new String[] { String.valueOf(_id) },
+                null,
+                null,
+                null,
+                null
+        );
+
+        Subcat subcat = new Subcat();
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+
+            subcat = new Subcat (
+                    cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getInt(2)
+            );
+        } else {
+            subcat = null;
+        }
+
+        cursor.close();
+        db.close();
+        return subcat;
+    }
+
+    public void updateSubcat (Subcat subcat) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(SUBCAT_DESC, subcat.getDescricao());
+
+        db.update(SUBCAT_TABLE, values, SUBCAT_ID + " = ? ",
+                new String[] {
+                        String.valueOf(subcat.getId())
+                });
+        db.close();
+    }
+
+    public List<Subcat> listSubcats () {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Subcat> subcats = new ArrayList<Subcat>();
+
+        String QUERY = "SELECT * FROM " + SUBCAT_TABLE;
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Subcat subcat = new Subcat();
+
+                subcat.setId(cursor.getInt(0));
+                subcat.setDescricao(cursor.getString(1));
+                subcat.setIdCategoria(cursor.getInt(2));
+
+                subcats.add(subcat);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+        return subcats;
+    }
+
+    public List<Subcat> listSubcatsByCategoria (Categoria _categoria) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Subcat> subcats = new ArrayList<Subcat>();
+
+        String QUERY = " SELECT " +
+                " S." + SUBCAT_ID + ", S." + SUBCAT_DESC + " S." + SUBCAT_CATEGORIA +
+                " FROM " + SUBCAT_TABLE + " S" +
+                " WHERE S." + SUBCAT_CATEGORIA + " = " + _categoria.getId();
+
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Subcat subcat = new Subcat();
+
+                subcat.setId(cursor.getInt(0));
+                subcat.setDescricao(cursor.getString(1));
+                subcat.setIdCategoria(cursor.getInt(2));
+
+                subcats.add(subcat);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+        return subcats;
+    }
+
+    public List<Subcat> listSubcatsByCategoriaOrdered (Categoria _categoria) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Subcat> subcats = new ArrayList<Subcat>();
+
+        String QUERY = " SELECT " +
+                " S." + SUBCAT_ID + ", S." + SUBCAT_DESC + " S." + SUBCAT_CATEGORIA +
+                " FROM " + SUBCAT_TABLE + " S" +
+                " WHERE S." + SUBCAT_CATEGORIA + " = " + _categoria.getId() +
+                " ORDER BY S." + SUBCAT_DESC;
+
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Subcat subcat = new Subcat();
+
+                subcat.setId(cursor.getInt(0));
+                subcat.setDescricao(cursor.getString(1));
+                subcat.setIdCategoria(cursor.getInt(2));
+
+                subcats.add(subcat);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+        return subcats;
+    }
+
+    public List<Subcat> listSubcatsByCategoriaDesc (Categoria _categoria, String _descricao) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Subcat> subcats = new ArrayList<Subcat>();
+
+        String QUERY = " SELECT " +
+                " S." + SUBCAT_ID + ", S." + SUBCAT_DESC + " S." + SUBCAT_CATEGORIA +
+                " FROM " + SUBCAT_TABLE + " L" +
+                " WHERE S." + SUBCAT_CATEGORIA + " = " + _categoria.getId() +
+                " && S." + SUBCAT_DESC + " LIKE '%" + _descricao + "%'" +
+                " ORDER BY S." + SUBCAT_DESC;
+
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Subcat subcat = new Subcat();
+
+                subcat.setId(cursor.getInt(0));
+                subcat.setDescricao(cursor.getString(1));
+                subcat.setIdCategoria(cursor.getInt(2));
+
+                subcats.add(subcat);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+        return subcats;
+    }
+    
     // CRUD PRODUTO /////////////////////////////////////////////////////////////////////////////
     /*
     private static final String PRODUTO_ID          = "id_produto";
