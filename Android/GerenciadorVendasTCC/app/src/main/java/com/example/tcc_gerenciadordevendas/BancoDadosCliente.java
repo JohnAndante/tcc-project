@@ -1649,12 +1649,6 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     }
 
     // CRUD PRODUTO /////////////////////////////////////////////////////////////////////////////
-    /*
-    private static final String PRODUTO_ID          = "id_produto";
-    private static final String PRODUTO_DESC        = "desc";
-    private static final String PRODUTO_VALOR       = "valor";
-    private static final String PRODUTO_LINHA       = "id_linha";
-     */
 
     public void addProduto (Produto _produto) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -1911,10 +1905,107 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     }
 
     // CRUD PROD_SUBCAT /////////////////////////////////////////////////////////////////////////
-    /*
-    private static final String PROD_SUBCAT_PROD    = "id_produto";
-    private static final String PROD_SUBCAT_SUBCAT  = "id_subcat";
-     */
+
+    public void addProdSubcat (ProdSubcat prodSubcat) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(PROD_SUBCAT_PROD, prodSubcat.getProduto().getId());
+        values.put(PROD_SUBCAT_SUBCAT, prodSubcat.getSubcat().getId());
+
+
+        db.insert(PROD_SUBCAT_TABLE, null, values);
+    }
+
+    public void deleteProdSubcat (ProdSubcat prodSubcat) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String QUERY = (" DELETE FROM " + PROD_SUBCAT_TABLE +
+                    " WHERE "   + PROD_SUBCAT_PROD      + " == " + prodSubcat.getProduto().getId() +
+                    " &&"       + PROD_SUBCAT_SUBCAT    + " == " + prodSubcat.getSubcat().getId());
+
+        db.rawQuery(QUERY, null);
+        db.close();
+    }
+
+    public List<ProdSubcat> listAllProdSubcats () {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<ProdSubcat> prodSubcats = new ArrayList<ProdSubcat>();
+
+        String QUERY = "SELECT * FROM " + PROD_SUBCAT_TABLE;
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                ProdSubcat prodSubcat = new ProdSubcat();
+                Produto produto = selectProduto(cursor.getInt(0));
+                Subcat subcat = selectSubcat(cursor.getInt(1));
+
+                prodSubcat.setProduto(produto);
+                prodSubcat.setSubcat(subcat);
+
+                prodSubcats.add(prodSubcat);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return prodSubcats;
+    }
+
+    public List<ProdSubcat> ListProdSubcatsByProduto (Produto _produto) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<ProdSubcat> prodSubcats = new ArrayList<ProdSubcat>();
+
+        String QUERY = "SELECT * FROM " + PROD_SUBCAT_TABLE +
+                " WHERE " + PROD_SUBCAT_PROD + " == " + _produto.getId();
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                ProdSubcat prodSubcat = new ProdSubcat();
+                Subcat subcat = selectSubcat(cursor.getInt(1));
+
+                prodSubcat.setProduto(_produto);
+                prodSubcat.setSubcat(subcat);
+
+                prodSubcats.add(prodSubcat);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return prodSubcats;
+    }
+
+    public List<ProdSubcat> ListProdSubcatsBySubcats (Subcat _subcat) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<ProdSubcat> prodSubcats = new ArrayList<ProdSubcat>();
+
+        String QUERY = "SELECT * FROM " + PROD_SUBCAT_TABLE +
+                " WHERE " + PROD_SUBCAT_SUBCAT + " == " + _subcat.getId();
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                ProdSubcat prodSubcat = new ProdSubcat();
+                Produto produto = selectProduto(cursor.getInt(0));
+
+                prodSubcat.setProduto(produto);
+                prodSubcat.setSubcat(_subcat);
+
+                prodSubcats.add(prodSubcat);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return prodSubcats;
+    }
 
     // Preenchimento estados e cidades //////////////////////////////////////////////////////////
 
