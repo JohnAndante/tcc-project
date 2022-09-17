@@ -1982,7 +1982,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return prodSubcats;
     }
 
-    public List<ProdSubcat> ListProdSubcatsByProduto (Produto _produto) {
+    public List<ProdSubcat> listProdSubcatsByProduto (Produto _produto) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         List<ProdSubcat> prodSubcats = new ArrayList<ProdSubcat>();

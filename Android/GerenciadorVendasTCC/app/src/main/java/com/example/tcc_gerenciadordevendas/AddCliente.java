@@ -76,7 +76,7 @@ public class AddCliente extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_cliente);
 
-        llButtons = (LinearLayout) findViewById(R.id.llBotoesCliente);
+        llButtons = findViewById(R.id.llBotoesCliente);
 
         initButtonsCfg();
         initButtonsOnclick();
