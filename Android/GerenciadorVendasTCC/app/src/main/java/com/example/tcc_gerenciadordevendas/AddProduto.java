@@ -1,18 +1,26 @@
 package com.example.tcc_gerenciadordevendas;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AddProduto extends AppCompatActivity {
@@ -38,6 +46,14 @@ public class AddProduto extends AppCompatActivity {
     int id_produto;
 
     private static final DecimalFormat df = new DecimalFormat("0.00");
+
+    // Variáveis para o marcaDropdown
+    private List<Marca> marcas;
+    private ArrayList<Marca> listaDinamicaMarca;
+    private AdapterMarca adapterMarca;
+    private Dialog dialogMarca;
+    private ListView listViewMarcas;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,11 +89,13 @@ public class AddProduto extends AppCompatActivity {
         }
 
         // Colocar aqui os dropdowns de marca, linha e categoria
+        marcaDropdown();
+        categoriaDropdown();
     }
 
     private void initButtonsCfg () {
-        Salvar      = findViewById(R.id.btProdutoSalvar);
-        Cancelar    = findViewById(R.id.btProdutoCancelar);
+        Salvar      = findViewById(R.id.btAddProdutoSalvar);
+        Cancelar    = findViewById(R.id.btAddProdutoVoltar);
     }
 
     private void initButtonsOnClick () {
@@ -141,12 +159,13 @@ public class AddProduto extends AppCompatActivity {
     }
 
     private void initEditTexts () {
-        /*
-        editTextNome        = (EditText) findViewById(R.id.editNomeCliente);
-        editTextTelefone    = (EditText) findViewById(R.id.editTelefoneCliente);
-        editTextRua         = (EditText) findViewById(R.id.editRuaEndereco);
-        editTextNum         = (EditText) findViewById(R.id.editNumEndereco);
-         */
+
+        editTextDescricao   = (EditText) findViewById(R.id.editDescricaoProduto);
+        editTextValor       = (EditText) findViewById(R.id.editValorProduto);
+        textMarca           = (TextView) findViewById(R.id.tvMarcaProduto);
+        textLinha           = (TextView) findViewById(R.id.tvLinhaProduto);
+        textCategoria       = (TextView) findViewById(R.id.tvCategoriaProduto);
+
     }
 
     private void initEditOnFocus () {
@@ -201,6 +220,55 @@ public class AddProduto extends AppCompatActivity {
     }
 
     private void marcaDropdown () {
+
+        textMarca.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                marcas = db.listMarcasOrdered();
+                listaDinamicaMarca = new ArrayList<Marca>();
+
+                if (!marcas.isEmpty()) {
+                    for (Marca m : marcas)
+                        listaDinamicaMarca.add(m);
+                }
+
+                dialogMarca = new Dialog(AddProduto.this);
+                dialogMarca.setContentView(R.layout.spinner_marca);
+
+                adapterMarca = new AdapterMarca(dialogMarca.getContext(), 0, listaDinamicaMarca);
+
+                dialogMarca.getWindow().setLayout((int) (deviceWidth * 0.75), (int) (deviceHeight * 0.75));
+                dialogMarca.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                dialogMarca.show();
+
+                TextView tvMarca = dialogMarca.findViewById(R.id.tvSpinnerMarca);
+                EditText editMarca = dialogMarca.findViewById(R.id.editTextSpinnerMarca);
+
+                listViewMarcas = (ListView) dialogMarca.findViewById(R.id.lvSpinnerMarca);
+                listViewMarcas.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+                listViewMarcas.setAdapter(adapterMarca);
+
+                editMarca.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        atualizaListaMarcas(charSequence);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                    }
+                });
+            }
+        });
+
+        listViewMarcas
 
     }
 
