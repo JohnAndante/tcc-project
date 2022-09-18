@@ -107,7 +107,6 @@ public class AddProduto extends AppCompatActivity {
             linhaSelecionada = l;
             marcaSelecionada = m;
             categoriaSelecionada = c;
-
         }
 
         // Colocar aqui os dropdowns de marca, linha e categoria

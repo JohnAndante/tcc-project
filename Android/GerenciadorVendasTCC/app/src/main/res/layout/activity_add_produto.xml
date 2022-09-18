@@ -43,17 +43,16 @@
                     android:layout_marginRight="5dp"
                     android:backgroundTint="@color/light_gray_01"
                     android:ems="10"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:inputType="textCapWords"
+                    android:gravity="center|left"
                     android:hint="Descrição do Produto"
-                    android:gravity="center|left"/>
+                    android:inputType="textCapWords"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_baseline_edit_24_white"
-                    android:visibility="invisible"/>
+                    android:src="@drawable/ic_baseline_edit_24_white" />
 
             </LinearLayout>
 
@@ -83,18 +82,17 @@
                     android:layout_marginRight="5dp"
                     android:backgroundTint="@color/light_gray_01"
                     android:ems="10"
+                    android:gravity="center|left"
+                    android:hint="R$ 0,00"
+                    android:inputType="numberDecimal"
                     android:textColor="@color/white"
                     android:textSize="16dp"
-                    android:textStyle="bold"
-                    android:inputType="numberDecimal"
-                    android:hint="R$ 0,00"
-                    android:gravity="center|left"/>
+                    android:textStyle="bold" />
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_baseline_edit_24_white"
-                    android:visibility="invisible"/>
+                    android:src="@drawable/ic_baseline_edit_24_white" />
 
             </LinearLayout>
 
@@ -124,16 +122,15 @@
                     android:layout_marginRight="5dp"
                     android:backgroundTint="@color/light_gray_01"
                     android:ems="10"
+                    android:gravity="center|left"
                     android:textColor="@color/white"
                     android:textSize="16dp"
-                    android:textStyle="bold"
-                    android:gravity="center|left"/>
+                    android:textStyle="bold" />
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24_white"
-                    android:visibility="invisible"/>
+                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24_white" />
 
             </LinearLayout>
 
@@ -163,16 +160,15 @@
                     android:layout_marginRight="5dp"
                     android:backgroundTint="@color/light_gray_01"
                     android:ems="10"
+                    android:gravity="center|left"
                     android:textColor="@color/white"
                     android:textSize="16dp"
-                    android:textStyle="bold"
-                    android:gravity="center|left"/>
+                    android:textStyle="bold" />
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24_white"
-                    android:visibility="invisible"/>
+                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24_white" />
 
             </LinearLayout>
 
@@ -202,22 +198,21 @@
                     android:layout_marginRight="5dp"
                     android:backgroundTint="@color/light_gray_01"
                     android:ems="10"
+                    android:gravity="center|left"
                     android:textColor="@color/white"
                     android:textSize="16dp"
-                    android:textStyle="bold"
-                    android:gravity="center|left"/>
+                    android:textStyle="bold" />
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24_white"
-                    android:visibility="invisible"/>
+                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24_white" />
 
             </LinearLayout>
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="80dp"/>
+                android:layout_height="80dp" />
 
         </LinearLayout>
 
