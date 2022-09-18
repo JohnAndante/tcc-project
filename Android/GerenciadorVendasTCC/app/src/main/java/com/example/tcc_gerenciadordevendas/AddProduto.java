@@ -60,7 +60,7 @@ public class AddProduto extends AppCompatActivity {
     private ArrayList<Linha> listaDinamicaLinha;
     private AdapterLinha adapterLinha;
     private Dialog dialogLinha;
-    private ListView listViewLInhas;
+    private ListView listViewLinhas;
 
     private List<Categoria> categorias;
     private ArrayList<Categoria> listaDinamicaCategoria;
@@ -103,6 +103,10 @@ public class AddProduto extends AppCompatActivity {
             textMarca.setText(m.getDescricao());
             textLinha.setText(l.getDescricao());
             textCategoria.setText(c.getDescricao());
+
+            linhaSelecionada = l;
+            marcaSelecionada = m;
+            categoriaSelecionada = c;
 
         }
 
@@ -322,19 +326,19 @@ public class AddProduto extends AppCompatActivity {
                 dialogLinha = new Dialog(AddProduto.this);
                 dialogLinha.setContentView(R.layout.spinner_linha);
 
-                adapterLinha = new AdapterMarca(dialogLinha.getContext(), 0, listaDinamicaLinha);
+                adapterLinha = new AdapterLinha(dialogLinha.getContext(), 0, listaDinamicaLinha);
 
                 dialogLinha.getWindow().setLayout((int) (deviceWidth * 0.75), (int) (deviceHeight * 0.75));
                 dialogLinha.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
                 dialogLinha.show();
 
-                TextView tvLinha = dialogLinhafindViewById(R.id.tvSpinnerLinha);
-                EditText editLinha = dialogLinhafindViewById(R.id.editTextSpinnerLinha);
+                TextView tvLinha = dialogLinha.findViewById(R.id.tvSpinnerLinha);
+                EditText editLinha = dialogLinha.findViewById(R.id.editTextSpinnerLinha);
 
-                listViewMarcas = (ListView) dialogLinhafindViewById(R.id.lvSpinnerLinha);
-                listViewMarcas.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-                listViewMarcas.setAdapter(adapteLinha);
+                listViewLinhas = (ListView) dialogLinha.findViewById(R.id.lvSpinnerLinha);
+                listViewLinhas.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+                listViewLinhas.setAdapter(adapterLinha);
 
                 editLinha.addTextChangedListener(new TextWatcher() {
                     @Override
@@ -357,7 +361,7 @@ public class AddProduto extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long lo) {
                         try {
-                            Linha l = (Linha) listViewMarcas.getItemAtPosition(i);
+                            Linha l = (Linha) listViewLinhas.getItemAtPosition(i);
                             textLinha.setText(l.getDescricao());
                             if (linhaSelecionada != l) {
                                 linhaSelecionada = l;
@@ -375,17 +379,103 @@ public class AddProduto extends AppCompatActivity {
 
     private void categoriaDropdown () {
 
+        textCategoria.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                categorias = db.listCategoriasOrdered();
+                listaDinamicaCategoria = new ArrayList<Categoria>();
+
+                if (!categorias.isEmpty()) {
+                    for (Categoria c : categorias)
+                        listaDinamicaCategoria.add(c);
+                }
+
+                dialogCategoria = new Dialog(AddProduto.this);
+                dialogCategoria.setContentView(R.layout.spinner_categoria);
+
+                adapterCategoria = new AdapterCategoria(dialogCategoria.getContext(), 0, listaDinamicaCategoria);
+
+                dialogCategoria.getWindow().setLayout((int) (deviceWidth * 0.75), (int) (deviceHeight * 0.75));
+                dialogCategoria.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                dialogCategoria.show();
+
+                TextView tvCategoria = dialogCategoria.findViewById(R.id.tvSpinnerCategoria);
+                EditText editCategoria = dialogCategoria.findViewById(R.id.editTextSpinnerCategoria);
+
+                listViewCategorias = (ListView) dialogCategoria.findViewById(R.id.lvSpinnerCategoria);
+                listViewCategorias.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+                listViewCategorias.setAdapter(adapterCategoria);
+
+                editCategoria.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        atualizaListaCategorias(charSequence);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                    }
+                });
+
+                listViewCategorias.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        try {
+                            Categoria c = (Categoria) listViewCategorias.getItemAtPosition(i);
+                            textCategoria.setText(c.getDescricao());
+                            if (categoriaSelecionada != c) {
+                                categoriaSelecionada = c;
+                                categoriaSelecionada = null;
+                            }
+
+                            dialogCategoria.dismiss();
+                        } catch (Exception e) {
+                            Log.e("ERROR", e.getMessage().toString());
+                        }
+                    }
+                });
+            }
+        });
+
     }
 
     private void atualizaListaMarcas (CharSequence _desc) {
+        marcas = db.listMarcasByDesc(_desc.toString());
+        listaDinamicaMarca = new ArrayList<Marca>();
+        for (Marca m : marcas)
+            listaDinamicaMarca.add(m);
 
+        adapterMarca = new AdapterMarca(dialogMarca.getContext(), 0, listaDinamicaMarca);
+        listViewMarcas.setAdapter(adapterMarca);
+        adapterMarca.notifyDataSetChanged();
     }
 
     private void atualizaListaLinhas (CharSequence _desc) {
+        linhas = db.listLinhasByMarcaDesc(marcaSelecionada, _desc.toString());
+        listaDinamicaLinha = new ArrayList<Linha>();
+        for (Linha l : linhas)
+            listaDinamicaLinha.add(l);
 
+        adapterLinha = new AdapterLinha(dialogLinha.getContext(), 0, listaDinamicaLinha);
+        listViewLinhas.setAdapter(adapterLinha);
+        adapterLinha.notifyDataSetChanged();
     }
 
     private void atualizaListaCategorias (CharSequence _desc) {
+        categorias = db.listCategoriasByDesc(_desc.toString());
+        listaDinamicaCategoria = new ArrayList<Categoria>();
+        for (Categoria c : categorias)
+            listaDinamicaCategoria.add(c);
 
+        adapterCategoria = new AdapterCategoria(dialogCategoria.getContext(), 0, listaDinamicaCategoria);
+        listViewCategorias.setAdapter(adapterCategoria);
+        adapterCategoria.notifyDataSetChanged();
     }
 }

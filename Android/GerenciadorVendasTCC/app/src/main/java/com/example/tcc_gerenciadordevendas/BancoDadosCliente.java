@@ -1251,8 +1251,8 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
         List<Linha> linhas = new ArrayList<Linha>();
 
-        String QUERY = " SELECT " +
-                " L." + LINHA_ID + ", L." + LINHA_DESC + " L." + LINHA_MARCA +
+        String QUERY = " SELECT" +
+                " L." + LINHA_ID + ", L." + LINHA_DESC + ", L." + LINHA_MARCA +
                 " FROM " + LINHA_TABLE + " L" +
                 " WHERE L." + LINHA_MARCA + " = " + marca.getId() +
                 " ORDER BY L." + LINHA_DESC;
