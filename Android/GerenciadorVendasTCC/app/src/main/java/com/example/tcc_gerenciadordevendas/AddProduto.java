@@ -8,8 +8,10 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -47,12 +49,28 @@ public class AddProduto extends AppCompatActivity {
 
     private static final DecimalFormat df = new DecimalFormat("0.00");
 
-    // Variáveis para o marcaDropdown
+    // Variáveis para os dropdowns
     private List<Marca> marcas;
     private ArrayList<Marca> listaDinamicaMarca;
     private AdapterMarca adapterMarca;
     private Dialog dialogMarca;
     private ListView listViewMarcas;
+
+    private List<Linha> linhas;
+    private ArrayList<Linha> listaDinamicaLinha;
+    private AdapterLinha adapterLinha;
+    private Dialog dialogLinha;
+    private ListView listViewLInhas;
+
+    private List<Categoria> categorias;
+    private ArrayList<Categoria> listaDinamicaCategoria;
+    private AdapterCategoria adapterCategoria;
+    private Dialog dialogCategoria;
+    private ListView listViewCategorias;
+
+    private Marca marcaSelecionada;
+    private Linha linhaSelecionada;
+    private Categoria categoriaSelecionada;
 
 
     @Override
@@ -265,15 +283,94 @@ public class AddProduto extends AppCompatActivity {
 
                     }
                 });
+
+                listViewMarcas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        try {
+                            Marca m = (Marca) listViewMarcas.getItemAtPosition(i);
+                            textMarca.setText(m.getDescricao());
+                            if (marcaSelecionada != m) {
+                                marcaSelecionada = m;
+                                linhaSelecionada = null;
+                            }
+
+                            dialogMarca.dismiss();
+                            linhaDropdown();
+                        } catch (Exception e) {
+                            Log.e("ERROR", e.getMessage().toString());
+                        }
+                    }
+                });
             }
         });
-
-        listViewMarcas
-
     }
 
     private void linhaDropdown () {
 
+        textLinha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                linhas = db.listLinhasByMarcaOrdered(marcaSelecionada);
+                listaDinamicaLinha = new ArrayList<Linha>();
+
+                if (!linhas.isEmpty()) {
+                    for (Linha l : linhas)
+                        listaDinamicaLinha.add(l);
+                }
+
+                dialogLinha = new Dialog(AddProduto.this);
+                dialogLinha.setContentView(R.layout.spinner_linha);
+
+                adapterLinha = new AdapterMarca(dialogLinha.getContext(), 0, listaDinamicaLinha);
+
+                dialogLinha.getWindow().setLayout((int) (deviceWidth * 0.75), (int) (deviceHeight * 0.75));
+                dialogLinha.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                dialogLinha.show();
+
+                TextView tvLinha = dialogLinhafindViewById(R.id.tvSpinnerLinha);
+                EditText editLinha = dialogLinhafindViewById(R.id.editTextSpinnerLinha);
+
+                listViewMarcas = (ListView) dialogLinhafindViewById(R.id.lvSpinnerLinha);
+                listViewMarcas.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+                listViewMarcas.setAdapter(adapteLinha);
+
+                editLinha.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        atualizaListaLinhas(charSequence);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                    }
+                });
+
+                listViewLinhas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long lo) {
+                        try {
+                            Linha l = (Linha) listViewMarcas.getItemAtPosition(i);
+                            textLinha.setText(l.getDescricao());
+                            if (linhaSelecionada != l) {
+                                linhaSelecionada = l;
+                            }
+
+                            dialogLinha.dismiss();
+                        } catch (Exception e) {
+                            Log.e("ERROR", e.getMessage().toString());
+                        }
+                    }
+                });
+            }
+        });
     }
 
     private void categoriaDropdown () {
