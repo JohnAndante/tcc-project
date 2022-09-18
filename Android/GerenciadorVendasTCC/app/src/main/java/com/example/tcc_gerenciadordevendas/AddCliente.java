@@ -237,7 +237,6 @@ public class AddCliente extends AppCompatActivity {
                 finish();
             }
         });
-
     }
 
     private boolean confereCampos(){
