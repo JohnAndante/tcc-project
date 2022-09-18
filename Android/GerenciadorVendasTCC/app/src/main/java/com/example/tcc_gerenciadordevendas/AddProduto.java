@@ -477,4 +477,8 @@ public class AddProduto extends AppCompatActivity {
         listViewCategorias.setAdapter(adapterCategoria);
         adapterCategoria.notifyDataSetChanged();
     }
+
+    private void testeInsereSubcats () {
+
+    }
 }
