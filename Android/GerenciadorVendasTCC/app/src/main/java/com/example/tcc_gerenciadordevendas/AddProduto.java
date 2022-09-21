@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -68,9 +69,9 @@ public class AddProduto extends AppCompatActivity {
     private Dialog dialogCategoria;
     private ListView listViewCategorias;
 
-    private Marca marcaSelecionada;
-    private Linha linhaSelecionada;
-    private Categoria categoriaSelecionada;
+    private Marca marcaSelecionada = null;
+    private Linha linhaSelecionada = null;
+    private Categoria categoriaSelecionada = null;
 
 
     @Override
@@ -129,20 +130,75 @@ public class AddProduto extends AppCompatActivity {
                 if (id_produto > 0 && confereCampos()) {
                     setContentView(R.layout.activity_add_produto);
 
-                    bundle.putInt("id", id_produto);
-
                     // processo para sobrescrever os dados já gravados anteriormente
                     // e então fazer o update do produto e tabelas relacionadas
                     // se necessário
 
                     // estudar como será possível trabalhar com as subcategorias
+
+                    String desc = editTextDescricao.getText().toString();
+
+                    // necessário tratar o texto exibido no editText
+                    Double valor = Double.valueOf(editTextValor.getText().toString());
+
+                    bundle.putInt("id", id_produto);
+                    Produto p = db.selectProduto(id_produto);
+                    Linha l = db.selectLinha(p.getLinha().getId());
+                    Marca m = db.selectMarca(l.getMarca().getId());
+                    ProdSubcat psc = db.selectFirstProdSubcatByProd(p);
+                    Subcat sc = db.selectSubcat(psc.getSubcat().getId());
+                    Categoria c = db.selectCategoria(sc.getCategoria().getId());
+
+                    p.setDescricao(desc);
+                    p.setValor(valor);
+
+                    m = marcaSelecionada;
+                    l = linhaSelecionada;
+
+                    p.setLinha(l);
+
+                    c = categoriaSelecionada;
+
+                    sc = new Subcat("Subcategoria Teste Edit", c);
+                    psc = new ProdSubcat(p, sc);
+
+                    db.updateProduto(p);
+
+                    setResult(RESULT_OK);
+                    finish();
+
                 } else
                 if (confereCampos()) {
-
                     // processo para gravar as informações na classe variável e
                     // gravar essas informações no banco de dados
 
                     // estudar como será possível trabalhar com as subcategorias
+
+                    setContentView(R.layout.activity_add_produto);
+                    String desc = editTextDescricao.getText().toString();
+
+                    // necessário tratar o texto exibido no editText
+                    Double valor = Double.valueOf(editTextValor.getText().toString());
+
+                    Linha l = linhaSelecionada;
+                    Marca m = db.selectMarca(l.getMarca().getId());
+                    Categoria c = categoriaSelecionada;
+
+                    Produto p = new Produto(desc, valor, l);
+                    db.addProduto(p);
+
+                    p = db.selectMaxProduto();
+
+                    Subcat sc = new Subcat("Subcategoria Teste", c);
+                    db.addSubcat(sc);
+                    sc = db.selectMaxSubcat();
+
+                    ProdSubcat psc = new ProdSubcat(p, sc);
+                    db.addProdSubcat(psc);
+
+                    setResult(RESULT_OK);
+                    finish();
+
                 }
             }
         });
@@ -159,23 +215,36 @@ public class AddProduto extends AppCompatActivity {
     private boolean confereCampos () {
         // conferir se os campos estão preenchidos e/ou selecionados
 
-        /*
-        String clienteRua = editTextRua.getText().toString();
-        String clienteNum = editTextNum.getText().toString();
-        String clienteBairro = editTextBairro.getText().toString();
-        Estado clienteEstado = estadoSelecionado;
-        Cidade clienteCidade = cidadeSelecionada;
+        String descProd = editTextDescricao.getText().toString();
+        String valorBruto = editTextValor.getText().toString();
+        Double valorProd = 0.00;
 
-        if (clienteRua.isEmpty() && clienteNum.isEmpty() && clienteBairro.isEmpty() && clienteEstado == null && clienteCidade == null) {
-            Toast.makeText(getApplicationContext(), "Regularize o endereço do cliente quando possível", Toast.LENGTH_SHORT).show();
-            return true;
-        } else
-        if (clienteEstado == null) {
-            Toast.makeText(getApplicationContext(), "Insira o estado ao endereço", Toast.LENGTH_SHORT).show();
+        valorBruto.replaceAll("[R]", "").replaceAll("[$]", "").replaceAll("[ ]", "");
+        valorProd = Double.valueOf(valorBruto);
+
+        if (descProd.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Preencha a descrição do produto", Toast.LENGTH_SHORT).show();
+            editTextDescricao.requestFocus();
             return false;
+        } else
+        if (valorProd.isNaN() || valorProd == 0.00) {
+            Toast.makeText(getApplicationContext(), "Insira um valor válido para o produto", Toast.LENGTH_SHORT).show();
+            editTextValor.requestFocus();
+            return false;
+        } else
+        if (marcaSelecionada == null) {
+            Toast.makeText(getApplicationContext(), "Selecione uma marca para o produto", Toast.LENGTH_SHORT).show();
+            return false;
+        } else
+        if (linhaSelecionada == null) {
+            Toast.makeText(getApplicationContext(), "Selecione uma linha para o produto", Toast.LENGTH_SHORT).show();
+            return false;
+        } else
+        if (categoriaSelecionada == null) {
+            Toast.makeText(getApplicationContext(), "Selecione uma categoria para o produto", Toast.LENGTH_SHORT).show();
+        } else {
+            return true;
         }
-         */
-
         return false;
     }
 

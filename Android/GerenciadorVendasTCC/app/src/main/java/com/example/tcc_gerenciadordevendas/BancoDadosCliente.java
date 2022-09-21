@@ -1529,6 +1529,30 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return subcat;
     }
 
+    public Subcat selectMaxSubcat () {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM " + SUBCAT_TABLE +
+                " WHERE " + SUBCAT_ID +
+                    " = (SELECT MAX(" + SUBCAT_ID + ") " +
+                    "FROM " + SUBCAT_TABLE +
+                ")", null);
+
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        Subcat sc = new Subcat(
+                cursor.getInt(0),
+                cursor.getString(1),
+                selectCategoria(cursor.getInt(2))
+        );
+
+        db.close();
+
+        return sc;
+
+    }
+
     public void updateSubcat (Subcat subcat) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1720,6 +1744,45 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return produto;
+    }
+
+    public Produto selectMaxProduto () {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM " + PRODUTO_TABLE +
+                " WHERE " + PRODUTO_ID +
+                " = (SELECT MAX(" + PRODUTO_ID + ") " +
+                "FROM " + PRODUTO_TABLE +
+                ")", null);
+
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        Produto produto = new Produto(
+                cursor.getInt(0),
+                cursor.getString(1),
+                cursor.getDouble(2),
+                selectLinha(cursor.getInt(3))
+        );
+
+        db.close();
+
+        return produto;
+    }
+
+    public void updateProduto (Produto produto) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(PRODUTO_DESC, produto.getDescricao());
+        values.put(PRODUTO_VALOR, produto.getValor());
+        values.put(PRODUTO_LINHA, produto.getLinha().getId());
+
+        db.update(PRODUTO_TABLE, values, SUBCAT_ID + " = ? ",
+                new String[] {
+                        String.valueOf(produto.getId())
+                });
+        db.close();
     }
 
     public List<Produto> listAllProdutos () {
