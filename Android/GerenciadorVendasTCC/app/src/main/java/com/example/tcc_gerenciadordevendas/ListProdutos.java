@@ -1,6 +1,7 @@
 package com.example.tcc_gerenciadordevendas;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -77,7 +78,10 @@ public class ListProdutos extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_produtos);
 
+
+        addDefaultData();
         initButtonsHub();
+
         listProdutos();
 
         imgbtNovoProduto = (ImageButton) findViewById(R.id.imgbtIconeNovoProduto);
@@ -92,32 +96,43 @@ public class ListProdutos extends AppCompatActivity {
         llAdicionarProduto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                int llAddProdutoHeight = llAdicionarProduto.getHeight();
+                Log.i("INFO LLADDPRODUTOHEIGHT", String.valueOf(llAddProdutoHeight));
                 addNewProduto();
             }
         });
 
-        if (!checkCategorias())
-            addDefaultCategorias();
-        if (!checkSubcategorias())
-            addDefaultSubcats();
-        if (!checkMarcas())
-            addDefaultMarcas();
-        if (!checkLinhas())
-            addDefaultLinhas();
-        if (!checkProdutos())
-            addDefaultProdutos();
-        if (!checkProdSubcats())
-            addDefaultProdSubcats();
+        adjustView();
     }
 
     @Override
     protected void onActivityResult (int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Alterando dados
-        // Verificar se ainda é útil
+        Intent intent = getIntent();
 
-        // Criando novos dados
+        //-- Criando novos dados
+        if ((requestCode == NOVO_PRODUTO) && (resultCode == RESULT_OK)) {
+
+            Produto produtoMax = new Produto();
+
+            try {
+                produtoMax = db.selectMaxProduto();
+            } catch (Exception e) {
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+            listaDinamicaProdutos.add(produtoMax);
+            adapter.notifyDataSetChanged();
+        }
+
+        //-- Alterando dados existentes
+        if ((requestCode == CONSULTAR_PRODUTO) && (resultCode == RESULT_ALT_PRODUTO)) {
+            listProdutos();
+            adapter.notifyDataSetChanged();
+        }
+
     }
 
     private void initButtonsHub () {
@@ -145,6 +160,8 @@ public class ListProdutos extends AppCompatActivity {
         if (!produtos.isEmpty()) {
             for (Produto p : produtos)
                 listaDinamicaProdutos.add(p);
+        } else {
+            Toast.makeText(getApplicationContext(), "Não há produtos cadastrados", Toast.LENGTH_SHORT).show();
         }
 
         adapter = new AdapterProduto(this, 0, listaDinamicaProdutos);
@@ -159,7 +176,7 @@ public class ListProdutos extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 try {
                     Produto p = (Produto) listViewProdutos.getItemAtPosition(i);
-                    openProdutoData(p);
+                    openProdutoData(p, i);
                 } catch (Exception e) {
                     Log.e("ERROR", e.getMessage().toString());
                 }
@@ -167,17 +184,40 @@ public class ListProdutos extends AppCompatActivity {
         });
     }
 
-    private void openProdutoData (Produto p) {
+    private void openProdutoData (Produto p, int position) {
 
         Intent intent = new Intent (ListProdutos.this, ViewProduto.class);
         Bundle bundle = new Bundle();
 
         bundle.putInt("ID", p.getId());
+        bundle.putInt("posicao", position);
         intent.putExtras(bundle);
 
         startActivityForResult(intent, CONSULTAR_PRODUTO);
     }
 
+    private void addDefaultData () {
+        if (!checkCategorias())
+            addDefaultCategorias();
+        if (!checkSubcategorias())
+            addDefaultSubcats();
+        if (!checkMarcas())
+            addDefaultMarcas();
+        if (!checkLinhas())
+            addDefaultLinhas();
+        if (!checkProdutos())
+            addDefaultProdutos();
+        if (!checkProdSubcats())
+            addDefaultProdSubcats();
+    }
+
+    private void adjustView () {
+        int llAddProdutoHeight = 170;
+        int deviceHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+        int newlistViewHeight = (deviceHeight - llAddProdutoHeight) - 30;
+
+
+    }
     private boolean checkCategorias () {
         // Confere se a quantia de categorias criadas é a desejada para testes
         // No momento teremos 4 categorias

@@ -105,39 +105,24 @@ public class ListClientes extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        //-- Alterando dados
-        //-- Verificar se ainda é útil
-        if ((requestCode == ALTERAR_CLIENTE) && (resultCode == RESULT_OK)) {
-
-            int id          = data.getIntExtra("posicao", 0);
-            String nome     = data.getStringExtra("nome");
-            String telefone = data.getStringExtra("telefone");
-
-            Cliente cliente = new Cliente(nome, telefone);
-            db.updateCliente(cliente);
-
-            Cliente clienteMax = db.selectMaxCliente();
-            listaDinamicaClientes.set(clienteMax.getId(), clienteMax);
-
-            adapter.notifyDataSetChanged();
-
-        }
-
         //-- Criando novos dados
         if ((requestCode == NOVO_CLIENTE) && (resultCode == RESULT_OK)) {
 
             Cliente clienteMax = new Cliente();
+
             try {
                 clienteMax = db.selectMaxCliente();
             } catch (Exception e) {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
+
             db.close();
             listaDinamicaClientes.add(clienteMax);
-
             adapter.notifyDataSetChanged();
-        }
 
+        } else
+
+        //-- Alterando dados existentes
         if ((requestCode == CONSULTAR_CLIENTE) && (resultCode == RESULT_ALT_CLIENTE)) {
             listClientes();
             adapter.notifyDataSetChanged();
@@ -187,7 +172,6 @@ public class ListClientes extends AppCompatActivity {
                     Cliente c = (Cliente) listViewClientes.getItemAtPosition(i);
                     openClienteData(c);
                 } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
                     Log.e("ERROR", e.getMessage().toString());
                 }
             }

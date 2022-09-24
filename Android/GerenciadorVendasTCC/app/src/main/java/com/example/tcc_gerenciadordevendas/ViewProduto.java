@@ -35,6 +35,8 @@ public class ViewProduto extends AppCompatActivity {
     private boolean produto_alterado;
 
     private Produto produto;
+    private int posicao;
+    private boolean hasPosicao = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,7 +73,13 @@ public class ViewProduto extends AppCompatActivity {
             textLinha.setText(linha.getDescricao());
             textCategoria.setText(categoria.getDescricao());
 
+            if (intent.hasExtra("posicao")) {
+                posicao = intent.getIntExtra("posicao", 0);
+                hasPosicao = true;
+            }
+
         }
+
     }
 
     @Override
@@ -96,11 +104,10 @@ public class ViewProduto extends AppCompatActivity {
             categoria = subcat.getCategoria();
 
             textDesc.setText(produto.getDescricao());
-            textValor.setText("R$ " + df.format(produto.getValor()));
+            textValor.setText(df.format(produto.getValor()));
             textMarca.setText(marca.getDescricao());
             textLinha.setText(linha.getDescricao());
             textCategoria.setText(categoria.getDescricao());
-
         }
     }
 
@@ -125,6 +132,8 @@ public class ViewProduto extends AppCompatActivity {
                 Bundle bundle = new Bundle();
 
                 bundle.putInt("ID", idProduto);
+                if (hasPosicao == true)
+                    bundle.putInt("posicao", posicao);
                 intent.putExtras(bundle);
                 startActivityForResult(intent, ALTERAR_PRODUTO);
             }
@@ -137,6 +146,8 @@ public class ViewProduto extends AppCompatActivity {
                     Intent intent2 = new Intent();
                     Bundle bundle = new Bundle();
                     bundle.putInt("ID", produto.getId());
+                    if (hasPosicao == true)
+                        bundle.putInt("posicao", posicao);
                     intent2.putExtras(bundle);
 
                     setResult(RESULT_ALT_PRODUTO, intent2);

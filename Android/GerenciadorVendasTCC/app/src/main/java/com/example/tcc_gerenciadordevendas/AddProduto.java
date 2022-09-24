@@ -73,6 +73,8 @@ public class AddProduto extends AppCompatActivity {
     private Linha linhaSelecionada = null;
     private Categoria categoriaSelecionada = null;
 
+    private int posicao;
+    private boolean hasPosicao = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -93,6 +95,11 @@ public class AddProduto extends AppCompatActivity {
             Salvar.setText("Alterar");
             id_produto = intent.getIntExtra("ID", 0);
 
+            if (intent.hasExtra("posicao")) {
+                posicao = intent.getIntExtra("posicao", 0);
+                hasPosicao = true;
+            }
+
             Produto p = db.selectProduto(id_produto);
             Linha l = db.selectLinha(p.getLinha().getId());
             Marca m = db.selectMarca(l.getMarca().getId());
@@ -100,7 +107,7 @@ public class AddProduto extends AppCompatActivity {
             Categoria c = db.selectFirstProdSubcatByProd(p).getSubcat().getCategoria();
 
             editTextDescricao.setText(p.getDescricao());
-            editTextValor.setText("R$ " + df.format(p.getValor()));
+            editTextValor.setText(df.format(p.getValor()));
             textMarca.setText(m.getDescricao());
             textLinha.setText(l.getDescricao());
             textCategoria.setText(c.getDescricao());
@@ -130,10 +137,6 @@ public class AddProduto extends AppCompatActivity {
                 if (id_produto > 0 && confereCampos()) {
                     setContentView(R.layout.activity_add_produto);
 
-                    // processo para sobrescrever os dados já gravados anteriormente
-                    // e então fazer o update do produto e tabelas relacionadas
-                    // se necessário
-
                     // estudar como será possível trabalhar com as subcategorias
 
                     String desc = editTextDescricao.getText().toString();
@@ -141,7 +144,9 @@ public class AddProduto extends AppCompatActivity {
                     // necessário tratar o texto exibido no editText
                     Double valor = Double.valueOf(editTextValor.getText().toString());
 
-                    bundle.putInt("id", id_produto);
+                    bundle.putInt("ID", id_produto);
+                    if (hasPosicao == true)
+                        bundle.putInt("posicao", posicao);
                     Produto p = db.selectProduto(id_produto);
                     Linha l = db.selectLinha(p.getLinha().getId());
                     Marca m = db.selectMarca(l.getMarca().getId());
@@ -500,7 +505,6 @@ public class AddProduto extends AppCompatActivity {
                             textCategoria.setText(c.getDescricao());
                             if (categoriaSelecionada != c) {
                                 categoriaSelecionada = c;
-                                categoriaSelecionada = null;
                             }
 
                             dialogCategoria.dismiss();

@@ -1778,7 +1778,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         values.put(PRODUTO_VALOR, produto.getValor());
         values.put(PRODUTO_LINHA, produto.getLinha().getId());
 
-        db.update(PRODUTO_TABLE, values, SUBCAT_ID + " = ? ",
+        db.update(PRODUTO_TABLE, values, PRODUTO_ID + " = ? ",
                 new String[] {
                         String.valueOf(produto.getId())
                 });

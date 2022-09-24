@@ -65,7 +65,9 @@
         android:layout_height="wrap_content"
         android:divider="@null"
         android:dividerHeight="0dp"
-        app:layout_constraintTop_toBottomOf="@id/llPaiAdicionarProduto" />
+        app:layout_constraintTop_toBottomOf="@id/llPaiAdicionarProduto">
+
+    </ListView>
 
     <Button
         android:id="@+id/btProdutoVoltar"

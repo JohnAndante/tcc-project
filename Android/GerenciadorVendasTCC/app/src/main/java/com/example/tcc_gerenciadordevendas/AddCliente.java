@@ -132,8 +132,8 @@ public class AddCliente extends AppCompatActivity {
 
                 // Se o cliente já existe, e os campos estão preenchidos
                 if (id_cliente > 0 && confereCampos() && confereCamposEndereco()) {
-
                     setContentView(R.layout.activity_add_cliente);
+
                     bundle.putInt("id", id_cliente);
                     Cliente c = db.selectCliente(id_cliente);
                     Telefone t = db.selectTelefoneFirst(c);
