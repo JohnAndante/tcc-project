@@ -1626,7 +1626,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         List<Subcat> subcats = new ArrayList<Subcat>();
 
         String QUERY = " SELECT " +
-                " S." + SUBCAT_ID + ", S." + SUBCAT_DESC + " S." + SUBCAT_CATEGORIA +
+                " S." + SUBCAT_ID + ", S." + SUBCAT_DESC + ", S." + SUBCAT_CATEGORIA +
                 " FROM " + SUBCAT_TABLE + " S" +
                 " WHERE S." + SUBCAT_CATEGORIA + " = " + _categoria.getId() +
                 " ORDER BY S." + SUBCAT_DESC;

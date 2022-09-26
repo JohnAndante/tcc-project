@@ -13,14 +13,14 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
-public class AdapterLinha extends ArrayAdapter {
+public class AdapterSubcat extends ArrayAdapter {
 
     private Context context;
-    private ArrayList<Linha> data;
+    private ArrayList<Subcat> data;
 
     BancoDadosCliente db = new BancoDadosCliente(null);
 
-    public AdapterLinha (Context context, int layoutId, ArrayList<Linha> list) {
+    public AdapterSubcat (Context context, int layoutId, ArrayList<Subcat> list) {
         super (context, layoutId, list);
         this.context = context;
         this.data = list;
@@ -28,10 +28,10 @@ public class AdapterLinha extends ArrayAdapter {
 
     public View getView (int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.card_linha, null);
+        View view = inflater.inflate(R.layout.card_subcat, null);
 
-        TextView tvDescLInha = (TextView) view.findViewById(R.id.tvDescLinha);
-        tvDescLInha.setText(data.get(position).getDescricao());
+        TextView tvDescSubcat = (TextView) view.findViewById(R.id.tvDescSubcat);
+        tvDescSubcat.setText(data.get(position).getDescricao());
 
         return view;
     }

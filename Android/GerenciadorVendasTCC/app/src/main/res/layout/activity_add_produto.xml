@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/dark_gray_01"
     tools:context=".AddProduto">
 
@@ -209,6 +210,37 @@
                     android:src="@drawable/ic_baseline_keyboard_arrow_down_24_white" />
 
             </LinearLayout>
+
+            <Button
+                android:id="@+id/buttonTeste"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Adicionar Chip" />
+
+            <LinearLayout
+                android:id="@+id/llSubcatTeste"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroupAddProduto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipAddSubcat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="false"
+                        android:clickable="true"
+                        android:text="Adicionar" />
+
+                </com.google.android.material.chip.ChipGroup>
+
+            </LinearLayout>
+
 
             <LinearLayout
                 android:id="@+id/llProdutoTeste"

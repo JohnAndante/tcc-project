@@ -22,6 +22,9 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +78,17 @@ public class AddProduto extends AppCompatActivity {
 
     private int posicao;
     private boolean hasPosicao = false;
+
+    private ChipGroup chipGroupSubcat;
+    private Chip chipAddSubcat;
+    private Button buttonTeste;
+    private int contador = 0;
+
+    private List<Subcat> subcats;
+    private ArrayList<Subcat> listaDinamicaSubcat;
+    private AdapterSubcat adapterSubcat;
+    private Dialog dialogSubcat;
+    private ListView listViewSubcats;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -260,6 +274,12 @@ public class AddProduto extends AppCompatActivity {
         textMarca           = (TextView) findViewById(R.id.tvMarcaProduto);
         textLinha           = (TextView) findViewById(R.id.tvLinhaProduto);
         textCategoria       = (TextView) findViewById(R.id.tvCategoriaProduto);
+
+        //-- Edit text e botões para teste
+
+        chipGroupSubcat = findViewById(R.id.chipGroupAddProduto);
+        buttonTeste = findViewById(R.id.buttonTeste);
+        chipAddSubcat = findViewById(R.id.chipAddSubcat);
 
     }
 
@@ -505,6 +525,7 @@ public class AddProduto extends AppCompatActivity {
                             textCategoria.setText(c.getDescricao());
                             if (categoriaSelecionada != c) {
                                 categoriaSelecionada = c;
+                                testeInsereSubcats();
                             }
 
                             dialogCategoria.dismiss();
@@ -551,7 +572,98 @@ public class AddProduto extends AppCompatActivity {
         adapterCategoria.notifyDataSetChanged();
     }
 
+    private void atualizaListaSubcats (CharSequence _desc) {
+        subcats = db.listSubcatsByCategoriaDesc(categoriaSelecionada, _desc.toString());
+        listaDinamicaSubcat = new ArrayList<Subcat>();
+        for (Subcat s : subcats)
+            listaDinamicaSubcat.add(s);
+
+        adapterSubcat = new AdapterSubcat(dialogSubcat.getContext(), 0, listaDinamicaSubcat);
+        listViewCategorias.setAdapter(adapterSubcat);
+        adapterSubcat.notifyDataSetChanged();
+    }
+
     private void testeInsereSubcats () {
 
+        chipAddSubcat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.e("INFO CHIP", "ENTROU NO ONCLICK");
+
+                subcats = db.listSubcatsByCategoriaOrdered(categoriaSelecionada);
+                listaDinamicaSubcat = new ArrayList<Subcat>();
+
+                if (!subcats.isEmpty()) {
+                    for (Subcat s : subcats)
+                        listaDinamicaSubcat.add(s);
+                }
+
+                dialogSubcat = new Dialog(AddProduto.this);
+                dialogSubcat.setContentView(R.layout.spinner_subcat);
+
+                adapterSubcat = new AdapterSubcat(dialogSubcat.getContext(), 0, listaDinamicaSubcat);
+
+                dialogSubcat.getWindow().setLayout((int) (deviceWidth * 0.75), (int) (deviceHeight * 0.75));
+                dialogSubcat.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                dialogSubcat.show();
+
+                TextView tvSubcat = dialogSubcat.findViewById(R.id.tvSpinnerSubcat);
+                EditText editSubcat = dialogSubcat.findViewById(R.id.editTextSpinnerSubcat);
+
+                listViewSubcats = (ListView) dialogSubcat.findViewById(R.id.lvSpinnerSubcat);
+                listViewSubcats.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+                listViewSubcats.setAdapter(adapterSubcat);
+
+                editSubcat.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        atualizaListaSubcats(charSequence);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                    }
+                });
+
+                listViewSubcats.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        try {
+                            Subcat s = (Subcat) listViewSubcats.getItemAtPosition(i);
+                            addChipSubcat(s.getDescricao());
+                        } catch (Exception e) {
+                            Toast.makeText(getApplicationContext(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                            Log.e("ERROR", e.getMessage().toString());
+                        }
+
+                        dialogSubcat.dismiss();
+                    }
+                });
+            }
+        });
+
+        buttonTeste.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addChipSubcat("Subcategoria foda " + contador);
+                contador++;
+            }
+        });
+
+    }
+
+    private void addChipSubcat (String text) {
+        Chip chip = new Chip(this);
+        chip.setText(text);
+        chip.setChipIconResource(R.drawable.ic_baseline_keyboard_arrow_down_24_white);
+
+        chipGroupSubcat.addView(chip);
     }
 }
