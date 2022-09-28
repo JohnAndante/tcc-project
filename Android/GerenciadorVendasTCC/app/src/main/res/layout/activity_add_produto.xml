@@ -211,43 +211,51 @@
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/buttonTeste"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/textSubcategoriaProduto"
+                android:layout_width="330dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="Adicionar Chip" />
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="2dp"
+                android:text="Subcategoria(s)"
+                android:textColor="@color/light_gray_01"
+                android:textSize="15dp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:id="@+id/llSubcatTeste"
                 android:layout_width="330dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:background="@drawable/cardbg_roundcorners_lightgray"
+                android:orientation="vertical"
+                android:padding="5dp">
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/chipGroupAddProduto"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipAddSubcat"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checkable="false"
-                        android:clickable="true"
-                        android:text="Adicionar" />
+                    android:layout_height="wrap_content">
 
                 </com.google.android.material.chip.ChipGroup>
 
-            </LinearLayout>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipAddSubcat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="false"
+                    android:clickable="true"
+                    android:text="Adicionar"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/dark_gray_01"
+                    android:textColor="@color/white"/>
 
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/llProdutoTeste"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:clickable="true"
-                android:layout_marginTop="50px" />
+                android:layout_marginTop="50px"
+                android:clickable="true" />
 
             <Space
                 android:layout_width="match_parent"

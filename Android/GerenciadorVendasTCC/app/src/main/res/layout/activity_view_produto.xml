@@ -211,6 +211,34 @@
 
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/textSubcategoriaProduto"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="2dp"
+                android:text="Subcategoria(s)"
+                android:textColor="@color/light_gray_01"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/llSubcatTeste"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/cardbg_roundcorners_lightgray"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroupViewProduto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </com.google.android.material.chip.ChipGroup>
+
+            </LinearLayout>
+
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="80dp"/>

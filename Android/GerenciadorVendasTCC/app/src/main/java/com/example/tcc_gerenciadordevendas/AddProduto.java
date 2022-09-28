@@ -9,8 +9,11 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -117,8 +120,15 @@ public class AddProduto extends AppCompatActivity {
             Produto p = db.selectProduto(id_produto);
             Linha l = db.selectLinha(p.getLinha().getId());
             Marca m = db.selectMarca(l.getMarca().getId());
-            List<ProdSubcat> ps = db.listProdSubcatsByProduto(p);
+            List<ProdSubcat> prodSubcats = db.listProdSubcatsByProduto(p);
+            listaDinamicaSubcat = new ArrayList<>();
             Categoria c = db.selectFirstProdSubcatByProd(p).getSubcat().getCategoria();
+
+            if (!prodSubcats.isEmpty()) {
+                for (ProdSubcat ps : prodSubcats) {
+                    listaDinamicaSubcat.add(ps.getSubcat());
+                }
+            }
 
             editTextDescricao.setText(p.getDescricao());
             editTextValor.setText(df.format(p.getValor()));
@@ -129,6 +139,14 @@ public class AddProduto extends AppCompatActivity {
             linhaSelecionada = l;
             marcaSelecionada = m;
             categoriaSelecionada = c;
+
+            if (!listaDinamicaSubcat.isEmpty()) {
+                for (Subcat s : listaDinamicaSubcat) {
+                    addChipSubcat(s.getDescricao());
+                }
+            }
+
+            testeInsereSubcats();
         }
 
         // Colocar aqui os dropdowns de marca, linha e categoria
@@ -178,8 +196,7 @@ public class AddProduto extends AppCompatActivity {
 
                     c = categoriaSelecionada;
 
-                    sc = new Subcat("Subcategoria Teste Edit", c);
-                    psc = new ProdSubcat(p, sc);
+
 
                     db.updateProduto(p);
 
@@ -208,13 +225,35 @@ public class AddProduto extends AppCompatActivity {
 
                     p = db.selectMaxProduto();
 
-                    Subcat sc = new Subcat("Subcategoria Teste", c);
+                    List<Subcat> subcatsCadastrados = db.listSubcatsByCategoria(categoriaSelecionada);
+                    ArrayList<Subcat> subcatsNovos = new ArrayList<Subcat>();
+
+                    boolean subcatCadastrado = false;
+
+                    for (int i = 0; i < chipGroupSubcat.getChildCount(); i++) {
+                        CharSequence chipDesc = ((Chip) chipGroupSubcat.getChildAt(i)).getText();
+                        List<Subcat> subcatsLike = db.listSubcatsByCategoriaDesc(categoriaSelecionada, chipDesc.toString());
+                        if (!subcatsLike.isEmpty()) {
+                            for (int j = 0; j < subcatsLike.size(); j++) {
+                                if (chipDesc.toString() == subcatsLike.get(j).getDescricao()) {
+                                    subcatCadastrado = true;
+                                } else {
+                                    if (j == subcatsLike.size()) {
+
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    /*
                     db.addSubcat(sc);
                     sc = db.selectMaxSubcat();
 
                     ProdSubcat psc = new ProdSubcat(p, sc);
                     db.addProdSubcat(psc);
 
+
+                     */
                     setResult(RESULT_OK);
                     finish();
 
@@ -236,18 +275,16 @@ public class AddProduto extends AppCompatActivity {
 
         String descProd = editTextDescricao.getText().toString();
         String valorBruto = editTextValor.getText().toString();
-        Double valorProd = 0.00;
 
-        valorBruto.replaceAll("[R]", "").replaceAll("[$]", "").replaceAll("[ ]", "");
-        valorProd = Double.valueOf(valorBruto);
+        Log.e("INFO VALOR", String.valueOf(valorBruto.length()));
 
         if (descProd.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Preencha a descrição do produto", Toast.LENGTH_SHORT).show();
             editTextDescricao.requestFocus();
             return false;
         } else
-        if (valorProd.isNaN() || valorProd == 0.00) {
-            Toast.makeText(getApplicationContext(), "Insira um valor válido para o produto", Toast.LENGTH_SHORT).show();
+        if (valorBruto.length() == 0) {
+            Toast.makeText(getApplicationContext(), "Insira um valor para o produto", Toast.LENGTH_SHORT).show();
             editTextValor.requestFocus();
             return false;
         } else
@@ -278,56 +315,21 @@ public class AddProduto extends AppCompatActivity {
         //-- Edit text e botões para teste
 
         chipGroupSubcat = findViewById(R.id.chipGroupAddProduto);
-        buttonTeste = findViewById(R.id.buttonTeste);
         chipAddSubcat = findViewById(R.id.chipAddSubcat);
 
     }
 
     private void initEditOnFocus () {
-        /*
-        editTextNome.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-            //    if (editTextNome.isFocused() && )
-                changellButtons();
-            }
-        });
 
-        editTextTelefone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        editTextValor.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void onFocusChange(View view, boolean b) {
-                changellButtons();
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_DONE) {
+                    textMarca.performClick();
+                }
+                return false;
             }
         });
-
-        editTextRua.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                changellButtons();
-            }
-        });
-
-        editTextNum.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                changellButtons();
-            }
-        });
-
-        editTextCompl.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                changellButtons();
-            }
-        });
-
-        textUf.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                changellButtons();
-            }
-        });
-         */
     }
 
     private void changellButtons () {
@@ -394,6 +396,7 @@ public class AddProduto extends AppCompatActivity {
 
                             dialogMarca.dismiss();
                             linhaDropdown();
+                            textLinha.performClick();
                         } catch (Exception e) {
                             Log.e("ERROR", e.getMessage().toString());
                         }
@@ -461,6 +464,7 @@ public class AddProduto extends AppCompatActivity {
                             }
 
                             dialogLinha.dismiss();
+                            textCategoria.performClick();
                         } catch (Exception e) {
                             Log.e("ERROR", e.getMessage().toString());
                         }
@@ -526,6 +530,7 @@ public class AddProduto extends AppCompatActivity {
                             if (categoriaSelecionada != c) {
                                 categoriaSelecionada = c;
                                 testeInsereSubcats();
+                                chipGroupSubcat.removeAllViews();
                             }
 
                             dialogCategoria.dismiss();
@@ -542,8 +547,11 @@ public class AddProduto extends AppCompatActivity {
     private void atualizaListaMarcas (CharSequence _desc) {
         marcas = db.listMarcasByDesc(_desc.toString());
         listaDinamicaMarca = new ArrayList<Marca>();
-        for (Marca m : marcas)
-            listaDinamicaMarca.add(m);
+
+        if (marcas != null && !marcas.isEmpty()) {
+            for (Marca m : marcas)
+                listaDinamicaMarca.add(m);
+        }
 
         adapterMarca = new AdapterMarca(dialogMarca.getContext(), 0, listaDinamicaMarca);
         listViewMarcas.setAdapter(adapterMarca);
@@ -553,8 +561,11 @@ public class AddProduto extends AppCompatActivity {
     private void atualizaListaLinhas (CharSequence _desc) {
         linhas = db.listLinhasByMarcaDesc(marcaSelecionada, _desc.toString());
         listaDinamicaLinha = new ArrayList<Linha>();
-        for (Linha l : linhas)
-            listaDinamicaLinha.add(l);
+
+        if (linhas != null && !marcas.isEmpty()) {
+            for (Linha l : linhas)
+                listaDinamicaLinha.add(l);
+        }
 
         adapterLinha = new AdapterLinha(dialogLinha.getContext(), 0, listaDinamicaLinha);
         listViewLinhas.setAdapter(adapterLinha);
@@ -564,8 +575,11 @@ public class AddProduto extends AppCompatActivity {
     private void atualizaListaCategorias (CharSequence _desc) {
         categorias = db.listCategoriasByDesc(_desc.toString());
         listaDinamicaCategoria = new ArrayList<Categoria>();
-        for (Categoria c : categorias)
-            listaDinamicaCategoria.add(c);
+
+        if (categorias != null && !categorias.isEmpty()) {
+            for (Categoria c : categorias)
+                listaDinamicaCategoria.add(c);
+        }
 
         adapterCategoria = new AdapterCategoria(dialogCategoria.getContext(), 0, listaDinamicaCategoria);
         listViewCategorias.setAdapter(adapterCategoria);
@@ -575,11 +589,17 @@ public class AddProduto extends AppCompatActivity {
     private void atualizaListaSubcats (CharSequence _desc) {
         subcats = db.listSubcatsByCategoriaDesc(categoriaSelecionada, _desc.toString());
         listaDinamicaSubcat = new ArrayList<Subcat>();
-        for (Subcat s : subcats)
-            listaDinamicaSubcat.add(s);
+
+        Log.e("INFO CHIP", "kd os lados do cara??? tem nada slc");
+
+        if (subcats != null && !subcats.isEmpty()) {
+            for (Subcat s : subcats)
+                listaDinamicaSubcat.add(s);
+                Log.e("INFO CHIP", "entrou no for gg f");
+        }
 
         adapterSubcat = new AdapterSubcat(dialogSubcat.getContext(), 0, listaDinamicaSubcat);
-        listViewCategorias.setAdapter(adapterSubcat);
+        listViewSubcats.setAdapter(adapterSubcat);
         adapterSubcat.notifyDataSetChanged();
     }
 
@@ -648,20 +668,15 @@ public class AddProduto extends AppCompatActivity {
                 });
             }
         });
-
-        buttonTeste.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addChipSubcat("Subcategoria foda " + contador);
-                contador++;
-            }
-        });
-
     }
 
     private void addChipSubcat (String text) {
         Chip chip = new Chip(this);
         chip.setText(text);
+        //chip.setChipStrokeColor();
+        //chip.setChipWidth();
+        chip.setBackgroundColor(R.color.dark_gray_01);
+        chip.setTextColor(R.color.light_gray_02);
         chip.setChipIconResource(R.drawable.ic_baseline_keyboard_arrow_down_24_white);
 
         chipGroupSubcat.addView(chip);

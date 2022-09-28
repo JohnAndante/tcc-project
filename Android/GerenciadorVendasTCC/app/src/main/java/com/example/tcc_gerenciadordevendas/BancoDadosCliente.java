@@ -1107,6 +1107,9 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
                 marcas.add(marca);
             } while (cursor.moveToNext());
+        } else {
+            db.close();
+            return null;
         }
 
         db.close();
@@ -1280,11 +1283,11 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
         List<Linha> linhas = new ArrayList<Linha>();
 
-        String QUERY = " SELECT " +
-                " L." + LINHA_ID + ", L." + LINHA_DESC + " L." + LINHA_MARCA +
+        String QUERY = " SELECT" +
+                " L." + LINHA_ID + ", L." + LINHA_DESC + ", L." + LINHA_MARCA +
                 " FROM " + LINHA_TABLE + " L" +
                 " WHERE L." + LINHA_MARCA + " = " + marca.getId() +
-                " && L." + LINHA_DESC + " LIKE '%" + _descricao + "%'" +
+                " AND L." + LINHA_DESC + " LIKE '%" + _descricao + "%'" +
                 " ORDER BY L." + LINHA_DESC;
 
         Cursor cursor = db.rawQuery(QUERY, null);
@@ -1299,6 +1302,9 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
                 linhas.add(linha);
             } while (cursor.moveToNext());
+        } else {
+            db.close();
+            return null;
         }
 
         db.close();
@@ -1456,6 +1462,9 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
                 categorias.add(categoria);
             } while (cursor.moveToNext());
+        } else {
+            db.close();
+            return null;
         }
 
         cursor.close();
@@ -1654,11 +1663,11 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
         List<Subcat> subcats = new ArrayList<Subcat>();
 
-        String QUERY = " SELECT " +
-                " S." + SUBCAT_ID + ", S." + SUBCAT_DESC + " S." + SUBCAT_CATEGORIA +
-                " FROM " + SUBCAT_TABLE + " L" +
+        String QUERY = " SELECT" +
+                " S." + SUBCAT_ID + ", S." + SUBCAT_DESC + ", S." + SUBCAT_CATEGORIA +
+                " FROM " + SUBCAT_TABLE + " S" +
                 " WHERE S." + SUBCAT_CATEGORIA + " = " + _categoria.getId() +
-                " && S." + SUBCAT_DESC + " LIKE '%" + _descricao + "%'" +
+                " AND S." + SUBCAT_DESC + " LIKE '%" + _descricao + "%'" +
                 " ORDER BY S." + SUBCAT_DESC;
 
         Cursor cursor = db.rawQuery(QUERY, null);
@@ -1673,6 +1682,9 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
                 subcats.add(subcat);
             } while (cursor.moveToNext());
+        } else {
+            db.close();
+            return null;
         }
 
         db.close();

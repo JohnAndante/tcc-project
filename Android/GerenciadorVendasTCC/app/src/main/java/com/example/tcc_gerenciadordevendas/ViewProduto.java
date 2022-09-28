@@ -6,10 +6,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
+
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 public class ViewProduto extends AppCompatActivity {
 
@@ -21,11 +30,11 @@ public class ViewProduto extends AppCompatActivity {
     private TextView textMarca;
     private TextView textLinha;
     private TextView textCategoria;
+    private ChipGroup chipGroupSubcats;
 
     BancoDadosCliente db = new BancoDadosCliente(this);
 
     private int idProduto;
-
 
     private static final DecimalFormat df = new DecimalFormat("0.00");
 
@@ -37,6 +46,8 @@ public class ViewProduto extends AppCompatActivity {
     private Produto produto;
     private int posicao;
     private boolean hasPosicao = false;
+    private List<Subcat> subcats;
+    private ArrayList<Subcat> arrayListSubcats;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,6 +59,7 @@ public class ViewProduto extends AppCompatActivity {
         Categoria categoria = new Categoria();
         Subcat subcat = new Subcat();
         ProdSubcat prodSubcat = new ProdSubcat();
+        arrayListSubcats = new ArrayList<Subcat>();
 
         initTexts();
         initButtons();
@@ -66,12 +78,26 @@ public class ViewProduto extends AppCompatActivity {
             prodSubcat = db.selectFirstProdSubcatByProd(produto);
             subcat = prodSubcat.getSubcat();
             categoria = subcat.getCategoria();
+            List<ProdSubcat> prodSubcats = db.listProdSubcatsByProduto(produto);
+
+            if (!prodSubcats.isEmpty()) {
+                for (ProdSubcat ps : prodSubcats) {
+                    arrayListSubcats.add(ps.getSubcat());
+                }
+            }
+
 
             textDesc.setText(produto.getDescricao());
             textValor.setText("R$ " + df.format(produto.getValor()));
             textMarca.setText(marca.getDescricao());
             textLinha.setText(linha.getDescricao());
             textCategoria.setText(categoria.getDescricao());
+
+            if (!arrayListSubcats.isEmpty()) {
+                for (Subcat s : arrayListSubcats) {
+                    addChipSubcat(s.getDescricao());
+                }
+            }
 
             if (intent.hasExtra("posicao")) {
                 posicao = intent.getIntExtra("posicao", 0);
@@ -112,11 +138,12 @@ public class ViewProduto extends AppCompatActivity {
     }
 
     private void initTexts () {
-        textDesc        = (TextView) findViewById(R.id.tvDescricaoProduto);
-        textValor       = (TextView) findViewById(R.id.tvValorProduto);
-        textMarca       = (TextView) findViewById(R.id.tvMarcaProduto);
-        textLinha       = (TextView) findViewById(R.id.tvLinhaProduto);
-        textCategoria   = (TextView) findViewById(R.id.tvCategoriaProduto);
+        textDesc            = (TextView) findViewById(R.id.tvDescricaoProduto);
+        textValor           = (TextView) findViewById(R.id.tvValorProduto);
+        textMarca           = (TextView) findViewById(R.id.tvMarcaProduto);
+        textLinha           = (TextView) findViewById(R.id.tvLinhaProduto);
+        textCategoria       = (TextView) findViewById(R.id.tvCategoriaProduto);
+        chipGroupSubcats    = (ChipGroup) findViewById(R.id.chipGroupViewProduto);
     }
 
     private void initButtons () {
@@ -157,5 +184,17 @@ public class ViewProduto extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void addChipSubcat (String text) {
+        Chip chip = new Chip(this);
+        chip.setText(text);
+        //chip.setChipStrokeColor();
+        //chip.setChipWidth();
+        chip.setBackgroundColor(R.color.dark_gray_01);
+        chip.setTextColor(R.color.light_gray_02);
+        chip.setChipIconResource(R.drawable.ic_baseline_keyboard_arrow_down_24_white);
+
+        chipGroupSubcats.addView(chip);
     }
 }
