@@ -142,7 +142,7 @@ public class AddProduto extends AppCompatActivity {
 
             if (!listaDinamicaSubcat.isEmpty()) {
                 for (Subcat s : listaDinamicaSubcat) {
-                    addChipSubcat(s.getDescricao());
+                    addChipSubcat(s.getDescricao(), s.getId());
                 }
             }
 
@@ -230,6 +230,7 @@ public class AddProduto extends AppCompatActivity {
 
                     boolean subcatCadastrado = false;
 
+                    /*
                     for (int i = 0; i < chipGroupSubcat.getChildCount(); i++) {
                         CharSequence chipDesc = ((Chip) chipGroupSubcat.getChildAt(i)).getText();
                         List<Subcat> subcatsLike = db.listSubcatsByCategoriaDesc(categoriaSelecionada, chipDesc.toString());
@@ -244,6 +245,15 @@ public class AddProduto extends AppCompatActivity {
                                 }
                             }
                         }
+                    }
+
+                     */
+
+                    Chip chip = (Chip) chipGroupSubcat.getChildAt(0);
+                    if (chip.getId() < 0){
+                        // não tem cadastro
+                    } else {
+                        // existe
                     }
                     /*
                     db.addSubcat(sc);
@@ -657,7 +667,7 @@ public class AddProduto extends AppCompatActivity {
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         try {
                             Subcat s = (Subcat) listViewSubcats.getItemAtPosition(i);
-                            addChipSubcat(s.getDescricao());
+                            addChipSubcat(s.getDescricao(), s.getId());
                         } catch (Exception e) {
                             Toast.makeText(getApplicationContext(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
                             Log.e("ERROR", e.getMessage().toString());
@@ -670,11 +680,14 @@ public class AddProduto extends AppCompatActivity {
         });
     }
 
-    private void addChipSubcat (String text) {
+    private void addChipSubcat (String text, int id) {
         Chip chip = new Chip(this);
         chip.setText(text);
         //chip.setChipStrokeColor();
         //chip.setChipWidth();
+        if (id > 0) {
+            chip.setId(id);
+        }
         chip.setBackgroundColor(R.color.dark_gray_01);
         chip.setTextColor(R.color.light_gray_02);
         chip.setChipIconResource(R.drawable.ic_baseline_keyboard_arrow_down_24_white);
