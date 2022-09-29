@@ -170,6 +170,8 @@ public class AddProduto extends AppCompatActivity {
                     setContentView(R.layout.activity_add_produto);
 
                     // estudar como será possível trabalhar com as subcategorias
+                    // analisar o que fazer quando trocar a categoria de um produto tendo
+                    // subcategorias e prodsubcats cadastradas ao mesmo.
 
                     String desc = editTextDescricao.getText().toString();
 
@@ -196,7 +198,48 @@ public class AddProduto extends AppCompatActivity {
 
                     c = categoriaSelecionada;
 
+                    // Aqui segue o algoritmo pra trabalhar com as subcategorias existentes
+                    // Primero geramos a lista do prodsubcat atual
+                    List<ProdSubcat> prodSubcatsOld = db.listProdSubcatsByProduto(p);
+                    ArrayList<ProdSubcat> prodSubcatsNew = new ArrayList<ProdSubcat>();
 
+                    // agora iremos recuperar os subcats do chipgroup, verificar se a
+                    // subcategoria existe, (adicionando ao banco de dados se nn existe )
+                    // e criar uma lista delas
+                    // por enquanto as listas serão em prodsubcat, pra facilitar no final
+                    for (int i = 0; i < chipGroupSubcat.getChildCount(); i++) {
+                        Chip chip = (Chip) chipGroupSubcat.getChildAt(i);
+                        if (chip.isChecked()) {
+                            if (chip.getId() < 0) {
+                                Subcat scNew = new Subcat(chip.getText().toString(), categoriaSelecionada);
+                                db.addSubcat(scNew);
+                                scNew = db.selectMaxSubcat();
+                            } else {
+                                Subcat scNew = new Subcat(chip.getId(), chip.getText().toString(), categoriaSelecionada);
+                                prodSubcatsNew.add(new ProdSubcat(p, scNew));
+                            }
+                        }
+                    }
+
+                    // -- lista das subcategorias selecionadas criadas
+                    // identificando as subcat repetidas nas listas, e deletando das duas listas
+                    // já as que foram removidas pelo cliente, serão removidas da lista antigas, e
+                    // deletadas do banco de dados
+                    for (ProdSubcat pscOld : prodSubcatsOld) {
+                        if (prodSubcatsNew.contains(pscOld)) {
+                            prodSubcatsOld.remove(pscOld);
+                            prodSubcatsNew.remove(pscOld);
+                        } else {
+                            prodSubcatsOld.remove(pscOld);
+                            db.deleteProdSubcat(pscOld);
+                        }
+                    }
+
+                    // O que sobrou na lista nova são apenas subcategorias novas, então para
+                    // cada subcategoria na lista de novos, adicionaremos ela ao banco
+                    for (ProdSubcat pscNew : prodSubcatsNew) {
+                        db.addProdSubcat(pscNew);
+                    }
 
                     db.updateProduto(p);
 
@@ -225,45 +268,6 @@ public class AddProduto extends AppCompatActivity {
 
                     p = db.selectMaxProduto();
 
-                    List<Subcat> subcatsCadastrados = db.listSubcatsByCategoria(categoriaSelecionada);
-                    ArrayList<Subcat> subcatsNovos = new ArrayList<Subcat>();
-
-                    boolean subcatCadastrado = false;
-
-                    /*
-                    for (int i = 0; i < chipGroupSubcat.getChildCount(); i++) {
-                        CharSequence chipDesc = ((Chip) chipGroupSubcat.getChildAt(i)).getText();
-                        List<Subcat> subcatsLike = db.listSubcatsByCategoriaDesc(categoriaSelecionada, chipDesc.toString());
-                        if (!subcatsLike.isEmpty()) {
-                            for (int j = 0; j < subcatsLike.size(); j++) {
-                                if (chipDesc.toString() == subcatsLike.get(j).getDescricao()) {
-                                    subcatCadastrado = true;
-                                } else {
-                                    if (j == subcatsLike.size()) {
-
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                     */
-
-                    Chip chip = (Chip) chipGroupSubcat.getChildAt(0);
-                    if (chip.getId() < 0){
-                        // não tem cadastro
-                    } else {
-                        // existe
-                    }
-                    /*
-                    db.addSubcat(sc);
-                    sc = db.selectMaxSubcat();
-
-                    ProdSubcat psc = new ProdSubcat(p, sc);
-                    db.addProdSubcat(psc);
-
-
-                     */
                     setResult(RESULT_OK);
                     finish();
 

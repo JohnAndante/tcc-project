@@ -1691,6 +1691,24 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return subcats;
     }
 
+    public boolean checkSubcatOnProdSubcats (Produto _produto, Subcat _subcat) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String QUERY = " SELECT * " +
+                " FROM " + PROD_SUBCAT_TABLE + " P " +
+                " WHERE P." + PROD_SUBCAT_PROD + " = " + _produto.getId() +
+                " AND P." + PROD_SUBCAT_SUBCAT + " = " + _subcat.getId();
+
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            return true;
+        } else {
+            return false;
+        }
+        // SELECT * FROM PRODSUBCATS P WHERE PRODUTO = PRODUTO AND SUBCAT = SUBCAT
+    }
+
     // CRUD PRODUTO /////////////////////////////////////////////////////////////////////////////
 
     public void addProduto (Produto _produto) {
