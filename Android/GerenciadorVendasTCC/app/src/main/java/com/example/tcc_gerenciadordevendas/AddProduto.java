@@ -196,6 +196,8 @@ public class AddProduto extends AppCompatActivity {
 
                     p.setLinha(l);
 
+                    db.updateProduto(p);
+
                     c = categoriaSelecionada;
 
                     // Aqui segue o algoritmo pra trabalhar com as subcategorias existentes
@@ -261,12 +263,32 @@ public class AddProduto extends AppCompatActivity {
 
                     Linha l = linhaSelecionada;
                     Marca m = db.selectMarca(l.getMarca().getId());
-                    Categoria c = categoriaSelecionada;
 
                     Produto p = new Produto(desc, valor, l);
                     db.addProduto(p);
 
                     p = db.selectMaxProduto();
+
+                    Categoria c = categoriaSelecionada;
+                    ArrayList<ProdSubcat> prodSubcats = new ArrayList<ProdSubcat>();
+                    for (int i = 0; i < chipGroupSubcat.getChildCount(); i++) {
+                        Chip chip = (Chip) chipGroupSubcat.getChildAt(i);
+                        if (chip.isChecked()) {
+                            if (chip.getId() < 0) {
+                                Subcat sc = new Subcat(chip.getText().toString(), categoriaSelecionada);
+                                db.addSubcat(sc);
+                                sc = db.selectMaxSubcat();
+                                prodSubcats.add(new ProdSubcat(p, sc));
+                            } else {
+                                Subcat sc = db.selectSubcat(chip.getId());
+                                prodSubcats.add(new ProdSubcat(p, sc));
+                            }
+                        }
+                    }
+
+                    for (ProdSubcat psc: prodSubcats) {
+                        db.addProdSubcat(psc);
+                    }
 
                     setResult(RESULT_OK);
                     finish();
