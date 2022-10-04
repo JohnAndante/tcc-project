@@ -2366,40 +2366,216 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
     // CRUD VENDA ///////////////////////////////////////////////////////////////////////////////
 
-    public void addVenda (Venda venda) {
+    public void addVenda (Venda _venda) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        ContentValues values = new ContentValues();
+
+        values.put(VENDA_DATA, _venda.getData());
+        values.put(VENDA_VALOR, _venda.getValor());
+        values.put(VENDA_CLIENTE, _venda.getCliente().getId());
+        values.put(VENDA_FORMA_PGTO, _venda.getFormaPgto().getId());
+
+        db.insert(VENDA_TABLE, null, values);
+        db.close();
     }
 
-    public void deleteVenda (Venda venda) {
+    public void deleteVenda (Venda _venda) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        db.delete(VENDA_TABLE, VENDA_ID + " = ? ", new String[]{
+                String.valueOf(_venda.getId())
+        });
+        db.close();
     }
 
     public void deleteVendaById (int _id) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        db.delete(VENDA_TABLE, VENDA_ID + " = ? ", new String[] {
+                String.valueOf(_id)
+        });
+        db.close();
     }
 
     public Venda selectVenda (int _id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.query(VENDA_TABLE,
+                new String[] {
+                        VENDA_ID, VENDA_DATA, VENDA_VALOR, VENDA_CLIENTE, VENDA_FORMA_PGTO },
+                VENDA_ID + " = ?",
+                new String[] { String.valueOf(_id) },
+                null,
+                null,
+                null,
+                null
+        );
+
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        Cliente c = selectCliente(cursor.getInt(3));
+        FormaPgto fp = selectFormaPgto(cursor.getInt(4));
+
+        Venda venda = new Venda(
+                cursor.getInt(0),
+                cursor.getString(1),
+                cursor.getDouble(2),
+                c,
+                fp
+        );
+
+        db.close();
+        return venda;
 
     }
 
     public Venda selectMaxVenda () {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        Cursor cursor = db.rawQuery("SELECT * FROM " + VENDA_TABLE +
+                " WHERE " + VENDA_ID +
+                " = (SELECT MAX(" + VENDA_ID + ") " +
+                "FROM " + VENDA_TABLE +
+                ")", null);
+
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        Cliente c = selectCliente(cursor.getInt(3));
+        FormaPgto fp = selectFormaPgto(cursor.getInt(4));
+
+        Venda venda = new Venda(
+                cursor.getInt(0),
+                cursor.getString(1),
+                cursor.getDouble(2),
+                c,
+                fp
+        );
+
+        db.close();
+        return venda;
     }
 
-    public void updateVenda (Venda venda) {
+    public void updateVenda (Venda _venda) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        ContentValues values = new ContentValues();
+
+        values.put(VENDA_DATA, _venda.getData());
+        values.put(VENDA_VALOR, _venda.getValor());
+        values.put(VENDA_CLIENTE, _venda.getCliente().getId());
+        values.put(VENDA_FORMA_PGTO, _venda.getFormaPgto().getId());
+
+        db.update(VENDA_TABLE, values, VENDA_ID + " = ? ",
+                new String[] {
+                        String.valueOf(_venda.getId())
+                });
+
+        db.close();
     }
 
     public List<Venda> listAllVendas() {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        List<Venda> vendas = new ArrayList<Venda>();
+
+        String QUERY = "SELECT * FROM " + VENDA_TABLE;
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Cliente c = selectCliente(cursor.getInt(3));
+                FormaPgto fp = selectFormaPgto(cursor.getInt(4));
+
+                Venda venda = new Venda(
+                        cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getDouble(2),
+                        c,
+                        fp
+                );
+
+                vendas.add(venda);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+
+        return vendas;
     }
 
     public List<Venda> listAllVendasByCliente (Cliente _cliente) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        List<Venda> vendas = new ArrayList<Venda>();
+
+        String QUERY = "SELECT " +
+                 " V." + VENDA_ID + ", V." + VENDA_DATA +
+                ", V." + VENDA_VALOR + ", V." + VENDA_CLIENTE +
+                ", V." + VENDA_FORMA_PGTO +
+                " FROM " + VENDA_TABLE + " V" +
+                " WHERE V." + VENDA_CLIENTE + " == " + _cliente.getId();
+
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Cliente c = selectCliente(cursor.getInt(3));
+                FormaPgto fp = selectFormaPgto(cursor.getInt(4));
+
+                Venda venda = new Venda(
+                        cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getDouble(2),
+                        c,
+                        fp
+                );
+
+                vendas.add(venda);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+
+        return vendas;
     }
 
     public List<Venda> listAllVendasByDate (String _date) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        List<Venda> vendas = new ArrayList<Venda>();
+
+        String QUERY = "SELECT " +
+                " V." + VENDA_ID + ", V." + VENDA_DATA +
+                ", V." + VENDA_VALOR + ", V." + VENDA_CLIENTE +
+                ", V." + VENDA_FORMA_PGTO +
+                " FROM " + VENDA_TABLE + " V" +
+                " ORDER BY " + VENDA_DATA;
+
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Cliente c = selectCliente(cursor.getInt(3));
+                FormaPgto fp = selectFormaPgto(cursor.getInt(4));
+
+                Venda venda = new Venda(
+                        cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getDouble(2),
+                        c,
+                        fp
+                );
+
+                vendas.add(venda);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+
+        return vendas;
     }
 
     // CRUD PRODUTO X VENDA /////////////////////////////////////////////////////////////////////
