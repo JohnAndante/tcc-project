@@ -12,8 +12,6 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.security.auth.Subject;
-
 public class BancoDadosCliente extends SQLiteOpenHelper {
 
     //Versão do banco
@@ -35,6 +33,9 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     private static final String SUBCAT_TABLE        = "subcat_tb";
     private static final String PROD_SUBCAT_TABLE   = "prod_subcat_tb";
     private static final String FORMA_PGTO_TABLE    = "forma_pgto_tb";
+    private static final String VENDA_TABLE         = "venda_tb";
+    private static final String PROD_VENDA_TABLE    = "prod_venda_tb";
+    private static final String PGTO_TABLE          = "pgto_tb";
 
     // Colunas da tabela cliente
     private static final String CLIENTE_ID          = "id_cliente";
@@ -101,6 +102,28 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     private static final String FORMA_PGTO_PRAZO    = "prazo";
     private static final String FORMA_PGTO_PARC     = "parcelavel";
 
+    // Colunas da tabela Venda
+    private static final String VENDA_ID            = "id_venda";
+    private static final String VENDA_DATA          = "data_venda";
+    private static final String VENDA_VALOR         = "valor_total";
+    private static final String VENDA_CLIENTE       = "id_cliente";
+    private static final String VENDA_FORMA_PGTO    = "id_forma_pgto";
+
+    // Colunas da tabela Produto x venda
+    private static final String PROD_VENDA_VENDA    = "id_venda";
+    private static final String PROD_VENDA_PROD     = "id_prod";
+    private static final String PROD_VENDA_QTD      = "qtd_prod";
+    private static final String PROD_VENDA_VALOR    = "valor_prod";
+
+    // Colunas da tabela Pagamento
+    private static final String PGTO_ID             = "id_pagamento";
+    private static final String PGTO_CLIENTE        = "id_cliente";
+    private static final String PGTO_FORMA_PGTO     = "id_forma_pgto";
+    private static final String PGTO_VALOR          = "valor_pgto";
+    private static final String PGTO_DATA           = "data_pgto";
+    private static final String PGTO_PARC           = "parcelas";
+
+
     // Strings para query de criação
     private String CLIENTE_QUERY        = "SELECT * FROM " + CLIENTE_TABLE;
     private String ENDERECO_QUERY       = "SELECT * FROM " + ENDERECO_TABLE;
@@ -114,6 +137,9 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     private String PRODUTO_QUERY        = "SELECT * FROM " + PRODUTO_TABLE;
     private String PROD_SUBCAT_QUERY    = "SELECT * FROM " + PROD_SUBCAT_TABLE;
     private String FORMA_PGTO_QUERY     = "SELECT * FROM " + FORMA_PGTO_TABLE;
+    private String VENDA_QUERY          = "SELECT * FROM " + VENDA_TABLE;
+    private String PROD_VENDA_QUERY     = "SELECT * FROM " + PROD_VENDA_TABLE;
+    private String PGTO_QUERY           = "SELECT * FROM " + PGTO_TABLE;
 
     public BancoDadosCliente(@Nullable Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -135,6 +161,9 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.execSQL(PRODUTO_QUERY);
         db.execSQL(PROD_SUBCAT_QUERY);
         db.execSQL(FORMA_PGTO_QUERY);
+        db.execSQL(VENDA_QUERY);
+        db.execSQL(PROD_VENDA_QUERY);
+        db.execSQL(PGTO_QUERY);
     }
 
     @Override
@@ -154,7 +183,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                 + TELEFONE_NUM      + " TEXT, "
                 + TELEFONE_CLIENTE  + " INTEGER, "
                 + "FOREIGN KEY ("   + TELEFONE_CLIENTE  + ") "
-                + "REFERENCES "     + CLIENTE_TABLE     + " (" + TELEFONE_CLIENTE + "))";
+                + "REFERENCES "     + CLIENTE_TABLE     + " (" + TELEFONE_CLIENTE   + "))";
 
         ESTADO_QUERY        = "CREATE TABLE " + ESTADO_TABLE + "("
                 + ESTADO_ID + " INTEGER PRIMARY KEY, "
@@ -166,7 +195,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                 + CIDADE_NOME       + " TEXT, "
                 + CIDADE_ESTADO     + " INTEGER, "
                 + "FOREIGN KEY ("   + CIDADE_ESTADO     + ") "
-                + "REFERENCES "     + ESTADO_TABLE      + " (" + CIDADE_ESTADO + "))";
+                + "REFERENCES "     + ESTADO_TABLE      + " (" + CIDADE_ESTADO      + "))";
 
         ENDERECO_QUERY      = "CREATE TABLE " + ENDERECO_TABLE + "("
                 + ENDERECO_ID       + " INTEGER PRIMARY KEY, "
@@ -178,7 +207,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                 + ENDERECO_CIDADE   + " INTEGER, "
                 + ENDERECO_CLIENTE  + " INTEGER, "
                 + "FOREIGN KEY ("   + ENDERECO_CLIENTE  + ") "
-                + "REFERENCES "     + CLIENTE_TABLE     + " (" + ENDERECO_CLIENTE + "))";
+                + "REFERENCES "     + CLIENTE_TABLE     + " (" + ENDERECO_CLIENTE   + "))";
 
         MARCA_QUERY         = "CREATE TABLE " + MARCA_TABLE + "( "
                 + MARCA_ID          + " INTEGER PRIMARY KEY, "
@@ -189,7 +218,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                 + LINHA_DESC        + " TEXT,  "
                 + LINHA_MARCA       + " INTEGER, "
                 + "FOREIGN KEY ("   + LINHA_MARCA       + ") "
-                + "REFERENCES "     + MARCA_TABLE       + " (" + LINHA_MARCA + "))";
+                + "REFERENCES "     + MARCA_TABLE       + " (" + LINHA_MARCA        + "))";
 
         CATEGORIA_QUERY     = "CREATE TABLE " + CATEGORIA_TABLE + "( "
                 + CATEGORIA_ID      + " INTEGER PRIMARY KEY, "
@@ -201,7 +230,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                 + SUBCAT_DESC       + " TEXT, "
                 + SUBCAT_CATEGORIA  + " INTEGER, "
                 + "FOREIGN KEY ("   + SUBCAT_CATEGORIA  + ") "
-                + "REFERENCES "     + CATEGORIA_TABLE   + " (" + SUBCAT_CATEGORIA + "))";
+                + "REFERENCES "     + CATEGORIA_TABLE   + " (" + SUBCAT_CATEGORIA   + "))";
 
         PRODUTO_QUERY       = "CREATE TABLE " + PRODUTO_TABLE + "( "
                 + PRODUTO_ID        + " INTEGER PRIMARY KEY, "
@@ -209,7 +238,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                 + PRODUTO_VALOR     + " DECIMAL(8, 2), "
                 + PRODUTO_LINHA     + " INTEGER, "
                 + "FOREIGN KEY ("   + PRODUTO_LINHA     + ") "
-                + "REFERENCES "     + LINHA_TABLE       + " (" + PRODUTO_LINHA + "))";
+                + "REFERENCES "     + LINHA_TABLE       + " (" + PRODUTO_LINHA      + "))";
 
         PROD_SUBCAT_QUERY   = "CREATE TABLE " + PROD_SUBCAT_TABLE + "( "
                 + PROD_SUBCAT_PROD   + " INTEGER, "
@@ -224,6 +253,39 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                 + FORMA_PGTO_DESC    + " TEXT, "
                 + FORMA_PGTO_PRAZO   + " INTEGER, "
                 + FORMA_PGTO_PARC    + " INTEGER )";
+
+        VENDA_QUERY         = "CREATE TABLE " + VENDA_TABLE + "( "
+                + VENDA_ID           + " INTEGER, "
+                + VENDA_DATA         + " TEXT, "
+                + VENDA_VALOR        + " DECIMAL(8, 2), "
+                + VENDA_CLIENTE      + " INTEGER, "
+                + VENDA_FORMA_PGTO   + " INTEGER, "
+                + "FOREIGN KEY ("    + VENDA_CLIENTE    + ") "
+                + "REFERENCES "      + CLIENTE_TABLE    + " (" + VENDA_CLIENTE      + "), "
+                + "FOREIGN KEY ("    + VENDA_FORMA_PGTO + ") "
+                + "REFERENCES "      + FORMA_PGTO_TABLE + " (" + VENDA_FORMA_PGTO   + "))";
+
+        PROD_VENDA_QUERY    = "CREATE TABLE " + PROD_VENDA_TABLE + "( "
+                + PROD_VENDA_VENDA   + " INTEGER, "
+                + PROD_VENDA_PROD    + " INTEGER, "
+                + PROD_VENDA_QTD     + " INTEGER, "
+                + PROD_VENDA_VALOR   + " DECIMAL(8, 2), "
+                + "FOREIGN KEY ("    + PROD_VENDA_VENDA + ") "
+                + "REFERENCES "      + VENDA_TABLE      + " (" + PROD_VENDA_VENDA   + "), "
+                + "FOREIGN KEY ("    + PROD_VENDA_PROD  + ") "
+                + "REFERENCES "      + PRODUTO_TABLE    + " (" + PROD_VENDA_PROD    + "))";
+
+        PGTO_QUERY          = "CREATE TABLE " + PGTO_TABLE + "( "
+                + PGTO_ID            + " INTEGER, "
+                + PGTO_CLIENTE       + " INTEGER, "
+                + PGTO_FORMA_PGTO    + " INTEGER, "
+                + PGTO_VALOR         + " DECIMAL(8, 2), "
+                + PGTO_DATA          + " TEXT,"
+                + PGTO_PARC          + " INTEGER,"
+                + "FOREIGN KEY ("    + PGTO_CLIENTE     + ") "
+                + "REFERENCES "      + CLIENTE_TABLE    + " (" + PGTO_CLIENTE       + "), "
+                + "FOREIGN KEY ("    + PGTO_FORMA_PGTO  + ") "
+                + "REFERENCES "      + FORMA_PGTO_TABLE + " (" + PGTO_FORMA_PGTO    + "))";
 
         Log.i("DATABASE INFO", CLIENTE_QUERY);
         Log.i("DATABASE INFO", TELEFONE_QUERY);
@@ -2300,6 +2362,113 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return formaPgtos;
+    }
+
+    // CRUD VENDA ///////////////////////////////////////////////////////////////////////////////
+
+    public void addVenda (Venda venda) {
+
+    }
+
+    public void deleteVenda (Venda venda) {
+
+    }
+
+    public void deleteVendaById (int _id) {
+
+    }
+
+    public Venda selectVenda (int _id) {
+
+    }
+
+    public Venda selectMaxVenda () {
+
+    }
+
+    public void updateVenda (Venda venda) {
+
+    }
+
+    public List<Venda> listAllVendas() {
+
+    }
+
+    public List<Venda> listAllVendasByCliente (Cliente _cliente) {
+
+    }
+
+    public List<Venda> listAllVendasByDate (String _date) {
+
+    }
+
+    // CRUD PRODUTO X VENDA /////////////////////////////////////////////////////////////////////
+
+    public void addProdVenda (ProdVenda _prodVenda) {
+
+    }
+
+    public void deleteProdVenda (ProdVenda _prodVenda) {
+
+    }
+
+    public ProdVenda selectProdVenda (int _id) {
+
+    }
+
+    public ProdVenda selectMaxProdVenda () {
+
+    }
+
+    public void updateProdVenda (ProdVenda _prodVenda) {
+
+    }
+
+    public List<ProdVenda> listAllProdVendas () {
+
+    }
+
+    public List<ProdVenda> listProdVendaByVenda (Venda _venda) {
+
+    }
+
+
+    // CRUD PAGAMENTO ///////////////////////////////////////////////////////////////////////////
+
+    public void addPgto (Pgto _pgto) {
+
+    }
+
+    public void deletePgto (Pgto _pgto) {
+
+    }
+
+    public void deletePgtoById (int _id) {
+
+    }
+
+    public Venda selectPgto (int _id) {
+
+    }
+
+    public Venda selectMaxPgto () {
+
+    }
+
+    public void updatePgto (Pgto _pgto) {
+
+    }
+
+    public List<Venda> listAllPgtos() {
+
+    }
+
+    public List<Venda> listAllPgtosByCliente (Cliente _cliente) {
+
+    }
+
+    public List<Venda> listAllPgtosByDate (String _date) {
+
     }
 
     // Preenchimento estados e cidades //////////////////////////////////////////////////////////
