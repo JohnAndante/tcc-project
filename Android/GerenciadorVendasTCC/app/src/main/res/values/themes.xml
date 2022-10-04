@@ -20,4 +20,9 @@
     <style name="Theme.TCCGerenciadorDeVendas.AppBarOverlay"
         parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="Theme.TCCGerenciadorDeVendas.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="ChipText_SelectedStyle">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

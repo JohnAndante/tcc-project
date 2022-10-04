@@ -2,6 +2,7 @@ package com.example.tcc_gerenciadordevendas;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -176,7 +178,9 @@ public class AddProduto extends AppCompatActivity {
                     String desc = editTextDescricao.getText().toString();
 
                     // necessário tratar o texto exibido no editText
-                    Double valor = Double.valueOf(editTextValor.getText().toString());
+                    String valorBruto = editTextValor.getText().toString();
+                    valorBruto.replaceAll(",", ".");
+                    Double valor = Double.valueOf(valorBruto);
 
                     bundle.putInt("ID", id_produto);
                     if (hasPosicao == true)
@@ -288,6 +292,7 @@ public class AddProduto extends AppCompatActivity {
 
                     for (ProdSubcat psc: prodSubcats) {
                         db.addProdSubcat(psc);
+                        Log.e("INFO PRODSUBCAT SENDO GRAVADO", psc.getProduto().getDescricao() + " - " + psc.getSubcat().getDescricao());
                     }
 
                     setResult(RESULT_OK);
@@ -626,12 +631,10 @@ public class AddProduto extends AppCompatActivity {
         subcats = db.listSubcatsByCategoriaDesc(categoriaSelecionada, _desc.toString());
         listaDinamicaSubcat = new ArrayList<Subcat>();
 
-        Log.e("INFO CHIP", "kd os lados do cara??? tem nada slc");
 
         if (subcats != null && !subcats.isEmpty()) {
             for (Subcat s : subcats)
                 listaDinamicaSubcat.add(s);
-                Log.e("INFO CHIP", "entrou no for gg f");
         }
 
         adapterSubcat = new AdapterSubcat(dialogSubcat.getContext(), 0, listaDinamicaSubcat);
@@ -709,15 +712,36 @@ public class AddProduto extends AppCompatActivity {
     private void addChipSubcat (String text, int id) {
         Chip chip = new Chip(this);
         chip.setText(text);
-        //chip.setChipStrokeColor();
-        //chip.setChipWidth();
-        if (id > 0) {
+        chip.setCheckable(true);
+        chip.setChecked(true);
+        chip.setCheckedIconVisible(false);
+        if (id > 0)
             chip.setId(id);
-        }
-        chip.setBackgroundColor(R.color.dark_gray_01);
-        chip.setTextColor(R.color.light_gray_02);
-        chip.setChipIconResource(R.drawable.ic_baseline_keyboard_arrow_down_24_white);
 
         chipGroupSubcat.addView(chip);
+
+        setChipCheckedStyle(chip);
+
+        chip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setChipCheckedStyle(chip);
+            }
+        });
+    }
+
+    private void setChipCheckedStyle(Chip chip) {
+        if (chip.isChecked()) {
+            chip.setChipBackgroundColorResource(R.color.light_gray_01);
+            chip.setChipStrokeColorResource(R.color.purple_500);
+            chip.setTextAppearanceResource(R.style.ChipText_SelectedStyle);
+            chip.setChipStrokeWidth(5);
+        } else {
+            chip.setChipBackgroundColorResource(R.color.light_gray_01);
+            chip.setRippleColor(ColorStateList.valueOf(R.color.dark_gray_01));
+            chip.setTextAppearanceResource(R.style.ChipText_SelectedStyle);
+            chip.setChipStrokeWidth(2);
+            chip.setChipStrokeColorResource(R.color.dark_gray_01);
+        }
     }
 }

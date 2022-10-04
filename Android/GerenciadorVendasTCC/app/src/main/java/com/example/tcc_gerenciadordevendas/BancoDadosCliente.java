@@ -34,6 +34,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     private static final String CATEGORIA_TABLE     = "categoria_tb";
     private static final String SUBCAT_TABLE        = "subcat_tb";
     private static final String PROD_SUBCAT_TABLE   = "prod_subcat_tb";
+    private static final String FORMA_PGTO_TABLE    = "forma_pgto_tb";
 
     // Colunas da tabela cliente
     private static final String CLIENTE_ID          = "id_cliente";
@@ -94,6 +95,12 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     private static final String PROD_SUBCAT_PROD    = "id_produto";
     private static final String PROD_SUBCAT_SUBCAT  = "id_subcat";
 
+    // Colunas da tabela forma de pagamento
+    private static final String FORMA_PGTO_ID       = "id_forma_pgto";
+    private static final String FORMA_PGTO_DESC     = "descricao";
+    private static final String FORMA_PGTO_PRAZO    = "prazo";
+    private static final String FORMA_PGTO_PARC     = "parcelavel";
+
     // Strings para query de criação
     private String CLIENTE_QUERY        = "SELECT * FROM " + CLIENTE_TABLE;
     private String ENDERECO_QUERY       = "SELECT * FROM " + ENDERECO_TABLE;
@@ -106,6 +113,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     private String SUBCAT_QUERY         = "SELECT * FROM " + SUBCAT_TABLE;
     private String PRODUTO_QUERY        = "SELECT * FROM " + PRODUTO_TABLE;
     private String PROD_SUBCAT_QUERY    = "SELECT * FROM " + PROD_SUBCAT_TABLE;
+    private String FORMA_PGTO_QUERY     = "SELECT * FROM " + FORMA_PGTO_TABLE;
 
     public BancoDadosCliente(@Nullable Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -126,6 +134,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.execSQL(SUBCAT_QUERY);
         db.execSQL(PRODUTO_QUERY);
         db.execSQL(PROD_SUBCAT_QUERY);
+        db.execSQL(FORMA_PGTO_QUERY);
     }
 
     @Override
@@ -209,6 +218,12 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                 + "REFERENCES "      + PRODUTO_TABLE      + " (" + PROD_SUBCAT_PROD   + "), "
                 + "FOREIGN KEY ("    + PROD_SUBCAT_SUBCAT + ") "
                 + "REFERENCES "      + SUBCAT_TABLE       + " (" + PROD_SUBCAT_SUBCAT + "))";
+
+        FORMA_PGTO_QUERY    = "CREATE TABLE " + FORMA_PGTO_TABLE + "( "
+                + FORMA_PGTO_ID      + " INTEGER, "
+                + FORMA_PGTO_DESC    + " TEXT, "
+                + FORMA_PGTO_PRAZO   + " INTEGER, "
+                + FORMA_PGTO_PARC    + " INTEGER )";
 
         Log.i("DATABASE INFO", CLIENTE_QUERY);
         Log.i("DATABASE INFO", TELEFONE_QUERY);
@@ -2020,7 +2035,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
         String QUERY = (" DELETE FROM " + PROD_SUBCAT_TABLE +
                     " WHERE "   + PROD_SUBCAT_PROD      + " == " + prodSubcat.getProduto().getId() +
-                    " &&"       + PROD_SUBCAT_SUBCAT    + " == " + prodSubcat.getSubcat().getId());
+                    " AND "     + PROD_SUBCAT_SUBCAT    + " == " + prodSubcat.getSubcat().getId());
 
         db.rawQuery(QUERY, null);
         db.close();
@@ -2125,6 +2140,166 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return prodSubcats;
+    }
+
+    // CRUD FORMA_PGTO //////////////////////////////////////////////////////////////////////////
+
+    public void addFormaPgto (FormaPgto _formaPgto) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(FORMA_PGTO_DESC, _formaPgto.getDescricao());
+        values.put(FORMA_PGTO_PRAZO, _formaPgto.getPrazo());
+        values.put(FORMA_PGTO_PARC, _formaPgto.getParcelavel());
+
+        db.insert(FORMA_PGTO_TABLE, null, values);
+        db.close();
+    }
+
+    public void deleteFormaPgto (FormaPgto _formaPgto) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(FORMA_PGTO_TABLE, FORMA_PGTO_ID + " = ? ", new String[]{
+                String.valueOf(_formaPgto.getId())
+        });
+        db.close();
+    }
+
+    public void deleteFormaPgtoById (int _id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(FORMA_PGTO_TABLE, FORMA_PGTO_ID + " = ? ", new String[] {
+                String.valueOf(_id)
+        });
+        db.close();
+    }
+
+    public FormaPgto selectFormaPgto (int _id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.query(FORMA_PGTO_TABLE,
+                new String[] {
+                        FORMA_PGTO_ID, FORMA_PGTO_DESC, FORMA_PGTO_PRAZO, FORMA_PGTO_PARC },
+                FORMA_PGTO_ID + " = ?",
+                new String[] { String.valueOf(_id) },
+                null,
+                null,
+                null,
+                null
+        );
+
+        FormaPgto formaPgto = new FormaPgto();
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+
+            formaPgto = new FormaPgto(
+                    cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getInt(2),
+                    cursor.getInt(3)
+            );
+        } else {
+            formaPgto = null;
+        }
+
+        cursor.close();
+        db.close();
+        return formaPgto;
+    }
+
+    public FormaPgto selectMaxFormaPgto () {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM " + FORMA_PGTO_TABLE +
+                " WHERE " + FORMA_PGTO_ID +
+                " = (SELECT MAX(" + FORMA_PGTO_ID + ") " +
+                "FROM " + FORMA_PGTO_TABLE +
+                ")", null);
+
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        FormaPgto fp = new FormaPgto(
+                cursor.getInt(0),
+                cursor.getString(1),
+                cursor.getInt(2),
+                cursor.getInt(3)
+        );
+        
+        db.close();
+
+        return fp;
+    }
+
+    public void updateFormaPgto (FormaPgto _formaPgto) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(FORMA_PGTO_DESC, _formaPgto.getDescricao());
+        values.put(FORMA_PGTO_PRAZO, _formaPgto.getPrazo());
+        values.put(FORMA_PGTO_PARC, _formaPgto.getParcelavel());
+
+
+        db.update(FORMA_PGTO_TABLE, values, FORMA_PGTO_ID + " = ? ",
+                new String[] {
+                        String.valueOf(_formaPgto.getId())
+                });
+        db.close();
+    }
+
+    public List<FormaPgto> listFormaPgto () {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<FormaPgto> formaPgtos = new ArrayList<FormaPgto>();
+
+        String QUERY = "SELECT * FROM " + FORMA_PGTO_TABLE;
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                FormaPgto formaPgto = new FormaPgto();
+
+                formaPgto.setId(cursor.getInt(0));
+                formaPgto.setDescricao(cursor.getString(1));
+                formaPgto.setPrazo(cursor.getInt(2));
+                formaPgto.setParcelavel(cursor.getInt(3));
+
+                formaPgtos.add(formaPgto);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return formaPgtos;
+    }
+
+    public List<FormaPgto> listFormaPgtoOrdered () {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<FormaPgto> formaPgtos = new ArrayList<FormaPgto>();
+
+        String QUERY = "SELECT * FROM " + FORMA_PGTO_TABLE +
+                " ORDER BY " + FORMA_PGTO_DESC;
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                FormaPgto formaPgto = new FormaPgto();
+
+                formaPgto.setId(cursor.getInt(0));
+                formaPgto.setDescricao(cursor.getString(1));
+                formaPgto.setPrazo(cursor.getInt(2));
+                formaPgto.setParcelavel(cursor.getInt(3));
+
+                formaPgtos.add(formaPgto);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return formaPgtos;
     }
 
     // Preenchimento estados e cidades //////////////////////////////////////////////////////////
