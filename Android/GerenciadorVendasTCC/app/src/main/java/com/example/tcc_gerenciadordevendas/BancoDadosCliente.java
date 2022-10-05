@@ -2428,7 +2428,6 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
         db.close();
         return venda;
-
     }
 
     public Venda selectMaxVenda () {
@@ -2581,70 +2580,277 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     // CRUD PRODUTO X VENDA /////////////////////////////////////////////////////////////////////
 
     public void addProdVenda (ProdVenda _prodVenda) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        ContentValues values = new ContentValues();
+
+        values.put(PROD_VENDA_PROD, _prodVenda.getProduto().getId());
+        values.put(PROD_VENDA_VENDA, _prodVenda.getVenda().getId());
+        values.put(PROD_VENDA_QTD, _prodVenda.getQtd());
+        values.put(PROD_VENDA_VALOR, _prodVenda.getValor_unit());
+
+        db.insert(PROD_VENDA_TABLE, null, values);
     }
 
     public void deleteProdVenda (ProdVenda _prodVenda) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
-    }
+        String QUERY = (" DELETE FROM " + PROD_VENDA_TABLE +
+                " WHERE "   + PROD_VENDA_PROD      + " == " + _prodVenda.getProduto().getId() +
+                " AND "     + PROD_VENDA_VENDA    + " == " + _prodVenda.getVenda().getId());
 
-    public ProdVenda selectProdVenda (int _id) {
-
-    }
-
-    public ProdVenda selectMaxProdVenda () {
-
-    }
-
-    public void updateProdVenda (ProdVenda _prodVenda) {
-
-    }
-
-    public List<ProdVenda> listAllProdVendas () {
-
+        db.rawQuery(QUERY, null);
+        db.close();
     }
 
     public List<ProdVenda> listProdVendaByVenda (Venda _venda) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        List<ProdVenda> prodVendas = new ArrayList<ProdVenda>();
+
+        String QUERY = "SELECT * FROM " + PROD_VENDA_TABLE +
+                " WHERE " + PROD_VENDA_VENDA + " == " + _venda.getId();
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Venda venda = selectVenda(cursor.getInt(0));
+                Produto produto = selectProduto(cursor.getInt(1));
+
+                ProdVenda prodVenda = new ProdVenda(
+                        venda,
+                        produto,
+                        cursor.getInt(2),
+                        cursor.getDouble(3)
+                );
+
+                prodVendas.add(prodVenda);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return prodVendas;
     }
 
 
     // CRUD PAGAMENTO ///////////////////////////////////////////////////////////////////////////
 
     public void addPgto (Pgto _pgto) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        ContentValues values = new ContentValues();
+
+        values.put(PGTO_CLIENTE, _pgto.getCliente().getId());
+        values.put(PGTO_FORMA_PGTO, _pgto.getFormaPgto().getId());
+        values.put(PGTO_VALOR, _pgto.getValor());
+        values.put(PGTO_DATA, _pgto.getData());
+        values.put(PGTO_PARC, _pgto.getParcelas());
+
+        db.insert(PGTO_TABLE, null, values);
+        db.close();
     }
 
     public void deletePgto (Pgto _pgto) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        String QUERY = (" DELETE FROM " + PGTO_TABLE +
+                " WHERE "   + PGTO_ID      + " == " + _pgto.getId()
+        );
+
+        db.rawQuery(QUERY, null);
+        db.close();
     }
 
     public void deletePgtoById (int _id) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        String QUERY = (" DELETE FROM " + PGTO_TABLE +
+                " WHERE "   + PGTO_ID      + " == " + _id
+        );
+
+        db.rawQuery(QUERY, null);
+        db.close();
     }
 
-    public Venda selectPgto (int _id) {
+    public Pgto selectPgto (int _id) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        Cursor cursor = db.query( PGTO_TABLE,
+                new String[] {
+                        PGTO_ID, PGTO_CLIENTE, PGTO_FORMA_PGTO, PGTO_VALOR, PGTO_DATA, PGTO_PARC },
+                PGTO_ID + " = ?",
+                new String[] { String.valueOf(_id) },
+                null,
+                null,
+                null,
+                null
+        );
+
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        Cliente c = selectCliente(cursor.getInt(1));
+        FormaPgto fp = selectFormaPgto(cursor.getInt(2));
+
+        Pgto pgto = new Pgto (
+                cursor.getInt(0),
+                c,
+                fp,
+                cursor.getDouble(3),
+                cursor.getString(4),
+                cursor.getInt(5)
+        );
+
+        db.close();
+        return pgto;
     }
 
-    public Venda selectMaxPgto () {
+    public Pgto selectMaxPgto () {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        Cursor cursor = db.rawQuery("SELECT * FROM " + PGTO_TABLE +
+                " WHERE " + PGTO_ID +
+                " = (SELECT MAX(" + PGTO_ID + ") " +
+                    "FROM " + PGTO_TABLE +
+                ")", null);
+
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        Cliente c = selectCliente(cursor.getInt(1));
+        FormaPgto fp = selectFormaPgto(cursor.getInt(2));
+
+        Pgto pgto = new Pgto (
+                cursor.getInt(0),
+                c,
+                fp,
+                cursor.getDouble(3),
+                cursor.getString(4),
+                cursor.getInt(5)
+        );
+
+        db.close();
+        return pgto;
     }
 
     public void updatePgto (Pgto _pgto) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        ContentValues values = new ContentValues();
+
+        values.put(PGTO_CLIENTE, _pgto.getCliente().getId());
+        values.put(PGTO_FORMA_PGTO, _pgto.getFormaPgto().getId());
+        values.put(PGTO_VALOR, _pgto.getValor());
+        values.put(PGTO_DATA, _pgto.getData());
+        values.put(PGTO_PARC, _pgto.getParcelas());
+
+        db.update(PGTO_TABLE, values, PGTO_ID + " = ?",
+                new String[] {
+                        String.valueOf(_pgto.getId())
+                });
+        db.close();
     }
 
-    public List<Venda> listAllPgtos() {
+    public List<Pgto> listAllPgtosOrdered() {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        List<Pgto> pgtos = new ArrayList<Pgto>();
+
+        String QUERY = "SELECT * FROM " + PGTO_TABLE +
+                " ORDER BY " + PGTO_DATA;
+
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Cliente c = selectCliente(cursor.getInt(3));
+                FormaPgto fp = selectFormaPgto(cursor.getInt(4));
+
+                Pgto pgto = new Pgto (
+                        cursor.getInt(0),
+                        c,
+                        fp,
+                        cursor.getDouble(3),
+                        cursor.getString(4),
+                        cursor.getInt(5)
+                );
+
+                pgtos.add(pgto);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+
+        return pgtos;
     }
 
-    public List<Venda> listAllPgtosByCliente (Cliente _cliente) {
+    public List<Pgto> listAllPgtosByCliente (Cliente _cliente) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        List<Pgto> pgtos = new ArrayList<Pgto>();
+
+        String QUERY = "SELECT * FROM " + PGTO_TABLE +
+                " WHERE " + PGTO_CLIENTE + " == " + _cliente.getId() +
+                " ORDER BY " + PGTO_DATA;
+
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Cliente c = selectCliente(cursor.getInt(3));
+                FormaPgto fp = selectFormaPgto(cursor.getInt(4));
+
+                Pgto pgto = new Pgto (
+                        cursor.getInt(0),
+                        c,
+                        fp,
+                        cursor.getDouble(3),
+                        cursor.getString(4),
+                        cursor.getInt(5)
+                );
+
+                pgtos.add(pgto);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+
+        return pgtos;
     }
 
-    public List<Venda> listAllPgtosByDate (String _date) {
+    public List<Pgto> listAllPgtosByDate (String _date) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        List<Pgto> pgtos = new ArrayList<Pgto>();
+
+        String QUERY = "SELECT * FROM " + PGTO_TABLE +
+                " WHERE " + PGTO_DATA + " == " + _date +
+                " ORDER BY " + PGTO_DATA;
+
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Cliente c = selectCliente(cursor.getInt(3));
+                FormaPgto fp = selectFormaPgto(cursor.getInt(4));
+
+                Pgto pgto = new Pgto (
+                        cursor.getInt(0),
+                        c,
+                        fp,
+                        cursor.getDouble(3),
+                        cursor.getString(4),
+                        cursor.getInt(5)
+                );
+
+                pgtos.add(pgto);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+
+        return pgtos;
     }
 
     // Preenchimento estados e cidades //////////////////////////////////////////////////////////
