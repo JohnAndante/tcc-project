@@ -22,22 +22,22 @@
             android:text="Clientes"/>
 
         <Button
-            android:id="@+id/btVenda"
+            android:id="@+id/btProduto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Produtos"/>
+
+        <Button
+            android:id="@+id/btVendas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Vendas"/>
 
         <Button
-            android:id="@+id/btPagamento"
+            android:id="@+id/btPgtos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Pagamentos"/>
-
-        <Button
-            android:id="@+id/btProduto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Produtos"/>
 
 
     </LinearLayout>

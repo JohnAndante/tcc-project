@@ -215,9 +215,8 @@ public class ListProdutos extends AppCompatActivity {
         int llAddProdutoHeight = 170;
         int deviceHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
         int newlistViewHeight = (deviceHeight - llAddProdutoHeight) - 30;
-
-
     }
+
     private boolean checkCategorias () {
         // Confere se a quantia de categorias criadas é a desejada para testes
         // No momento teremos 4 categorias

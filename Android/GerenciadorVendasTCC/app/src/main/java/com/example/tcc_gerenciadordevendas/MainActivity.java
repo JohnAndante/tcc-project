@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Button btCliente;
     private Button btProduto;
+    private Button btVendas;
+    private Button btPgtos;
 
     private Float translationY = 100f;
     private Boolean isMenuOpen = false;
@@ -90,6 +92,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, ListProdutos.class));
+            }
+        });
+
+        btVendas = findViewById(R.id.btVendas);
+        btVendas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, ListVendas.class));
+            }
+        });
+
+        btPgtos = findViewById(R.id.btPgtos);
+        btPgtos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, ListPgtos.class));
             }
         });
 

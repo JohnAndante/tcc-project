@@ -5,16 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dark_gray_01"
-    tools:context=".ListVendas">
+    tools:context=".ListPgtos">
 
     <LinearLayout
-        android:id="@+id/llPaiAdicionarVenda"
+        android:id="@+id/llPaiAdicionarPgto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal|center" >
 
         <LinearLayout
-            android:id="@+id/llAdicionarVenda"
+            android:id="@+id/llAdicionarPgto"
             android:layout_width="380dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -27,7 +27,7 @@
             app:layout_constraintEnd_toEndOf="parent">
 
             <ImageButton
-                android:id="@+id/imgbtIconeNovaVenda"
+                android:id="@+id/imgbtIconeNovoPgto"
                 android:layout_width="38dp"
                 android:layout_height="38dp"
                 android:layout_marginLeft="0dp"
@@ -37,17 +37,17 @@
                 />
 
             <TextView
-                android:id="@+id/tvNovaVenda"
+                android:id="@+id/tvNovoPgto"
                 android:layout_width="260dp"
                 android:layout_height="wrap_content"
                 android:textSize="18dp"
-                android:text="Adicionar Venda"
+                android:text="Adicionar Pagamento"
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 />
 
             <ImageButton
-                android:id="@+id/imgbtDadosVenda"
+                android:id="@+id/imgbtDadosPgto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -59,18 +59,18 @@
     </LinearLayout>
 
     <ListView
-        android:id="@+id/listVVendas"
+        android:id="@+id/listVPgtos"
         android:layout_width="match_parent"
         android:layout_height="660dp"
         android:divider="@null"
         android:dividerHeight="0dp"
-        app:layout_constraintTop_toBottomOf="@id/llPaiAdicionarVenda">
+        app:layout_constraintTop_toBottomOf="@id/llPaiAdicionarPgto">
 
     </ListView>
 
 
     <Button
-        android:id="@+id/btVendaVoltar"
+        android:id="@+id/btPgtoVoltar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Voltar"
