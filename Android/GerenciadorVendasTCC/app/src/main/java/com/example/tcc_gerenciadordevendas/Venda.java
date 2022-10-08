@@ -6,25 +6,25 @@ public class Venda {
     private String data;
     private Double valor;
     private Cliente cliente;
-    private FormaPgto formaPgto;
+    private Pgto pgto;
 
     public Venda ()  {
 
     }
 
-    public Venda (int _id, String _data, Double _valor, Cliente _cliente, FormaPgto _formaPgto) {
+    public Venda (int _id, String _data, Double _valor, Cliente _cliente, Pgto _pgto) {
         this.id = _id;
         this.data = _data;
         this.valor = _valor;
         this.cliente = _cliente;
-        this.formaPgto = _formaPgto;
+        this.pgto = _pgto;
     }
 
-    public Venda (String _data, Double _valor, Cliente _cliente, FormaPgto _formaPgto) {
+    public Venda (String _data, Double _valor, Cliente _cliente, Pgto _pgto) {
         this.data = _data;
         this.valor = _valor;
         this.cliente = _cliente;
-        this.formaPgto = _formaPgto;
+        this.pgto = _pgto;
     }
 
     public int getId() {
@@ -59,11 +59,11 @@ public class Venda {
         this.cliente = cliente;
     }
 
-    public FormaPgto getFormaPgto() {
-        return formaPgto;
+    public Pgto getPgto() {
+        return pgto;
     }
 
-    public void setFormaPgto(FormaPgto formaPgto) {
-        this.formaPgto = formaPgto;
+    public void setPgto(Pgto pgto) {
+        this.pgto = pgto;
     }
 }

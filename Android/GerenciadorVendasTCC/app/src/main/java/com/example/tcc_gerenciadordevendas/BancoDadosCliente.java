@@ -107,7 +107,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     private static final String VENDA_DATA          = "data_venda";
     private static final String VENDA_VALOR         = "valor_total";
     private static final String VENDA_CLIENTE       = "id_cliente";
-    private static final String VENDA_FORMA_PGTO    = "id_forma_pgto";
+    private static final String VENDA_PGTO          = "id_pgto";
 
     // Colunas da tabela Produto x venda
     private static final String PROD_VENDA_VENDA    = "id_venda";
@@ -259,11 +259,11 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                 + VENDA_DATA         + " TEXT, "
                 + VENDA_VALOR        + " DECIMAL(8, 2), "
                 + VENDA_CLIENTE      + " INTEGER, "
-                + VENDA_FORMA_PGTO   + " INTEGER, "
+                + VENDA_PGTO         + " INTEGER, "
                 + "FOREIGN KEY ("    + VENDA_CLIENTE    + ") "
                 + "REFERENCES "      + CLIENTE_TABLE    + " (" + VENDA_CLIENTE      + "), "
-                + "FOREIGN KEY ("    + VENDA_FORMA_PGTO + ") "
-                + "REFERENCES "      + FORMA_PGTO_TABLE + " (" + VENDA_FORMA_PGTO   + "))";
+                + "FOREIGN KEY ("    + VENDA_PGTO + ") "
+                + "REFERENCES "      + FORMA_PGTO_TABLE + " (" + VENDA_PGTO   + "))";
 
         PROD_VENDA_QUERY    = "CREATE TABLE " + PROD_VENDA_TABLE + "( "
                 + PROD_VENDA_VENDA   + " INTEGER, "
@@ -351,7 +351,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
             cursor.moveToFirst();
 
         Cliente cliente1 = new Cliente(
-                Integer.parseInt(cursor.getString(0)),
+                cursor.getInt(0),
                 cursor.getString(1),
                 cursor.getString(2));
 
@@ -2374,8 +2374,10 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         values.put(VENDA_DATA, _venda.getData());
         values.put(VENDA_VALOR, _venda.getValor());
         values.put(VENDA_CLIENTE, _venda.getCliente().getId());
-        values.put(VENDA_FORMA_PGTO, _venda.getFormaPgto().getId());
-
+        if (_venda.getPgto() != null)
+                values.put(VENDA_PGTO, _venda.getPgto().getId());
+        else
+                values.put(VENDA_PGTO, 0);
         db.insert(VENDA_TABLE, null, values);
         db.close();
     }
@@ -2403,7 +2405,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
         Cursor cursor = db.query(VENDA_TABLE,
                 new String[] {
-                        VENDA_ID, VENDA_DATA, VENDA_VALOR, VENDA_CLIENTE, VENDA_FORMA_PGTO },
+                        VENDA_ID, VENDA_DATA, VENDA_VALOR, VENDA_CLIENTE, VENDA_PGTO },
                 VENDA_ID + " = ?",
                 new String[] { String.valueOf(_id) },
                 null,
@@ -2416,14 +2418,18 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
             cursor.moveToFirst();
 
         Cliente c = selectCliente(cursor.getInt(3));
-        FormaPgto fp = selectFormaPgto(cursor.getInt(4));
+        Pgto p = new Pgto();
+        if (cursor.getInt(3) > 0)
+           p = selectPgto(cursor.getInt(3));
+        else
+            p = null;
 
         Venda venda = new Venda(
                 cursor.getInt(0),
                 cursor.getString(1),
                 cursor.getDouble(2),
                 c,
-                fp
+                p
         );
 
         db.close();
@@ -2443,14 +2449,14 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
             cursor.moveToFirst();
 
         Cliente c = selectCliente(cursor.getInt(3));
-        FormaPgto fp = selectFormaPgto(cursor.getInt(4));
+        Pgto p = selectPgto(cursor.getInt(4));
 
         Venda venda = new Venda(
                 cursor.getInt(0),
                 cursor.getString(1),
                 cursor.getDouble(2),
                 c,
-                fp
+                p
         );
 
         db.close();
@@ -2465,7 +2471,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         values.put(VENDA_DATA, _venda.getData());
         values.put(VENDA_VALOR, _venda.getValor());
         values.put(VENDA_CLIENTE, _venda.getCliente().getId());
-        values.put(VENDA_FORMA_PGTO, _venda.getFormaPgto().getId());
+        values.put(VENDA_PGTO, _venda.getPgto().getId());
 
         db.update(VENDA_TABLE, values, VENDA_ID + " = ? ",
                 new String[] {
@@ -2486,14 +2492,17 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 Cliente c = selectCliente(cursor.getInt(3));
-                FormaPgto fp = selectFormaPgto(cursor.getInt(4));
-
+                Pgto p = new Pgto();
+                if (cursor.getInt(4) > 0)
+                    p = selectPgto(cursor.getInt(4));
+                else
+                    p = null;
                 Venda venda = new Venda(
                         cursor.getInt(0),
                         cursor.getString(1),
                         cursor.getDouble(2),
                         c,
-                        fp
+                        p
                 );
 
                 vendas.add(venda);
@@ -2511,9 +2520,9 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         List<Venda> vendas = new ArrayList<Venda>();
 
         String QUERY = "SELECT " +
-                 " V." + VENDA_ID + ", V." + VENDA_DATA +
-                ", V." + VENDA_VALOR + ", V." + VENDA_CLIENTE +
-                ", V." + VENDA_FORMA_PGTO +
+                 " V." + VENDA_ID           + ", V." + VENDA_DATA +
+                ", V." + VENDA_VALOR        + ", V." + VENDA_CLIENTE +
+                ", V." + VENDA_PGTO         +
                 " FROM " + VENDA_TABLE + " V" +
                 " WHERE V." + VENDA_CLIENTE + " == " + _cliente.getId();
 
@@ -2522,14 +2531,14 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 Cliente c = selectCliente(cursor.getInt(3));
-                FormaPgto fp = selectFormaPgto(cursor.getInt(4));
+                Pgto p = selectPgto(cursor.getInt(4));
 
                 Venda venda = new Venda(
                         cursor.getInt(0),
                         cursor.getString(1),
                         cursor.getDouble(2),
                         c,
-                        fp
+                        p
                 );
 
                 vendas.add(venda);
@@ -2547,9 +2556,9 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         List<Venda> vendas = new ArrayList<Venda>();
 
         String QUERY = "SELECT " +
-                " V." + VENDA_ID + ", V." + VENDA_DATA +
-                ", V." + VENDA_VALOR + ", V." + VENDA_CLIENTE +
-                ", V." + VENDA_FORMA_PGTO +
+                " V." + VENDA_ID            + ", V." + VENDA_DATA +
+                ", V." + VENDA_VALOR        + ", V." + VENDA_CLIENTE +
+                ", V." + VENDA_PGTO         +
                 " FROM " + VENDA_TABLE + " V" +
                 " ORDER BY " + VENDA_DATA;
 
@@ -2558,14 +2567,14 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 Cliente c = selectCliente(cursor.getInt(3));
-                FormaPgto fp = selectFormaPgto(cursor.getInt(4));
+                Pgto p = selectPgto(cursor.getInt(4));
 
                 Venda venda = new Venda(
                         cursor.getInt(0),
                         cursor.getString(1),
                         cursor.getDouble(2),
                         c,
-                        fp
+                        p
                 );
 
                 vendas.add(venda);

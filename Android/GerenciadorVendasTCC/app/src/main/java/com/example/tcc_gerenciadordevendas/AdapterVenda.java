@@ -2,6 +2,7 @@ package com.example.tcc_gerenciadordevendas;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,14 +19,16 @@ import java.util.ArrayList;
 
 public class AdapterVenda extends ArrayAdapter {
 
-    private final Context context;
+    private Context context = null;
     private final ArrayList<Venda> data;
 
-    BancoDadosCliente db = new BancoDadosCliente(null);
+    BancoDadosCliente db = new BancoDadosCliente(context);
 
     public AdapterVenda (Context _context, int _layout, ArrayList<Venda> _data) {
         super (_context, _layout, _data);
         this.context = _context;
+
+        Log.e("INFO CONTEXT despois", context.toString());
         this.data = _data;
     }
 
