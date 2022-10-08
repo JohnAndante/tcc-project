@@ -1,6 +1,228 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/dark_gray_01"
+    tools:context=".AddVenda">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/dark_gray_01"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textClienteVenda"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="2dp"
+                android:text="Cliente"
+                android:textColor="@color/light_gray_01"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="330dp"
+                android:layout_height="45dp"
+                android:background="@drawable/cardbg_roundcorners_lightgray"
+                android:gravity="center_horizontal|center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvClienteVenda"
+                    android:layout_width="290dp"
+                    android:layout_height="45dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:backgroundTint="@color/light_gray_01"
+                    android:ems="10"
+                    android:gravity="center|start"
+                    android:text="Selecione o Cliente"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24_white" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textProdutoVenda"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="2dp"
+                android:text="Produto"
+                android:textColor="@color/light_gray_01"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="330dp"
+                android:layout_height="45dp"
+                android:background="@drawable/cardbg_roundcorners_lightgray"
+                android:gravity="center_horizontal|center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvProdutoVenda"
+                    android:layout_width="290dp"
+                    android:layout_height="45dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:backgroundTint="@color/light_gray_01"
+                    android:ems="10"
+                    android:gravity="center|start"
+                    android:textColor="@color/white"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24_white" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textQtdProduto"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="2dp"
+                android:text="Quantidade"
+                android:textColor="@color/light_gray_01"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="330dp"
+                android:layout_height="45dp"
+                android:background="@drawable/cardbg_roundcorners_lightgray"
+                android:gravity="center_horizontal|center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_baseline_horizontal_rule_24_white" />
+
+                <TextView
+                    android:id="@+id/tvQtdProdutoVenda"
+                    android:layout_width="270dp"
+                    android:layout_height="45dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:backgroundTint="@color/light_gray_01"
+                    android:ems="10"
+                    android:gravity="center|start"
+                    android:textColor="@color/white"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_baseline_add_24_white" />
+
+            </LinearLayout>
+
+            <Button
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:text="Adicionar Produto"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="2dp" />
+            
+            <LinearLayout
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textProdutosAdicionados"
+                    android:layout_width="330dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="2dp"
+                    android:text="Produtos Adicionados"
+                    android:textColor="@color/light_gray_01"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="330dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|center"
+                    android:background="@drawable/cardbg_roundcorners_lightgray"
+                    android:orientation="vertical">
+
+                    <ListView
+                        android:id="@+id/lvProdVendaAdicionados"
+                        android:layout_width="330dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/cardbg_roundcorners_lightgray"/>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="330dp"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_baseline_horizontal_rule_24_white" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="80dp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/llBotoesProduto"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:gravity="center_horizontal|center"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/btAddProdutoSalvar"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="50dp"
+            android:focusable="false"
+            android:text="Salvar" />
+
+        <Button
+            android:id="@+id/btAddProdutoVoltar"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:text="Voltar" />
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -2633,6 +2633,23 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return prodVendas;
     }
 
+    public int qtdProdVendaByVenda (Venda _venda) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String QUERY = " SELECT COUNT(*) FROM " + PROD_VENDA_TABLE +
+                " WHERE " + PROD_VENDA_VENDA + " == " + _venda.getId();
+
+        Cursor cursor = db.rawQuery(QUERY, null);
+        int qtd;
+        if (cursor.moveToFirst()) {
+            qtd = cursor.getInt(0);
+        } else {
+            qtd = 0;
+        }
+
+        return qtd;
+    }
+
 
     // CRUD PAGAMENTO ///////////////////////////////////////////////////////////////////////////
 
