@@ -182,13 +182,40 @@
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:src="@drawable/ic_baseline_horizontal_rule_24_white" />
+                            android:src="@drawable/ic_baseline_drag_handle_24_white"
+                            app:layout_constraintEnd_toStartOf="@+id/tvValorTotalVenda"
+                            app:layout_constraintStart_toStartOf="parent"
+                            tools:layout_editor_absoluteY="0dp" />
+
+                        <TextView
+                            android:id="@+id/tvValorTotalVenda"
+                            android:layout_width="155dp"
+                            android:layout_height="wrap_content"
+                            android:text="R$ 0,00"
+                            android:textColor="@color/white"
+                            android:textSize="15dp"
+                            android:textStyle="bold"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:layout_editor_absoluteX="62dp" />
+
+                        <TextView
+                            android:id="@+id/tvQtdTotalVenda"
+                            android:layout_width="115dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="143dp"
+                            android:text="0 Produtos"
+                            android:textColor="@color/white"
+                            android:textSize="15dp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.993"
+                            app:layout_constraintStart_toEndOf="@+id/tvValorTotalVenda"
+                            app:layout_constraintTop_toTopOf="parent" />
+
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </LinearLayout>
-
-
 
             </LinearLayout>
 
@@ -201,7 +228,7 @@
     </ScrollView>
 
     <LinearLayout
-        android:id="@+id/llBotoesProduto"
+        android:id="@+id/llBotoesVenda"
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:gravity="center_horizontal|center"
@@ -214,14 +241,14 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="50dp"
             android:focusable="false"
-            android:text="Salvar" />
+            android:text="Avançar" />
 
         <Button
             android:id="@+id/btAddProdutoVoltar"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:focusable="false"
-            android:text="Voltar" />
+            android:text="Cancelar" />
 
     </LinearLayout>
 
