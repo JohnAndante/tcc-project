@@ -139,7 +139,7 @@ public class ListVendas extends AppCompatActivity {
 
         List<Venda> vendas = db.listAllVendas();
         listaDinamicaVendas = new ArrayList<Venda>();
-        //gestureDetector = new GestureDetector(this, gestureListener);
+        gestureDetector = new GestureDetector(this, gestureListener);
 
         if (!vendas.isEmpty()) {
             for (Venda v : vendas)
@@ -429,7 +429,7 @@ public class ListVendas extends AppCompatActivity {
     private boolean checkVendas () {
         // Confere se a quantia de vendas registradas é a desejada para testes
         // No momento teremos 2 vendas
-        int correto = 4;
+        int correto = 2;
         List<Venda> vendas = db.listAllVendas();
         Log.e("INFO SIZE VENDAS", String.valueOf(vendas.size()));
 

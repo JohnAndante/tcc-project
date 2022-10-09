@@ -27,8 +27,6 @@ public class AdapterVenda extends ArrayAdapter {
     public AdapterVenda (Context _context, int _layout, ArrayList<Venda> _data) {
         super (_context, _layout, _data);
         this.context = _context;
-
-        Log.e("INFO CONTEXT despois", context.toString());
         this.data = _data;
     }
 
@@ -41,7 +39,7 @@ public class AdapterVenda extends ArrayAdapter {
         TextView tvVendaValor = view.findViewById(R.id.tvVendaValor);
 
         tvNomeCliente.setText(data.get(position).getCliente().getNome());
-        tvVendaQtdProdutos.setText(db.qtdProdVendaByVenda(data.get(position)) + " Produtos");
+        tvVendaQtdProdutos.setText(" ? " + " Produtos");
         tvVendaValor.setText("R$ " + data.get(position).getValor().toString());
 
         return view;
