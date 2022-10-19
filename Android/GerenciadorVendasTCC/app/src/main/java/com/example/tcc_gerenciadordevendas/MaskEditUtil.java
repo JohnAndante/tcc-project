@@ -2,7 +2,10 @@ package com.example.tcc_gerenciadordevendas;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.EditText;
+
+import java.text.NumberFormat;
 
 public abstract class MaskEditUtil {
 
@@ -63,4 +66,64 @@ public abstract class MaskEditUtil {
     public static String unmask(final String s) {
         return s.replaceAll("[.]", "").replaceAll("[-]", "").replaceAll("[/]", "").replaceAll("[(]", "").replaceAll("[ ]","").replaceAll("[:]", "").replaceAll("[)]", "");
     }
+
+    public static TextWatcher moneyMask (final EditText editText, final String mask) {
+        return new TextWatcher() {
+            private String current = "";
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(!charSequence.toString().equals(current)){
+                    editText.removeTextChangedListener(this);
+
+                    String cleanString = charSequence.toString().replaceAll("[$,.]", "");
+
+                    double parsed = Double.parseDouble(cleanString);
+                    String formatted = NumberFormat.getCurrencyInstance().format((parsed/100));
+
+                    current = formatted;
+
+                    Log.e("INFO CUSTOM MASK", "Normal - " + current);
+
+                    String someString = formatted.toString().replaceAll("[.]", ",");
+
+                    Log.e("INFO CUSTOM MASK", "Alterado - " + someString);
+
+                    editText.setText(formatted);
+                    editText.setSelection(formatted.length());
+
+                    editText.addTextChangedListener(this);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        };
+    }
+
+    public static String unmaskMoneyMask (final String s) {
+        String altered = s.toString().replaceAll("[.,]", "");
+
+        double parsed = Double.parseDouble(altered);
+        String newString = String.valueOf(parsed/100);
+
+        return altered;
+    }
+
+    public static Double unmaskMoneyToDouble (final String s) {
+        String altered  =s.toString().replaceAll("[.,]", "");
+
+        double parsed = Double.parseDouble(altered);
+        parsed = (parsed/100);
+
+        return parsed;
+    }
+
 }
