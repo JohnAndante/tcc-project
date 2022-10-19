@@ -60,6 +60,24 @@ public abstract class MaskEditUtil {
         };
     }
 
+    public static TextWatcher decimalMask (final EditText editText) {
+        return new TextWatcher() {
+            int length = editText.length();
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        };
+    }
+
     public static String unmask(final String s) {
         return s.replaceAll("[.]", "").replaceAll("[-]", "").replaceAll("[/]", "").replaceAll("[(]", "").replaceAll("[ ]","").replaceAll("[:]", "").replaceAll("[)]", "");
     }
