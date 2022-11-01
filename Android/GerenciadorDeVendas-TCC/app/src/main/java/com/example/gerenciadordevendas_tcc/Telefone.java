@@ -1,4 +1,4 @@
-package com.example.tcc_gerenciadordevendas;
+package com.example.gerenciadordevendas_tcc;
 
 public class Telefone {
 

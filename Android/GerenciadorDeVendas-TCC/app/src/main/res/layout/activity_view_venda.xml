@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/dark_gray_01"
+    tools:context=".ViewVenda">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/dark_gray_01"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="330dp"
+                android:layout_height="40dp">
+
+                <TextView
+                    android:id="@+id/textDataVenda"
+                    android:layout_width="270dp"
+                    android:layout_height="wrap_content"
+                    android:text="Segunda, 31 de Fevereiro"
+                    android:textColor="@color/white"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textHoraVenda"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:text="12h40"
+                    android:textColor="@color/white"
+                    android:textDirection="rtl"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textDataVenda"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/cardbg_roundcorners_lightgray"
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="330dp"
+                    android:layout_height="56dp">
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="10dp"
+                        android:background="@drawable/iconbg_roundcorners_lightblue_01"
+                        android:src="@drawable/ic_baseline_person_outline_24_white"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:layout_editor_absoluteY="8dp" />
+
+                    <TextView
+                        android:id="@+id/tvNomeClienteVenda"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:text="Nome do Cliente"
+                        android:textColor="@color/white"
+                        android:textSize="15dp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageView"
+                        tools:layout_editor_absoluteY="8dp" />
+
+                    <TextView
+                        android:id="@+id/tvTelefoneClienteVenda"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:text="(44) 9 8877-6655"
+                        android:textColor="@color/white"
+                        android:textSize="14dp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageView"
+                        app:layout_constraintTop_toBottomOf="@+id/tvNomeClienteVenda"
+                        app:layout_constraintVertical_bias="0.111" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <ListView
+                    android:id="@+id/lvProdutosVenda"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/iconbg_roundcorners_blue_stroke">
+
+
+                </ListView>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp">
+
+                    <TextView
+                        android:id="@+id/textValorTotalVenda"
+                        android:layout_width="190dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Valor Total"
+                        android:textColor="@color/white"
+                        android:textSize="15dp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvValorTotalVenda"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="R$ 0,00"
+                        android:textColor="@color/white"
+                        android:textSize="15dp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toEndOf="@+id/textValorTotalVenda"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clFormaPgto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:id="@+id/textFormaPgto"
+                        android:layout_width="190dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Forma de Pagamento"
+                        android:textColor="@color/white"
+                        android:textSize="15dp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@id/tvFormaDePgto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Cartão"
+                        android:textColor="@color/white"
+                        android:textSize="15dp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toEndOf="@id/textFormaPgto"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textDe"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="x de "
+                        android:textColor="@color/white"
+                        android:textSize="15dp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toEndOf="@+id/tvQtdParcela"
+                        app:layout_constraintTop_toBottomOf="@id/tvFormaDePgto" />
+
+                    <TextView
+                        android:id="@+id/tvValorParcela"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="R$ 0,00"
+                        android:textColor="@color/white"
+                        android:textSize="15dp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toEndOf="@+id/textDe"
+                        app:layout_constraintTop_toBottomOf="@id/tvFormaDePgto" />
+
+                    <TextView
+                        android:id="@+id/tvQtdParcela"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="1"
+                        android:textColor="@color/white"
+                        android:textSize="15dp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toEndOf="@+id/textFormaPgto"
+                        app:layout_constraintTop_toBottomOf="@+id/tvFormaDePgto" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btExportarComprovante"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Enviar Comprovante" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="80dp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/llBotoesVenda"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:gravity="center_horizontal|center"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/btNovaVenda"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="50dp"
+            android:focusable="false"
+            android:text="Nova Venda" />
+
+        <Button
+            android:id="@+id/btAddProdutoVoltar"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:text="Voltar" />
+
+    </LinearLayout>
+
+</RelativeLayout>
