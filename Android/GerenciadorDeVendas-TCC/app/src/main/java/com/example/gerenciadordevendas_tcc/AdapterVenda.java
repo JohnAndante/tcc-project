@@ -40,7 +40,7 @@ public class AdapterVenda extends ArrayAdapter {
 
         tvNomeCliente.setText(data.get(position).getCliente().getNome());
         tvVendaQtdProdutos.setText(" ? " + " Produtos");
-        tvVendaValor.setText("R$ " + data.get(position).getValor().toString());
+        tvVendaValor.setText("R$ " + MaskEditUtil.doubleToMoney(data.get(position).getValor()));
 
         return view;
     }

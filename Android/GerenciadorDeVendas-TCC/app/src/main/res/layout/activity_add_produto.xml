@@ -298,7 +298,7 @@
             android:text="Salvar" />
 
         <Button
-            android:id="@+id/btAddProdutoVoltar"
+            android:id="@+id/btViewVoltar"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:focusable="false"

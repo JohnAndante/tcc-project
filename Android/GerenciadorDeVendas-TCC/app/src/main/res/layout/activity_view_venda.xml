@@ -159,7 +159,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@id/tvFormaDePgto"
+                        android:id="@id/tvFormaPgtoVenda"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
@@ -180,7 +180,7 @@
                         android:textSize="15dp"
                         android:textStyle="bold"
                         app:layout_constraintStart_toEndOf="@+id/tvQtdParcela"
-                        app:layout_constraintTop_toBottomOf="@id/tvFormaDePgto" />
+                        app:layout_constraintTop_toBottomOf="@id/tvFormaPgtoVenda" />
 
                     <TextView
                         android:id="@+id/tvValorParcela"
@@ -192,7 +192,7 @@
                         android:textSize="15dp"
                         android:textStyle="bold"
                         app:layout_constraintStart_toEndOf="@+id/textDe"
-                        app:layout_constraintTop_toBottomOf="@id/tvFormaDePgto" />
+                        app:layout_constraintTop_toBottomOf="@id/tvFormaPgtoVenda" />
 
                     <TextView
                         android:id="@+id/tvQtdParcela"
@@ -205,7 +205,7 @@
                         android:textSize="15dp"
                         android:textStyle="bold"
                         app:layout_constraintStart_toEndOf="@+id/textFormaPgto"
-                        app:layout_constraintTop_toBottomOf="@+id/tvFormaDePgto" />
+                        app:layout_constraintTop_toBottomOf="@+id/tvFormaPgtoVenda" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -236,7 +236,7 @@
         android:layout_alignParentBottom="true">
 
         <Button
-            android:id="@+id/btNovaVenda"
+            android:id="@+id/btViewNovaVenda"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="50dp"
@@ -244,7 +244,7 @@
             android:text="Nova Venda" />
 
         <Button
-            android:id="@+id/btAddProdutoVoltar"
+            android:id="@+id/btViewVoltar"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:focusable="false"

@@ -30,6 +30,7 @@ public class ListVendas extends AppCompatActivity {
     private AdapterVenda adapter;
     private GestureDetector gestureDetector;
     private ArrayList<Venda> listaDinamicaVendas;
+    private ArrayList<List> listaDinamicaVendas2;
     private ArrayList<String> arraylist;
 
     private static final int LIMITE_SWIPE = 100;
@@ -136,7 +137,7 @@ public class ListVendas extends AppCompatActivity {
     }
 
     private void listVendas () {
-
+        // Tentativa 1
         List<Venda> vendas = db.listAllVendas();
         listaDinamicaVendas = new ArrayList<Venda>();
         gestureDetector = new GestureDetector(this, gestureListener);
@@ -166,6 +167,12 @@ public class ListVendas extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void listVendas2 () {
+
+        List<Venda> vendas = db.listAllVendas();
+
     }
 
     private void openVendaData (Venda v, int position) {

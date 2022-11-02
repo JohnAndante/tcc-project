@@ -10,10 +10,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.method.KeyListener;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -27,7 +25,6 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -162,7 +159,7 @@ public class AddProduto extends AppCompatActivity {
 
     private void initButtonsCfg () {
         Salvar      = findViewById(R.id.btAddProdutoSalvar);
-        Cancelar    = findViewById(R.id.btAddProdutoVoltar);
+        Cancelar    = findViewById(R.id.btViewVoltar);
     }
 
     private void initButtonsOnClick () {

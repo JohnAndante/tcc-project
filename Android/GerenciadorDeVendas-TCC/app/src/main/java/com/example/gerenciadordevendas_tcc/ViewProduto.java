@@ -24,7 +24,6 @@ public class ViewProduto extends AppCompatActivity {
 
     private Button Editar;
     private Button Voltar;
-
     private TextView textDesc;
     private TextView textValor;
     private TextView textMarca;
@@ -35,8 +34,6 @@ public class ViewProduto extends AppCompatActivity {
     BancoDadosCliente db = new BancoDadosCliente(this);
 
     private int idProduto;
-
-    private static final DecimalFormat df = new DecimalFormat("0.00");
 
     public static final int ALTERAR_PRODUTO = 102;
     public static final int RESULT_ALT_PRODUTO = 202;
@@ -129,7 +126,7 @@ public class ViewProduto extends AppCompatActivity {
             categoria = subcat.getCategoria();
 
             textDesc.setText(produto.getDescricao());
-            textValor.setText(df.format(produto.getValor()));
+            textValor.setText(MaskEditUtil.doubleToMoney(produto.getValor()));
             textMarca.setText(marca.getDescricao());
             textLinha.setText(linha.getDescricao());
             textCategoria.setText(categoria.getDescricao());
