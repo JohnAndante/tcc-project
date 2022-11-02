@@ -87,7 +87,7 @@ public class ViewProduto extends AppCompatActivity {
             }
 
             textDesc.setText(produto.getDescricao());
-            textValor.setText("R$ " + df.format(produto.getValor()));
+            textValor.setText("R$ " + MaskEditUtil.doubleToMoney(produto.getValor()));
             textMarca.setText(marca.getDescricao());
             textLinha.setText(linha.getDescricao());
             textCategoria.setText(categoria.getDescricao());

@@ -2,9 +2,15 @@ package com.example.gerenciadordevendas_tcc;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.KeyListener;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
 import android.widget.EditText;
 
+import androidx.annotation.Nullable;
+
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 
 public abstract class MaskEditUtil {
@@ -85,63 +91,23 @@ public abstract class MaskEditUtil {
         return s.replaceAll("[.]", "").replaceAll("[-]", "").replaceAll("[/]", "").replaceAll("[(]", "").replaceAll("[ ]","").replaceAll("[:]", "").replaceAll("[)]", "");
     }
 
-    public static TextWatcher moneyMask (final EditText editText, final String mask) {
-        return new TextWatcher() {
-            private String current = "";
+    public static Double moneyToDouble (final String money) {
+        String formatted = money.replaceAll("[.]", "")
+                                .replaceAll("[,]", ".");
 
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(!charSequence.toString().equals(current)){
-                    editText.removeTextChangedListener(this);
-
-                    String cleanString = charSequence.toString().replaceAll("[$,.]", "");
-
-                    double parsed = Double.parseDouble(cleanString);
-                    String formatted = NumberFormat.getCurrencyInstance().format((parsed/100));
-
-                    current = formatted;
-
-                    Log.e("INFO CUSTOM MASK", "Normal - " + current);
-
-                    String someString = formatted.toString().replaceAll("[.]", ",");
-
-                    Log.e("INFO CUSTOM MASK", "Alterado - " + someString);
-
-                    editText.setText(formatted);
-                    editText.setSelection(formatted.length());
-
-                    editText.addTextChangedListener(this);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        };
+        return Double.parseDouble(formatted);
     }
 
-    public static String unmaskMoneyMask (final String s) {
-        String altered = s.toString().replaceAll("[.,]", "");
+    public static String doubleToMoney (final Double value) {
+        String s = value.toString();
+        String cleanString = s.replaceAll("[$,.]", "");
+        BigDecimal parsed = new BigDecimal(cleanString).setScale(2, BigDecimal.ROUND_FLOOR).divide(new BigDecimal(100), BigDecimal.ROUND_FLOOR);
+        String formatted = NumberFormat.getCurrencyInstance().format(parsed);
+        formatted = formatted.replaceAll("[$]", "")
+                             .replaceAll("[,]", "a")
+                             .replaceAll("[.]", ",")
+                             .replaceAll("[a]", ".");
 
-        double parsed = Double.parseDouble(altered);
-        String newString = String.valueOf(parsed/100);
-
-        return altered;
+        return formatted;
     }
-
-    public static Double unmaskMoneyToDouble (final String s) {
-        String altered  =s.toString().replaceAll("[.,]", "");
-
-        double parsed = Double.parseDouble(altered);
-        parsed = (parsed/100);
-
-        return parsed;
-    }
-
 }

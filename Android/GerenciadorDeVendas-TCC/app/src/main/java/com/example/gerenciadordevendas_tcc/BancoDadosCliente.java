@@ -1918,6 +1918,33 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return produtos;
     }
 
+    public List<Produto> listAllProdutosOrdered () {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Produto> produtos = new ArrayList<Produto>();
+
+        String QUERY = "SELECT * FROM " + PRODUTO_TABLE
+                    + " ORDER BY " + PRODUTO_DESC;
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Produto produto = new Produto();
+
+                produto.setId(cursor.getInt(0));
+                produto.setDescricao(cursor.getString(1));
+                produto.setValor(cursor.getDouble(2));
+                produto.setLinha(selectLinha(cursor.getInt(3)));
+
+                produtos.add(produto);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return produtos;
+    }
+
     public List<Produto> listAllProdutosByDesc (String _descricao) {
         SQLiteDatabase db = this.getWritableDatabase();
 

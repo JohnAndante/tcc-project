@@ -1,5 +1,6 @@
 package com.example.gerenciadordevendas_tcc;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -9,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.KeyListener;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -45,6 +47,7 @@ public class AddProduto extends AppCompatActivity {
     private TextView textMarca;
     private TextView textLinha;
     private TextView textCategoria;
+    private TextView textCifra;
 
     public final int deviceHeight   = Resources.getSystem().getDisplayMetrics().heightPixels;
     public final int deviceWidth    = Resources.getSystem().getDisplayMetrics().widthPixels;
@@ -133,10 +136,11 @@ public class AddProduto extends AppCompatActivity {
             }
 
             editTextDescricao.setText(p.getDescricao());
-            editTextValor.setText(df.format(p.getValor()));
+            editTextValor.setText(MaskEditUtil.doubleToMoney(p.getValor()));
             textMarca.setText(m.getDescricao());
             textLinha.setText(l.getDescricao());
             textCategoria.setText(c.getDescricao());
+            textCifra.setTextColor(R.color.white); // Corrigir quando possível
 
             linhaSelecionada = l;
             marcaSelecionada = m;
@@ -163,6 +167,7 @@ public class AddProduto extends AppCompatActivity {
 
     private void initButtonsOnClick () {
         Salvar.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceType")
             @Override
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
@@ -177,10 +182,7 @@ public class AddProduto extends AppCompatActivity {
 
                     String desc = editTextDescricao.getText().toString();
 
-                    // necessário tratar o texto exibido no editText
-                    String valorBruto = editTextValor.getText().toString();
-                    valorBruto.replaceAll(",", ".");
-                    Double valor = Double.valueOf(valorBruto);
+                    Double valor = MaskEditUtil.moneyToDouble(editTextValor.getText().toString());
 
                     bundle.putInt("ID", id_produto);
                     if (hasPosicao == true)
@@ -262,8 +264,7 @@ public class AddProduto extends AppCompatActivity {
                     setContentView(R.layout.activity_add_produto);
                     String desc = editTextDescricao.getText().toString();
 
-                    // necessário tratar o texto exibido no editText
-                    Double valor = Double.valueOf(editTextValor.getText().toString());
+                    Double valor = MaskEditUtil.moneyToDouble(editTextValor.getText().toString());
 
                     Linha l = linhaSelecionada;
                     Marca m = db.selectMarca(l.getMarca().getId());
@@ -352,6 +353,7 @@ public class AddProduto extends AppCompatActivity {
         textMarca           = (TextView) findViewById(R.id.tvMarcaProduto);
         textLinha           = (TextView) findViewById(R.id.tvLinhaProduto);
         textCategoria       = (TextView) findViewById(R.id.tvCategoriaProduto);
+        textCifra           = (TextView) findViewById(R.id.textCifraValorProduto);
 
         //-- Edit text e botões para teste
 
@@ -371,6 +373,9 @@ public class AddProduto extends AppCompatActivity {
                 return false;
             }
         });
+
+        editTextValor.addTextChangedListener(new MoneyTextWatcher(editTextValor));
+
     }
 
     private void changellButtons () {

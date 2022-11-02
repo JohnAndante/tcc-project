@@ -153,7 +153,7 @@ public class ListProdutos extends AppCompatActivity {
 
     private void listProdutos () {
 
-        List<Produto> produtos = db.listAllProdutos();
+        List<Produto> produtos = db.listAllProdutosOrdered();
         listaDinamicaProdutos = new ArrayList<Produto>();
         gestureDetector = new GestureDetector(this, gestureListener);
 

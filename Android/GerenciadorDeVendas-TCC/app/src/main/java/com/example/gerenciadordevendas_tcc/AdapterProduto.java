@@ -39,7 +39,7 @@ public class AdapterProduto extends ArrayAdapter {
         // Adicionar aqui a alteração de cor do ícone
 
         tvNomeProduto.setText(data.get(position).getDescricao());
-        tvValorProduto.setText("R$ " + df.format(data.get(position).getValor()));
+        tvValorProduto.setText("R$ " + MaskEditUtil.doubleToMoney(data.get(position).getValor()));
 
         return view;
     }
