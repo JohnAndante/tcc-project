@@ -2398,13 +2398,20 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
 
+        if (_venda.getId() >= 0) {
+            Log.e("INFO ADD VENDA", "MAIOR OU IGUAL A ZERO");
+            values.put(VENDA_ID, _venda.getId());
+        } else {
+            Log.e("INFO ADD VENDA", "NÃO ENTROU NO IF");
+        }
+
         values.put(VENDA_DATA, _venda.getData());
         values.put(VENDA_VALOR, _venda.getValor());
         values.put(VENDA_CLIENTE, _venda.getCliente().getId());
         if (_venda.getPgto() != null)
             values.put(VENDA_PGTO, _venda.getPgto().getId());
         else
-            values.put(VENDA_PGTO, 0);
+            values.put(VENDA_PGTO, -1);
         db.insert(VENDA_TABLE, null, values);
         db.close();
     }
@@ -2443,11 +2450,13 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
         if (cursor != null)
             cursor.moveToFirst();
+        else
+            return null;
 
         Cliente c = selectCliente(cursor.getInt(3));
         Pgto p = new Pgto();
-        if (cursor.getInt(3) > 0)
-            p = selectPgto(cursor.getInt(3));
+        if (cursor.getInt(4) >= 0)
+            p = selectPgto(cursor.getInt(4));
         else
             p = null;
 

@@ -443,7 +443,7 @@ public class ListVendas extends AppCompatActivity {
         if (vendas.size() < correto)
             return false;
         else {
-            Log.e("INFO SIZE VENDAS", String.valueOf(vendas.size()));
+            Log.e("INFO SIZE VENDAS ONIF", String.valueOf(vendas.size()));
             for (Venda v : vendas)
                 Log.e("INFO VENDAS ID", v.getId() + " - " + v.getCliente().getNome() + " - " + v.getValor());
         }

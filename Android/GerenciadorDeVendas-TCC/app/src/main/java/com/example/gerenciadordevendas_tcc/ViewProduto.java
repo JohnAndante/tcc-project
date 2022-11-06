@@ -6,19 +6,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 public class ViewProduto extends AppCompatActivity {
 
@@ -84,7 +79,7 @@ public class ViewProduto extends AppCompatActivity {
             }
 
             textDesc.setText(produto.getDescricao());
-            textValor.setText("R$ " + MaskEditUtil.doubleToMoney(produto.getValor()));
+            textValor.setText("R$ " + MaskEditUtil.doubleToMoneyValue(produto.getValor()));
             textMarca.setText(marca.getDescricao());
             textLinha.setText(linha.getDescricao());
             textCategoria.setText(categoria.getDescricao());
@@ -126,7 +121,7 @@ public class ViewProduto extends AppCompatActivity {
             categoria = subcat.getCategoria();
 
             textDesc.setText(produto.getDescricao());
-            textValor.setText(MaskEditUtil.doubleToMoney(produto.getValor()));
+            textValor.setText(MaskEditUtil.doubleToMoneyValue(produto.getValor()));
             textMarca.setText(marca.getDescricao());
             textLinha.setText(linha.getDescricao());
             textCategoria.setText(categoria.getDescricao());

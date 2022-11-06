@@ -133,7 +133,7 @@ public class AddProduto extends AppCompatActivity {
             }
 
             editTextDescricao.setText(p.getDescricao());
-            editTextValor.setText(MaskEditUtil.doubleToMoney(p.getValor()));
+            editTextValor.setText(MaskEditUtil.doubleToMoneyValue(p.getValor()));
             textMarca.setText(m.getDescricao());
             textLinha.setText(l.getDescricao());
             textCategoria.setText(c.getDescricao());

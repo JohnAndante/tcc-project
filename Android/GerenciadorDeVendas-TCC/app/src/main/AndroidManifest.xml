@@ -41,6 +41,9 @@
         <activity android:name=".ListVendas"
             android:exported="true" />
 
+        <activity android:name=".ViewVenda"
+            android:exported="true" />
+
         <activity android:name=".ListPgtos"
             android:exported="true"
             tools:ignore="Instantiatable" />

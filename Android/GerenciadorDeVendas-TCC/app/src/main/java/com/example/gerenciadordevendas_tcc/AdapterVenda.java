@@ -2,7 +2,6 @@ package com.example.gerenciadordevendas_tcc;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.w3c.dom.Text;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class AdapterVenda extends ArrayAdapter {
@@ -40,7 +36,7 @@ public class AdapterVenda extends ArrayAdapter {
 
         tvNomeCliente.setText(data.get(position).getCliente().getNome());
         tvVendaQtdProdutos.setText(" ? " + " Produtos");
-        tvVendaValor.setText("R$ " + MaskEditUtil.doubleToMoney(data.get(position).getValor()));
+        tvVendaValor.setText("R$ " + MaskEditUtil.doubleToMoneyValue(data.get(position).getValor()));
 
         return view;
     }

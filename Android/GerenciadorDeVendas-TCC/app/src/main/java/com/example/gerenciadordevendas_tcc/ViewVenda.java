@@ -2,22 +2,32 @@ package com.example.gerenciadordevendas_tcc;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ViewVenda extends AppCompatActivity {
 
     private Button Voltar;
     private Button NovaVenda;
     private Button EnviaComprovante;
+    private Button AdicionaPgto;
     private TextView textNomeCliente;
     private TextView textTelefoneCliente;
     private TextView textDataVenda;
@@ -28,13 +38,15 @@ public class ViewVenda extends AppCompatActivity {
     private TextView textQtdParcelas;
     private TextView textValorParcela;
     private ListView listProdutos;
+    private ConstraintLayout clFormaPgto;
 
     BancoDadosCliente db = new BancoDadosCliente(this);
 
     private int idVenda;
     private Venda venda;
     private List<Produto> produtos;
-    private ArrayList<Produto> arrayListProdutos;
+    private ArrayList<ProdVenda> arrayListProdVenda;
+    private AdapterProdutoVenda adapterProdutoVenda;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,7 +56,7 @@ public class ViewVenda extends AppCompatActivity {
         Cliente cliente = new Cliente();
         Pgto pgto = new Pgto();
         Produto produto = new Produto();
-        arrayListProdutos = new ArrayList<Produto>();
+        arrayListProdVenda = new ArrayList<ProdVenda>();
 
         initTextViews();
         initButtons();
@@ -63,12 +75,51 @@ public class ViewVenda extends AppCompatActivity {
 
             if (!prodsVenda.isEmpty()) {
                 for (ProdVenda pv : prodsVenda)
-                    arrayListProdutos.add(pv.getProduto());
+                    arrayListProdVenda.add(pv);
             }
+
+            // retirar SDF adicionais se não tiverem uso
+            SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+            SimpleDateFormat tf = new SimpleDateFormat("HH:mm", Locale.getDefault());
+            SimpleDateFormat dtf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+            String dataVenda = venda.getData();
+
+            Date dateVenda = new Date();
+            try {
+                dateVenda = dtf.parse(dataVenda);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            textDataVenda.setText(DateCustomText.getExtenseDate(dataVenda));
+            textHoraVenda.setText(DateCustomText.getCustomTime(dataVenda));
 
             textNomeCliente.setText(cliente.getNome());
             textTelefoneCliente.setText(cliente.getTelefone());
-            textDataVenda.setText("somedate");
+
+            textValorTotal.setText(MaskEditUtil.doubleToMoneyValue(venda.getValor()));
+
+            clFormaPgto = (ConstraintLayout) findViewById(R.id.clFormaPgto);
+
+            if (pgto == null || pgto.getId() < 0){
+                clFormaPgto.setVisibility(View.GONE);
+                AdicionaPgto.setVisibility(View.VISIBLE);
+            } else {
+                textPgtoVenda.setText(pgto.getFormaPgto().getDescricao());
+                textQtdParcelas.setText(pgto.getParcelas());
+                textValorParcela.setText(Double.valueOf(pgto.getValor()/pgto.getParcelas()).toString());
+                AdicionaPgto.setVisibility(View.GONE);
+            }
+
+            adapterProdutoVenda = new AdapterProdutoVenda(this, 0, arrayListProdVenda);
+
+
+            listProdutos = (ListView) findViewById(R.id.lvProdutosVenda);
+            listProdutos.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+            listProdutos.setAdapter(adapterProdutoVenda);
+
+            justifyListViewHeightBasedOnChildren(listProdutos);
         }
     }
 
@@ -88,13 +139,15 @@ public class ViewVenda extends AppCompatActivity {
         Voltar = (Button) findViewById(R.id.btViewVoltar);
         NovaVenda = (Button) findViewById(R.id.btViewNovaVenda);
         EnviaComprovante = (Button) findViewById(R.id.btExportarComprovante);
+        AdicionaPgto = (Button) findViewById(R.id.btAdicionarPgtoVenda);
     }
 
     private void initButtonsOnClick () {
         Voltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                setResult(RESULT_CANCELED);
+                finish();
             }
         });
 
@@ -112,4 +165,22 @@ public class ViewVenda extends AppCompatActivity {
             }
         });
     }
+
+    public static void justifyListViewHeightBasedOnChildren (ListView listView) {
+
+        ListAdapter listadp = listView.getAdapter();
+        if (listadp != null) {
+            int totalHeight = 0;
+            for (int i = 0; i < listadp.getCount(); i++) {
+                View listItem = listadp.getView(i, null, listView);
+                listItem.measure(0, 0);
+                totalHeight += listItem.getMeasuredHeight();
+            }
+            ViewGroup.LayoutParams params = listView.getLayoutParams();
+            params.height = totalHeight + (listView.getDividerHeight() * (listadp.getCount() - 1) + 2);
+            listView.setLayoutParams(params);
+            listView.requestLayout();
+        }
+    }
+
 }

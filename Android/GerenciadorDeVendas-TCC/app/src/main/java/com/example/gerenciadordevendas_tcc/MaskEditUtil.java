@@ -11,6 +11,7 @@ import android.widget.EditText;
 import androidx.annotation.Nullable;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 public abstract class MaskEditUtil {
@@ -98,15 +99,52 @@ public abstract class MaskEditUtil {
         return Double.parseDouble(formatted);
     }
 
-    public static String doubleToMoney (final Double value) {
-        String s = value.toString();
+    public static String doubleToMoneyValue(final Double value) {
+        String s = new DecimalFormat("#.00").format(value);
         String cleanString = s.replaceAll("[$,.]", "");
         BigDecimal parsed = new BigDecimal(cleanString).setScale(2, BigDecimal.ROUND_FLOOR).divide(new BigDecimal(100), BigDecimal.ROUND_FLOOR);
         String formatted = NumberFormat.getCurrencyInstance().format(parsed);
-        formatted = formatted.replaceAll("[$]", "")
+        formatted = formatted.replaceAll("[R]", "")
+                             .replaceAll("[$]", "");
+        /*
                              .replaceAll("[,]", "a")
                              .replaceAll("[.]", ",")
                              .replaceAll("[a]", ".");
+        */
+        return formatted;
+    }
+
+    public static String doubleToMoneyCipher(final Double value) {
+        String s = new DecimalFormat("#.00").format(value);
+        String cleanString = s.replaceAll("[$,.]", "");
+        BigDecimal parsed = new BigDecimal(cleanString).setScale(2, BigDecimal.ROUND_FLOOR).divide(new BigDecimal(100), BigDecimal.ROUND_FLOOR);
+        String formatted = NumberFormat.getCurrencyInstance().format(parsed);
+        return formatted;
+    }
+
+    public static String doubleToMoneyTest(final Double value) {
+
+        String s = new DecimalFormat("#.00").format(value);
+
+        Log.e("INFO MASK ORIGINAL DOUBLE", s);
+
+        String cleanString = s.replaceAll("[$,.]", "");
+
+        Log.e("INFO MASK CLEAN STRING", cleanString);
+
+        BigDecimal parsed = new BigDecimal(cleanString).setScale(2, BigDecimal.ROUND_FLOOR).divide(new BigDecimal(100), BigDecimal.ROUND_FLOOR);
+
+        Log.e("INFO MASK PARSED", parsed.toString());
+
+        String formatted = NumberFormat.getCurrencyInstance().format(parsed);/*
+        formatted = formatted.replaceAll("[R]", "")
+                             .replaceAll("[$]", "")
+                             .replaceAll("[,]", "a")
+                             .replaceAll("[.]", ",")
+                             .replaceAll("[a]", ".");
+                             */
+
+        Log.e("INFO MASK FORMATTED", formatted);
 
         return formatted;
     }
