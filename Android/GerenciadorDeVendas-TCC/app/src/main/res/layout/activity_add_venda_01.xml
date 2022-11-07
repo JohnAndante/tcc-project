@@ -13,6 +13,7 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
+            android:id="@+id/llClienteNovaVenda"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/dark_gray_01"
@@ -31,6 +32,7 @@
                 android:textStyle="bold" />
 
             <LinearLayout
+                android:id="@+id/ClienteNovaVenda"
                 android:layout_width="330dp"
                 android:layout_height="45dp"
                 android:background="@drawable/cardbg_roundcorners_lightgray"
@@ -69,6 +71,7 @@
                 android:textStyle="bold" />
 
             <LinearLayout
+                android:id="@+id/llProdutoNovaVenda"
                 android:layout_width="330dp"
                 android:layout_height="45dp"
                 android:background="@drawable/cardbg_roundcorners_lightgray"
@@ -107,6 +110,7 @@
                 android:textStyle="bold" />
 
             <LinearLayout
+                android:id="@+id/llQtdProdutoNovaVenda"
                 android:layout_width="330dp"
                 android:layout_height="45dp"
                 android:background="@drawable/cardbg_roundcorners_lightgray"
@@ -114,24 +118,27 @@
                 android:orientation="horizontal">
 
                 <ImageView
+                    android:id="@+id/imgLessQtdProduto"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_baseline_horizontal_rule_24_white" />
 
-                <TextView
-                    android:id="@+id/tvQtdProdutoVenda"
+                <EditText
+                    android:id="@+id/editQtdProdutoVenda"
                     android:layout_width="270dp"
                     android:layout_height="45dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:backgroundTint="@color/light_gray_01"
                     android:ems="10"
+                    android:inputType="number"
                     android:gravity="center|start"
                     android:textColor="@color/white"
                     android:textSize="16dp"
                     android:textStyle="bold" />
 
                 <ImageView
+                    android:id="@+id/imgMoreQtdProduto"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_baseline_add_24_white" />
@@ -139,13 +146,15 @@
             </LinearLayout>
 
             <Button
+                android:id="@+id/btAdicionarProdutoVenda"
                 android:layout_width="330dp"
                 android:layout_height="wrap_content"
-                android:text="Adicionar Produto"
                 android:layout_marginTop="15dp"
-                android:layout_marginBottom="2dp" />
-            
+                android:layout_marginBottom="2dp"
+                android:text="Adicionar Produto" />
+
             <LinearLayout
+                android:id="@+id/llProdutosAdicionadosNovaVenda"
                 android:layout_width="330dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|center"
@@ -173,45 +182,70 @@
                         android:id="@+id/lvProdVendaAdicionados"
                         android:layout_width="330dp"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/cardbg_roundcorners_lightgray"/>
+                        android:background="@drawable/cardbg_roundcorners_lightgray" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="330dp"
                         android:layout_height="wrap_content">
 
                         <ImageView
+                            android:id="@+id/imgIgualNovaVenda"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:src="@drawable/ic_baseline_drag_handle_24_white"
-                            app:layout_constraintEnd_toStartOf="@+id/tvValorTotalVenda"
+                            android:layout_marginLeft="20dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            tools:layout_editor_absoluteY="0dp" />
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
-                            android:id="@+id/tvValorTotalVenda"
-                            android:layout_width="155dp"
+                            android:id="@+id/tvCifraValorTotalVenda"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="R$ 0,00"
+                            android:text="R$ "
                             android:textColor="@color/white"
                             android:textSize="15dp"
                             android:textStyle="bold"
+                            android:layout_marginLeft="20dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/imgIgualNovaVenda"
                             tools:layout_editor_absoluteX="62dp" />
 
                         <TextView
-                            android:id="@+id/tvQtdTotalVenda"
-                            android:layout_width="115dp"
+                            android:id="@+id/tvValorTotalVenda"
+                            android:layout_width="100dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="143dp"
-                            android:text="0 Produtos"
+                            android:text="0,00"
                             android:textColor="@color/white"
                             android:textSize="15dp"
                             android:textStyle="bold"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.993"
-                            app:layout_constraintStart_toEndOf="@+id/tvValorTotalVenda"
+                            app:layout_constraintStart_toEndOf="@+id/tvCifraValorTotalVenda"
                             app:layout_constraintTop_toTopOf="parent" />
 
+                        <TextView
+                            android:id="@+id/tvQtdTotalVenda"
+                            android:layout_width="25dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:text="0"
+                            android:textColor="@color/white"
+                            android:textSize="15dp"
+                            android:textStyle="bold"
+                            android:textAlignment="textEnd"
+                            app:layout_constraintStart_toEndOf="@id/tvValorTotalVenda"
+                            app:layout_constraintBottom_toBottomOf="parent"/>
+
+                        <TextView
+                            android:id="@+id/tvProdutosNovaVenda"
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:text=" Produtos"
+                            android:textColor="@color/white"
+                            android:textSize="15dp"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toEndOf="@id/tvQtdTotalVenda"
+                            app:layout_constraintBottom_toBottomOf="parent" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -236,7 +270,7 @@
         android:layout_alignParentBottom="true">
 
         <Button
-            android:id="@+id/btAddProdutoSalvar"
+            android:id="@+id/btAvancarVenda"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="50dp"
@@ -244,7 +278,7 @@
             android:text="Avançar" />
 
         <Button
-            android:id="@+id/btViewVoltar"
+            android:id="@+id/btCancelarVenda"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:focusable="false"

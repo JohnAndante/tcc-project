@@ -389,7 +389,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.close();
     }
 
-    public List<Cliente> listAllClientes() {
+    public List<Cliente> listAllClientes () {
         SQLiteDatabase db = this.getWritableDatabase();
 
         List<Cliente> listClientes = new ArrayList<>();
@@ -411,6 +411,61 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
         db.close();
         return listClientes;
+    }
+
+    public List<Cliente> listClientesOrdered () {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Cliente> listClientes = new ArrayList<>();
+
+        String QUERY = "SELECT * FROM " + CLIENTE_TABLE +
+                " ORDER BY " + CLIENTE_NOME;
+        Cursor c = db.rawQuery(QUERY, null);
+
+        if (c.moveToFirst()) {
+            do {
+                Cliente cliente = new Cliente();
+                cliente.setId(Integer.parseInt(c.getString(0)));
+                cliente.setNome(c.getString(1));
+                cliente.setTelefone(c.getString(2));
+
+                listClientes.add(cliente);
+
+            } while (c.moveToNext());
+        }
+
+        db.close();
+        return listClientes;
+    }
+
+    public List<Cliente> listClientesByNome (String _nome) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Cliente> listClientes = new ArrayList<>();
+
+        String QUERY = "SELECT * FROM " + CLIENTE_TABLE +
+                " WHERE " + CLIENTE_NOME + " LIKE '%" + _nome + "%'" +
+                " ORDER BY " + CLIENTE_NOME;
+
+        Cursor c = db.rawQuery(QUERY, null);
+
+        if (c.moveToFirst()) {
+            do {
+                Cliente cliente = new Cliente();
+                cliente.setId(Integer.parseInt(c.getString(0)));
+                cliente.setNome(c.getString(1));
+                cliente.setTelefone(c.getString(2));
+
+                listClientes.add(cliente);
+
+            } while (c.moveToNext());
+
+            db.close();
+            return listClientes;
+        } else {
+            db.close();
+            return null;
+        }
     }
 
     // CRUD ENDEREÇO ////////////////////////////////////////////////////////////////////////////
