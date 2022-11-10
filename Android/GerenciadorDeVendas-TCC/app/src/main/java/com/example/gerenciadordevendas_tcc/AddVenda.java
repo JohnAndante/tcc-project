@@ -311,7 +311,7 @@ public class AddVenda extends AppCompatActivity {
                     qtdProduto--;
                     editQtdProdutoVenda.setText(String.valueOf(qtdProduto));
                 } else {
-                    Toast.makeText(getApplicationContext(), "Quantidade incorreta", Toast.LENGTH_SHORT);
+                    Toast.makeText(AddVenda.this, "Quantidade incorreta", Toast.LENGTH_SHORT);
                 }
             }
         });
@@ -324,7 +324,7 @@ public class AddVenda extends AppCompatActivity {
                     qtdProduto++;
                     editQtdProdutoVenda.setText(String.valueOf(qtdProduto));
                 } else {
-                    Toast.makeText(getApplicationContext(), "Quantidade incorreta", Toast.LENGTH_SHORT);
+                    Toast.makeText(AddVenda.this, "Quantidade incorreta", Toast.LENGTH_SHORT);
                 }
             }
         });
@@ -370,17 +370,17 @@ public class AddVenda extends AppCompatActivity {
         if (clienteSelecionado == null || clienteSelecionado.getId() < 0) {
             ok = false;
             llClienteVenda.requestFocus();
-            Toast.makeText(getApplicationContext(), "Insira um cliente para sua venda", Toast.LENGTH_LONG);
+            Toast.makeText(AddVenda.this, "Insira um cliente para sua venda", Toast.LENGTH_LONG);
         } else
         if (produtoSelecionado == null || produtoSelecionado.getId() < 0) {
             ok = false;
             llProdutoVenda.requestFocus();
-            Toast.makeText(getApplicationContext(), "Insira um produto para adicionar á sua venda", Toast.LENGTH_LONG);
+            Toast.makeText(AddVenda.this, "Insira um produto para adicionar á sua venda", Toast.LENGTH_LONG);
         } else
         if (Integer.parseInt(editQtdProdutoVenda.getText().toString()) <= 0) {
             ok = false;
             editQtdProdutoVenda.requestFocus();
-            Toast.makeText(getApplicationContext(), "Insira uma quantidade válida para o produto selecionado", Toast.LENGTH_LONG);
+            Toast.makeText(AddVenda.this, "Insira uma quantidade válida para o produto selecionado", Toast.LENGTH_LONG);
         }
         return ok;
     }
