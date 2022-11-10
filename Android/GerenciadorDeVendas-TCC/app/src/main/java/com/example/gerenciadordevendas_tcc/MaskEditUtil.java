@@ -94,9 +94,22 @@ public abstract class MaskEditUtil {
 
     public static Double moneyToDouble (final String money) {
         String formatted = money.replaceAll("[.]", "")
-                                .replaceAll("[,]", ".");
+                                .replaceAll("[,]", ".")
+                                .replaceAll("[ ]", "");
 
-        return Double.parseDouble(formatted);
+        Log.e("INFO DOUBLE", formatted);
+        return Double.valueOf(formatted);
+    }
+
+    public static Double moneyToDoubleTest (final String money) {
+        double value = 0.00;
+        try {
+            value = DecimalFormat.getNumberInstance().parse(money).doubleValue();
+            System.out.println(value);
+        } catch (Exception e) {
+            Log.e("INFO ERROR DOUBLE", e.getMessage());
+        }
+        return value;
     }
 
     public static String doubleToMoneyValue(final Double value) {
@@ -136,13 +149,13 @@ public abstract class MaskEditUtil {
 
         Log.e("INFO MASK PARSED", parsed.toString());
 
-        String formatted = NumberFormat.getCurrencyInstance().format(parsed);/*
+        String formatted = NumberFormat.getCurrencyInstance().format(parsed);
         formatted = formatted.replaceAll("[R]", "")
-                             .replaceAll("[$]", "")
+                             .replaceAll("[$]", "");/*
                              .replaceAll("[,]", "a")
                              .replaceAll("[.]", ",")
                              .replaceAll("[a]", ".");
-                             */
+*/
 
         Log.e("INFO MASK FORMATTED", formatted);
 

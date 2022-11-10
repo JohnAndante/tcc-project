@@ -28,13 +28,9 @@ public class ListVendas extends AppCompatActivity {
     private LinearLayout llAdicionarVenda;
     private ListView listViewVendas;
     private AdapterVenda adapter;
-    private GestureDetector gestureDetector;
     private ArrayList<Venda> listaDinamicaVendas;
     private ArrayList<List> listaDinamicaVendas2;
     private ArrayList<String> arraylist;
-
-    private static final int LIMITE_SWIPE = 100;
-    private static final int LIMITE_VELOCIDADE = 100;
 
     BancoDadosCliente db = new BancoDadosCliente(this);
 
@@ -42,38 +38,6 @@ public class ListVendas extends AppCompatActivity {
     public static final int ALTERAR_VENDA = 4100;
     public static final int CONSULTAR_VENDA = 4200;
     public static final int RESULT_ALT_VENDA = 4300;
-
-    //private int viewCounter = 0;
-
-
-    GestureDetector.SimpleOnGestureListener gestureListener = new GestureDetector.SimpleOnGestureListener() {
-        @Override
-        // Método do Swipe
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            float diferencaX = e2.getX() - e1.getX();
-            if (Math.abs(diferencaX) > LIMITE_SWIPE && Math.abs(velocityX) > LIMITE_VELOCIDADE){
-                if (diferencaX > 0){
-                    Log.i("MOVIMENTO", "Movimento para a direita");
-                }
-                else {
-                    Log.i("MOVIMENTO", "Movimento para a esquerda");
-                }
-            }
-            return true;
-        }
-    };
-
-    @Override
-    public boolean onTouchEvent (MotionEvent event) {
-        return gestureDetector.onTouchEvent(event);
-    }
-
-    View.OnTouchListener touchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch (View v, MotionEvent event) {
-            return gestureDetector.onTouchEvent(event);
-        }
-    };
 
 
     protected void onCreate (Bundle savedBundleState) {
@@ -95,7 +59,7 @@ public class ListVendas extends AppCompatActivity {
         llAdicionarVenda.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addNewPgto();
+                addNovaVenda();
             }
         });
 
@@ -131,6 +95,11 @@ public class ListVendas extends AppCompatActivity {
         });
     }
 
+    private void addNovaVenda () {
+        Intent intent = new Intent(getApplicationContext(), AddVenda.class);
+        startActivityForResult(intent, NOVA_VENDA);
+    }
+
     private void addNewPgto () {
         Intent intent = new Intent(getApplication(), AddVenda.class);
         startActivityForResult(intent, NOVA_VENDA);
@@ -140,7 +109,6 @@ public class ListVendas extends AppCompatActivity {
         // Tentativa 1
         List<Venda> vendas = db.listAllVendas();
         listaDinamicaVendas = new ArrayList<Venda>();
-        gestureDetector = new GestureDetector(this, gestureListener);
 
         if (!vendas.isEmpty()) {
             for (Venda v : vendas)
@@ -154,7 +122,6 @@ public class ListVendas extends AppCompatActivity {
         listViewVendas = findViewById(R.id.listVVendas);
         listViewVendas.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
         listViewVendas.setAdapter(adapter);
-        listViewVendas.setOnTouchListener(touchListener);
 
         listViewVendas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

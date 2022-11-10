@@ -114,8 +114,7 @@ public class ViewVenda extends AppCompatActivity {
 
             adapterProdutoVenda = new AdapterProdutoVenda(this, 0, arrayListProdVenda);
 
-
-            listProdutos = (ListView) findViewById(R.id.lvProdutosVenda);
+            listProdutos = findViewById(R.id.lvProdutosVenda);
             listProdutos.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
             listProdutos.setAdapter(adapterProdutoVenda);
 

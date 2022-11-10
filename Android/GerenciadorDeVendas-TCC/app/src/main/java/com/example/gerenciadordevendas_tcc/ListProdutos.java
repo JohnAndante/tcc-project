@@ -4,17 +4,21 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -29,12 +33,9 @@ public class ListProdutos extends AppCompatActivity {
     private LinearLayout llAdicionarProduto;
     private ListView listViewProdutos;
     private AdapterProduto adapter;
-    private GestureDetector gestureDetector;
     private ArrayList<Produto> listaDinamicaProdutos;
     private ArrayList<String> arraylist;
 
-    private static final int LIMITE_SWIPE = 100;
-    private static final int LIMITE_VELOCIDADE = 100;
 
     BancoDadosCliente db = new BancoDadosCliente(this);
 
@@ -44,40 +45,12 @@ public class ListProdutos extends AppCompatActivity {
     public static final int RESULT_ALT_PRODUTO = 202;
 
     private int viewCounter = 0;
-
-    GestureDetector.SimpleOnGestureListener gestureListener = new GestureDetector.SimpleOnGestureListener() {
-        @Override
-        // Método do Swipe
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            float diferencaX = e2.getX() - e1.getX();
-            if (Math.abs(diferencaX) > LIMITE_SWIPE && Math.abs(velocityX) > LIMITE_VELOCIDADE){
-                if (diferencaX > 0){
-                    Log.i("MOVIMENTO", "Movimento para a direita");
-                }
-                else {
-                    Log.i("MOVIMENTO", "Movimento para a esquerda");
-                }
-            }
-            return true;
-        }
-    };
-
-    @Override
-    public boolean onTouchEvent (MotionEvent event) {
-        return gestureDetector.onTouchEvent(event);
-    }
-
-    View.OnTouchListener touchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch (View v, MotionEvent event) {
-            return gestureDetector.onTouchEvent(event);
-        }
-    };
+    static int occupiedHeight = 0;
+    final static int deviceHeight  = Resources.getSystem().getDisplayMetrics().heightPixels;
 
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_produtos);
-
 
         addDefaultData();
         initButtonsHub();
@@ -93,6 +66,7 @@ public class ListProdutos extends AppCompatActivity {
         });
 
         llAdicionarProduto = (LinearLayout) findViewById(R.id.llAdicionarProduto);
+        Log.e("INFO LLADDPRODUTOHEIGHT", String.valueOf(llAdicionarProduto.getHeight()));
         llAdicionarProduto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,6 +78,9 @@ public class ListProdutos extends AppCompatActivity {
         });
 
         adjustView();
+        occupiedHeight = getActionBarHeight() + getNavigationBarHeight() + getStatusBarHeight() + 169;
+        // lladdproduto height = 169
+
     }
 
     @Override
@@ -155,7 +132,6 @@ public class ListProdutos extends AppCompatActivity {
 
         List<Produto> produtos = db.listAllProdutosOrdered();
         listaDinamicaProdutos = new ArrayList<Produto>();
-        gestureDetector = new GestureDetector(this, gestureListener);
 
         if (!produtos.isEmpty()) {
             for (Produto p : produtos)
@@ -169,7 +145,6 @@ public class ListProdutos extends AppCompatActivity {
         listViewProdutos = (ListView) findViewById(R.id.listVProdutos);
         listViewProdutos.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
         listViewProdutos.setAdapter(adapter);
-        listViewProdutos.setOnTouchListener(touchListener);
 
         listViewProdutos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -182,6 +157,8 @@ public class ListProdutos extends AppCompatActivity {
                 }
             }
         });
+
+        justifyListViewHeightBasedOnChildren(listViewProdutos);
     }
 
     private void openProdutoData (Produto p, int position) {
@@ -215,6 +192,58 @@ public class ListProdutos extends AppCompatActivity {
         int llAddProdutoHeight = 170;
         int deviceHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
         int newlistViewHeight = (deviceHeight - llAddProdutoHeight) - 30;
+    }
+
+    private int getActionBarHeight () {
+        // Calculate ActionBar height
+        TypedValue tv = new TypedValue();
+        int actionBarHeight = 0;
+        if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
+            actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
+        return actionBarHeight;
+    }
+
+    private int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
+
+    private int getNavigationBarHeight() {
+        int result = 0;
+        boolean hasMenuKey = ViewConfiguration.get(getApplicationContext()).hasPermanentMenuKey();
+        int resourceId = getResources().getIdentifier("navigation_bar_height", "dimen", "android");
+        if (resourceId > 0 && !hasMenuKey)
+        {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
+
+    private static void justifyListViewHeightBasedOnChildren (@NonNull ListView listView) {
+
+        ListAdapter listadp = listView.getAdapter();
+        if (listadp != null) {
+            int totalHeight = 0;
+            for (int i = 0; i < listadp.getCount(); i++) {
+                View listItem = listadp.getView(i, null, listView);
+                listItem.measure(0, 0);
+                totalHeight += listItem.getMeasuredHeight();
+            }
+            ViewGroup.LayoutParams params = listView.getLayoutParams();
+            params.height = totalHeight + (listView.getDividerHeight() * (listadp.getCount() - 1) + 2);
+            Log.e("INFO HEIGHT A", String.valueOf(params.height));
+            Log.e("INFO HEIGHT B", String.valueOf(deviceHeight - occupiedHeight));
+            if (params.height >= (deviceHeight - occupiedHeight - 500)) {
+                params.height = (deviceHeight - occupiedHeight - 500);
+            }
+            listView.setLayoutParams(params);
+            listView.requestLayout();
+
+        }
     }
 
     private boolean checkCategorias () {
@@ -392,7 +421,6 @@ public class ListProdutos extends AppCompatActivity {
         db.addProdSubcat(new ProdSubcat(db.selectProduto(8), db.selectSubcat(4)));
         db.addProdSubcat(new ProdSubcat(db.selectProduto(8), db.selectSubcat(9)));
     }
-
 
 }
 

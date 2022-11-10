@@ -36,13 +36,14 @@ public class MoneyTextWatcher implements TextWatcher {
 
         editText.removeTextChangedListener(this);
 
-        String cleanString = s.replaceAll("[$,.]", "");
+        String cleanString = s.replaceAll("[R$,.]", "");
         BigDecimal parsed = new BigDecimal(cleanString).setScale(2, BigDecimal.ROUND_FLOOR).divide(new BigDecimal(100), BigDecimal.ROUND_FLOOR);
         String formatted = NumberFormat.getCurrencyInstance().format(parsed);
         formatted = formatted.replaceAll("[$]", "")
+                             .replaceAll("[R]", "");/*
                              .replaceAll("[,]", "a")
                              .replaceAll("[.]", ",")
-                             .replaceAll("[a]", ".");
+                             .replaceAll("[a]", ".");*/
 
         editText.setText(formatted);
         editText.setSelection(formatted.length());

@@ -11,20 +11,22 @@
         android:id="@+id/llPaiAdicionarProduto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal|center" >
+        android:gravity="center_horizontal|center"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:id="@+id/llAdicionarProduto"
             android:layout_width="380dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_horizontal|center"
-            android:layout_margin="10dp"
-            android:padding="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="3dp"
             android:background="@drawable/cardbg_roundcorners_lightgray"
+            android:gravity="center_horizontal|center"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageButton
                 android:id="@+id/imgbtIconeNovoProduto"
@@ -33,26 +35,24 @@
                 android:layout_marginLeft="0dp"
                 android:layout_marginRight="20dp"
                 android:background="@drawable/iconbg_roundcorners_lightgray_01_stroke"
-                android:src="@drawable/ic_baseline_add_24_white"
-                />
+                android:src="@drawable/ic_baseline_add_24_white" />
 
             <TextView
                 android:id="@+id/tvNovoProduto"
                 android:layout_width="260dp"
                 android:layout_height="wrap_content"
-                android:textSize="18dp"
                 android:text="Adicionar Produto"
                 android:textColor="@color/white"
-                android:textStyle="bold"
-                />
+                android:textSize="18dp"
+                android:textStyle="bold" />
 
             <ImageButton
                 android:id="@+id/imgbtDadosProduto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:src="@drawable/ic_baseline_arrow_forward_ios_24_white"
-                android:background="@null"/>
+                android:background="@null"
+                android:src="@drawable/ic_baseline_arrow_forward_ios_24_white" />
 
         </LinearLayout>
 

@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_horizontal|center"
-        android:layout_margin="10dp"
+        android:layout_marginTop="4dp"
         android:padding="5dp"
         android:clickable="false"
         android:focusable="false"
@@ -22,6 +22,7 @@
         android:background="@drawable/cardbg_roundcorners_lightgray">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint"
             android:layout_width="320dp"
             android:layout_height="wrap_content"
             android:clickable="false"
@@ -32,14 +33,17 @@
                 android:id="@+id/tvVendaNomeCliente"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@id/llCardVenda"
+                android:layout_alignTop="@id/constraint"
                 android:clickable="false"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:text="Nome do Cliente"
                 android:textColor="@color/white"
                 android:textSize="18dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tvVendaQtdProdutos"
@@ -53,6 +57,7 @@
                 android:textColor="@color/white"
                 android:textSize="14dp"
                 android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvVendaNomeCliente" />
 
             <TextView

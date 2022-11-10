@@ -29,12 +29,8 @@ public class ListClientes extends AppCompatActivity {
     private LinearLayout llAdicionarCliente;
     private ListView listViewClientes;
     private AdapterCliente adapter;
-    private GestureDetector gestureDetector;
     private ArrayList<Cliente> listaDinamicaClientes;
     private ArrayList<String> arrayList;
-
-    private static final int LIMITE_SWIPE = 100;
-    private static final int LIMITE_VELOCIDADE = 100;
 
     BancoDadosCliente db = new BancoDadosCliente(this);
 
@@ -44,35 +40,6 @@ public class ListClientes extends AppCompatActivity {
     public static final int RESULT_ALT_CLIENTE = 202;
 
     private int viewCounter = 0;
-
-    GestureDetector.SimpleOnGestureListener gestureListener = new GestureDetector.SimpleOnGestureListener() {
-        @Override
-        // Método do Swipe
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            float diferencaX = e2.getX() - e1.getX();
-            if(Math.abs(diferencaX) > LIMITE_SWIPE && Math.abs(velocityX) > LIMITE_VELOCIDADE){
-                if(diferencaX > 0){
-                    Log.i("MOVIMENTO", "Movimento para a direita");
-                }
-                else{
-                    Log.i("MOVIMENTO", "Movimento para a esquerda");
-                }
-            }
-            return true;
-        }
-    };
-
-    @Override
-    public boolean onTouchEvent (MotionEvent event) {
-        return gestureDetector.onTouchEvent(event);
-    }
-
-    View.OnTouchListener touchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            return gestureDetector.onTouchEvent(event);
-        }
-    };
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -151,7 +118,6 @@ public class ListClientes extends AppCompatActivity {
 
         List<Cliente> clientes = db.listAllClientes();
         listaDinamicaClientes = new ArrayList<Cliente>();
-        gestureDetector = new GestureDetector(this, gestureListener);
 
         if (!clientes.isEmpty()) {
             for (Cliente c : clientes)
@@ -163,7 +129,6 @@ public class ListClientes extends AppCompatActivity {
         listViewClientes = (ListView) findViewById(R.id.listVClientes);
         listViewClientes.setDescendantFocusability(FOCUS_BLOCK_DESCENDANTS);
         listViewClientes.setAdapter(adapter);
-        listViewClientes.setOnTouchListener(touchListener);
 
         listViewClientes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

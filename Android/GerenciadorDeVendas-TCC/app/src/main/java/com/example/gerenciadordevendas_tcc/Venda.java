@@ -1,5 +1,7 @@
 package com.example.gerenciadordevendas_tcc;
 
+import androidx.annotation.Nullable;
+
 public class Venda {
 
     private int id;

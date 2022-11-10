@@ -114,6 +114,8 @@
                 android:layout_width="330dp"
                 android:layout_height="45dp"
                 android:background="@drawable/cardbg_roundcorners_lightgray"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:gravity="center_horizontal|center"
                 android:orientation="horizontal">
 
@@ -131,8 +133,9 @@
                     android:layout_marginRight="5dp"
                     android:backgroundTint="@color/light_gray_01"
                     android:ems="10"
-                    android:inputType="number"
                     android:gravity="center|start"
+                    android:inputType="number"
+                    android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="16dp"
                     android:textStyle="bold" />
@@ -142,6 +145,60 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_baseline_add_24_white" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textValorProdutoVenda"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="2dp"
+                android:text="Valor Unitário"
+                android:textColor="@color/light_gray_01"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/llValorProdutoNovaVenda"
+                android:layout_width="330dp"
+                android:layout_height="45dp"
+                android:background="@drawable/cardbg_roundcorners_lightgray"
+                android:gravity="center_horizontal|center"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:id="@+id/tvCifraValorProdutoVenda"
+                    android:layout_width="25dp"
+                    android:layout_height="45dp"
+                    android:layout_marginLeft="5dp"
+                    android:backgroundTint="@color/light_gray_01"
+                    android:ems="10"
+                    android:gravity="center|start"
+                    android:text="R$ "
+                    android:textColor="@color/white"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/editValorProdutoVenda"
+                    android:layout_width="270dp"
+                    android:layout_height="45dp"
+                    android:backgroundTint="@color/light_gray_01"
+                    android:ems="10"
+                    android:gravity="center|start"
+                    android:inputType="number"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:hint="0,00"
+                    android:textStyle="bold"
+                    android:importantForAutofill="no" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_baseline_edit_24_white" />
 
             </LinearLayout>
 
@@ -184,32 +241,39 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/cardbg_roundcorners_lightgray" />
 
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="?android:attr/listDivider" />
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="330dp"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="4dp">
 
                         <ImageView
                             android:id="@+id/imgIgualNovaVenda"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
+                            android:layout_marginLeft="14dp"
                             android:src="@drawable/ic_baseline_drag_handle_24_white"
-                            android:layout_marginLeft="20dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:id="@+id/tvCifraValorTotalVenda"
-                            android:layout_width="wrap_content"
+                            android:layout_width="20dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="14dp"
                             android:text="R$ "
                             android:textColor="@color/white"
-                            android:textSize="15dp"
+                            android:textSize="14dp"
                             android:textStyle="bold"
-                            android:layout_marginLeft="20dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toEndOf="@id/imgIgualNovaVenda"
+                            app:layout_constraintTop_toTopOf="parent"
                             tools:layout_editor_absoluteX="62dp" />
 
                         <TextView
@@ -218,7 +282,7 @@
                             android:layout_height="wrap_content"
                             android:text="0,00"
                             android:textColor="@color/white"
-                            android:textSize="15dp"
+                            android:textSize="14dp"
                             android:textStyle="bold"
                             app:layout_constraintStart_toEndOf="@+id/tvCifraValorTotalVenda"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -229,23 +293,23 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:text="0"
-                            android:textColor="@color/white"
-                            android:textSize="15dp"
-                            android:textStyle="bold"
                             android:textAlignment="textEnd"
+                            android:textColor="@color/white"
+                            android:textSize="14dp"
+                            android:textStyle="bold"
                             app:layout_constraintStart_toEndOf="@id/tvValorTotalVenda"
-                            app:layout_constraintBottom_toBottomOf="parent"/>
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:id="@+id/tvProdutosNovaVenda"
                             android:layout_width="80dp"
                             android:layout_height="wrap_content"
-                            android:text=" Produtos"
+                            android:text=" Itens"
                             android:textColor="@color/white"
-                            android:textSize="15dp"
+                            android:textSize="14dp"
                             android:textStyle="bold"
-                            app:layout_constraintStart_toEndOf="@id/tvQtdTotalVenda"
-                            app:layout_constraintBottom_toBottomOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/tvQtdTotalVenda" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

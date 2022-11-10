@@ -1,8 +1,11 @@
 package com.example.gerenciadordevendas_tcc;
 
+import android.util.Log;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class DateCustomText {
@@ -118,5 +121,21 @@ public class DateCustomText {
         }
 
         return customTime;
+    }
+
+    public static String getActualDateTime () {
+        GregorianCalendar gc = new GregorianCalendar();
+        Date d = Calendar.getInstance().getTime();
+        String now = "";
+        gc.setTime(d);
+        now =   gc.get(Calendar.YEAR) + "-" +
+                gc.get(Calendar.MONTH) + "-" +
+                gc.get(Calendar.DAY_OF_MONTH) + " " +
+                gc.get(Calendar.HOUR) + ":" +
+                gc.get(Calendar.MINUTE) + ":" +
+                gc.get(Calendar.SECOND);
+        Log.e("INFO GET CUSTOM TIME", now + "////\n// " + d);
+
+        return now;
     }
 }
