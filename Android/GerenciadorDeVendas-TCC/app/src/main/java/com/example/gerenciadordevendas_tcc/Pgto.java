@@ -7,13 +7,14 @@ public class Pgto {
     private FormaPgto formaPgto;
     private Double valor;
     private String data;
+    private Double juros;
     private int parcelas;
 
     public Pgto () {
 
     }
 
-    public Pgto (int _id, Cliente _cliente, FormaPgto _formaPgto, Double _valor, String _data, int _parcelas) {
+    public Pgto (int _id, Cliente _cliente, FormaPgto _formaPgto, Double _valor, String _data, Double _juros, int _parcelas) {
         this.id = _id;
         this.cliente = _cliente;
         this.formaPgto = _formaPgto;
@@ -22,7 +23,7 @@ public class Pgto {
         this.parcelas = _parcelas;
     }
 
-    public Pgto (Cliente _cliente, FormaPgto _formaPgto, Double _valor, String _data, int _parcelas) {
+    public Pgto (Cliente _cliente, FormaPgto _formaPgto, Double _valor, String _data, Double _juros, int _parcelas) {
         this.cliente = _cliente;
         this.formaPgto = _formaPgto;
         this.valor = _valor;
@@ -68,6 +69,14 @@ public class Pgto {
 
     public void setData (String data) {
         this.data = data;
+    }
+
+    public Double getJuros() {
+        return juros;
+    }
+
+    public void setJuros(Double juros) {
+        this.juros = juros;
     }
 
     public int getParcelas () {

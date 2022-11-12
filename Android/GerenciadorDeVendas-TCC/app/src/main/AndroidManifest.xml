@@ -41,6 +41,8 @@
         <activity android:name=".AddVenda"
             android:windowSoftInputMode="stateHidden"/>
 
+        <activity android:name=".AddVendaDetails" />
+
         <activity android:name=".ListVendas"
             />
 

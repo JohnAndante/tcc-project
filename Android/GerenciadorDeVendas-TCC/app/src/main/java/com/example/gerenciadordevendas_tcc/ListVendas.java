@@ -198,8 +198,8 @@ public class ListVendas extends AppCompatActivity {
 
     private void addDefaultClientes () {
         // Adiciona os clientes usados em teste
-        db.addCliente(new Cliente(901, "Clieiton costa", "(44) 9 9951-0032"));
-        db.addCliente(new Cliente(902, "Maria dos Penhados", "(44) 9 8456-8774"));
+        db.addCliente(new Cliente(0, "Clieiton costa", "(44) 9 9951-0032"));
+        db.addCliente(new Cliente(1, "Maria dos Penhados", "(44) 9 8456-8774"));
     }
 
     private boolean checkFormaPgtos () {
@@ -419,8 +419,8 @@ public class ListVendas extends AppCompatActivity {
 
     private void addDefaultVendas () {
         // adicionar a venda
-        db.addVenda(new Venda(1, "01/10/2022 08:20:00", 139.80, db.selectCliente(1), null ));
-        db.addVenda(new Venda(2, "02/10/2022 10:45:00", 139.80, db.selectCliente(2), null ));
+        db.addVenda(new Venda(1, "2022-10-01 08:20:00", 139.80, db.selectCliente(0), null ));
+        db.addVenda(new Venda(2, "2022-04-05 18:40:00", 139.80, db.selectCliente(1), null ));
     }
 
     private void addDefaultProdVenda () {

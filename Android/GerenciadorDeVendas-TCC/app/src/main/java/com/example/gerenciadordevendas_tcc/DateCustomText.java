@@ -15,7 +15,7 @@ public class DateCustomText {
         String dayWeek = "";
         GregorianCalendar gc = new GregorianCalendar();
         try {
-            gc.setTime(new SimpleDateFormat("dd/MM/yyy HH:mm:ss").parse(date));
+            gc.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(date));
             switch (gc.get(Calendar.DAY_OF_WEEK)) {
                 case Calendar.SUNDAY:
                     dayWeek = "Domingo";
@@ -49,7 +49,7 @@ public class DateCustomText {
         String monthName = "";
         GregorianCalendar gc = new GregorianCalendar();
         try {
-            gc.setTime(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(date));
+            gc.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(date));
             switch (gc.get(Calendar.MONTH)) {
                 case Calendar.JANUARY:
                     monthName = "Janeiro";
@@ -98,7 +98,7 @@ public class DateCustomText {
         GregorianCalendar gc = new GregorianCalendar();
         String extenseDate = "";
         try {
-            gc.setTime(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(date));
+            gc.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(date));
             extenseDate = getWeekDay(date) + ", " +
                     gc.get(Calendar.DAY_OF_MONTH) + " de " +
                     getMonthName(date) + " de " +
@@ -114,7 +114,7 @@ public class DateCustomText {
         GregorianCalendar gc = new GregorianCalendar();
         String customTime = "";
         try {
-            gc.setTime(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(date));
+            gc.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(date));
             customTime = gc.get(Calendar.HOUR) + "h" + gc.get(Calendar.MINUTE);
         } catch (ParseException e) {
             e.printStackTrace();

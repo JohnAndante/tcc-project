@@ -55,7 +55,6 @@ public class ViewVenda extends AppCompatActivity {
 
         Cliente cliente = new Cliente();
         Pgto pgto = new Pgto();
-        Produto produto = new Produto();
         arrayListProdVenda = new ArrayList<ProdVenda>();
 
         initTextViews();
@@ -78,19 +77,7 @@ public class ViewVenda extends AppCompatActivity {
                     arrayListProdVenda.add(pv);
             }
 
-            // retirar SDF adicionais se não tiverem uso
-            SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-            SimpleDateFormat tf = new SimpleDateFormat("HH:mm", Locale.getDefault());
-            SimpleDateFormat dtf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-
             String dataVenda = venda.getData();
-
-            Date dateVenda = new Date();
-            try {
-                dateVenda = dtf.parse(dataVenda);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
 
             textDataVenda.setText(DateCustomText.getExtenseDate(dataVenda));
             textHoraVenda.setText(DateCustomText.getCustomTime(dataVenda));
@@ -153,7 +140,8 @@ public class ViewVenda extends AppCompatActivity {
         NovaVenda.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(ViewVenda.this, AddVenda.class);
+                startActivity(intent);
             }
         });
 
@@ -165,7 +153,7 @@ public class ViewVenda extends AppCompatActivity {
         });
     }
 
-    public static void justifyListViewHeightBasedOnChildren (ListView listView) {
+    private void justifyListViewHeightBasedOnChildren (ListView listView) {
 
         ListAdapter listadp = listView.getAdapter();
         if (listadp != null) {

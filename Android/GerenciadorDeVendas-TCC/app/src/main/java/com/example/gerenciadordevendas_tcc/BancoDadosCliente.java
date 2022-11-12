@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     private static final String VENDA_TABLE         = "venda_tb";
     private static final String PROD_VENDA_TABLE    = "prod_venda_tb";
     private static final String PGTO_TABLE          = "pgto_tb";
+    private static final String PARC_TABLE          = "parc_tb";
 
     // Colunas da tabela cliente
     private static final String CLIENTE_ID          = "id_cliente";
@@ -121,8 +123,8 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     private static final String PGTO_FORMA_PGTO     = "id_forma_pgto";
     private static final String PGTO_VALOR          = "valor_pgto";
     private static final String PGTO_DATA           = "data_pgto";
+    private static final String PGTO_JUROS          = "juros";
     private static final String PGTO_PARC           = "parcelas";
-
 
     // Strings para query de criação
     private String CLIENTE_QUERY        = "SELECT * FROM " + CLIENTE_TABLE;
@@ -149,21 +151,6 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         createTables();
-        db.execSQL(CLIENTE_QUERY);
-        db.execSQL(TELEFONE_QUERY);
-        db.execSQL(ENDERECO_QUERY);
-        db.execSQL(CIDADE_QUERY);
-        db.execSQL(ESTADO_QUERY);
-        db.execSQL(MARCA_QUERY);
-        db.execSQL(LINHA_QUERY);
-        db.execSQL(CATEGORIA_QUERY);
-        db.execSQL(SUBCAT_QUERY);
-        db.execSQL(PRODUTO_QUERY);
-        db.execSQL(PROD_SUBCAT_QUERY);
-        db.execSQL(FORMA_PGTO_QUERY);
-        db.execSQL(VENDA_QUERY);
-        db.execSQL(PROD_VENDA_QUERY);
-        db.execSQL(PGTO_QUERY);
     }
 
     @Override
@@ -281,33 +268,23 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                 + PGTO_FORMA_PGTO    + " INTEGER, "
                 + PGTO_VALOR         + " DECIMAL(8, 2), "
                 + PGTO_DATA          + " TEXT,"
+                + PGTO_JUROS         + " DECIMAL(8, 2), "
                 + PGTO_PARC          + " INTEGER,"
                 + "FOREIGN KEY ("    + PGTO_CLIENTE     + ") "
                 + "REFERENCES "      + CLIENTE_TABLE    + " (" + PGTO_CLIENTE       + "), "
                 + "FOREIGN KEY ("    + PGTO_FORMA_PGTO  + ") "
                 + "REFERENCES "      + FORMA_PGTO_TABLE + " (" + PGTO_FORMA_PGTO    + "))";
 
-        Log.i("DATABASE INFO", CLIENTE_QUERY);
-        Log.i("DATABASE INFO", TELEFONE_QUERY);
-        Log.i("DATABASE INFO", ENDERECO_QUERY);
-        Log.i("DATABASE INFO", CIDADE_QUERY);
-        Log.i("DATABASE INFO", ESTADO_QUERY);
-        Log.i("DATABASE INFO", MARCA_QUERY);
-        Log.i("DATABASE INFO", LINHA_QUERY);
-        Log.i("DATABASE INFO", CATEGORIA_QUERY);
-        Log.i("DATABASE INFO", SUBCAT_QUERY);
-        Log.i("DATABASE INFO", PRODUTO_QUERY);
-        Log.i("DATABASE INFO", PROD_SUBCAT_QUERY);
-
     }
 
     // CRUD CLIENTE ////////////////////////////////////////////////////////////////////////////
 
-    void addCliente (Cliente cliente) {
+    void addCliente (@NonNull Cliente cliente) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-
+        if (cliente.getId() >= 0)
+            values.put(CLIENTE_ID, cliente.getId());
         values.put(CLIENTE_NOME, cliente.getNome());
         values.put(CLIENTE_TELEFONE, cliente.getTelefone());
 
@@ -315,7 +292,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.close();
     }
 
-    void deleteCliente (Cliente cliente) {
+    void deleteCliente (@NonNull Cliente cliente) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.delete(CLIENTE_TABLE, CLIENTE_ID + " = ? ", new String[] {
@@ -376,7 +353,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return cliente1;
     }
 
-    void updateCliente (Cliente cliente) {
+    void updateCliente (@NonNull Cliente cliente) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -470,7 +447,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
     // CRUD ENDEREÇO ////////////////////////////////////////////////////////////////////////////
 
-    void addTelefone (Telefone telefone) {
+    void addTelefone (@NonNull Telefone telefone) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -482,7 +459,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.close();
     }
 
-    void deleteTelefone (Telefone telefone) {
+    void deleteTelefone (@NonNull Telefone telefone) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.delete(TELEFONE_TABLE, TELEFONE_ID + " = ? ", new String[]{
@@ -500,7 +477,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.close();
     }
 
-    void deleteTelefoneByCliente (Cliente cliente) {
+    void deleteTelefoneByCliente (@NonNull Cliente cliente) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.delete(TELEFONE_TABLE, TELEFONE_CLIENTE + " = ? ", new String[] {
@@ -538,7 +515,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return telefone1;
     }
 
-    public Telefone selectTelefoneFirst(Cliente cliente) {
+    public Telefone selectTelefoneFirst(@NonNull Cliente cliente) {
         SQLiteDatabase db = this.getWritableDatabase();
         Telefone telefone = new Telefone();
 
@@ -567,7 +544,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return telefone;
     }
 
-    void updateTelefone (Telefone telefone) {
+    void updateTelefone (@NonNull Telefone telefone) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -640,7 +617,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
     // CRUD ESTADO //////////////////////////////////////////////////////////////////////////////
 
-    public void addEstado (Estado estado) {
+    public void addEstado (@NonNull Estado estado) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -652,7 +629,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void deleteEstado (Estado estado) {
+    public void deleteEstado (@NonNull Estado estado) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.delete(ESTADO_TABLE, ESTADO_ID + " = ? ", new String[]{
@@ -702,7 +679,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return estado;
     }
 
-    public void updateEstado (Estado estado) {
+    public void updateEstado (@NonNull Estado estado) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -793,7 +770,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
     // CRUD CIDADE //////////////////////////////////////////////////////////////////////////////
 
-    public void addCidade (Cidade cidade) {
+    public void addCidade (@NonNull Cidade cidade) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -805,7 +782,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void deleteCidade (Cidade cidade) {
+    public void deleteCidade (@NonNull Cidade cidade) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.delete(CIDADE_TABLE, CIDADE_ID + " = ? ", new String[]{
@@ -1012,8 +989,6 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         );
 
         Endereco endereco = new Endereco();
-        Cidade cidade = new Cidade();
-        Cliente cliente = new Cliente();
 
         if (cursor != null) {
             cursor.moveToFirst();
@@ -1025,8 +1000,8 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                     cursor.getString(3),
                     cursor.getString(4),
                     cursor.getString(5),
-                    cidade = selectCidade(cursor.getInt(6)),
-                    cliente = selectCliente(cursor.getInt(7))
+                    selectCidade(cursor.getInt(6)),
+                    selectCliente(cursor.getInt(7))
 
             );
         } else {
@@ -1051,8 +1026,6 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         Cursor c = db.rawQuery(QUERY, null);
 
         Endereco endereco = new Endereco();
-        Cidade cidade = new Cidade();
-        Cliente cliente = new Cliente();
 
         if (c.moveToFirst()) {
             endereco = new Endereco(
@@ -1062,8 +1035,8 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                     c.getString(3),
                     c.getString(4),
                     c.getString(5),
-                    cidade = selectCidade(c.getInt(6)),
-                    cliente = selectCliente(c.getInt(7)));
+                    selectCidade(c.getInt(6)),
+                    selectCliente(c.getInt(7)));
 
             Log.e("INFO DB SELECT ENDERECO", String.valueOf(endereco.getId()) + " " + endereco.getCliente().getNome());
         } else {
@@ -2454,7 +2427,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
 
         if (_venda.getId() >= 0) {
-            Log.e("INFO ADD VENDA", "MAIOR OU IGUAL A ZERO");
+            Log.e("INFO ADD VENDA", "MAIOR OU IGUAL A ZERO [[[ " + String.valueOf(_venda.getId()) + " ]]]");
             values.put(VENDA_ID, _venda.getId());
         } else {
             Log.e("INFO ADD VENDA", "NÃO ENTROU NO IF");
@@ -2540,7 +2513,11 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
             cursor.moveToFirst();
 
         Cliente c = selectCliente(cursor.getInt(3));
-        Pgto p = selectPgto(cursor.getInt(4));
+        Pgto p = new Pgto();
+        if (cursor.getInt(4) >= 0)
+            p = selectPgto(cursor.getInt(4));
+        else
+            p = null;
 
         Venda venda = new Venda(
                 cursor.getInt(0),
@@ -2706,7 +2683,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     public List<ProdVenda> listProdVendaByVenda (Venda _venda) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        List<ProdVenda> prodVendas = new ArrayList<ProdVenda>();
+        List<ProdVenda> prodVendas = new ArrayList<>();
 
         String QUERY = "SELECT * FROM " + PROD_VENDA_TABLE +
                 " WHERE " + PROD_VENDA_VENDA + " == " + _venda.getId();
@@ -2750,7 +2727,6 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return qtd;
     }
 
-
     // CRUD PAGAMENTO ///////////////////////////////////////////////////////////////////////////
 
     public void addPgto (Pgto _pgto) {
@@ -2762,6 +2738,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         values.put(PGTO_FORMA_PGTO, _pgto.getFormaPgto().getId());
         values.put(PGTO_VALOR, _pgto.getValor());
         values.put(PGTO_DATA, _pgto.getData());
+        values.put(PGTO_JUROS, _pgto.getJuros());
         values.put(PGTO_PARC, _pgto.getParcelas());
 
         db.insert(PGTO_TABLE, null, values);
@@ -2795,7 +2772,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
         Cursor cursor = db.query( PGTO_TABLE,
                 new String[] {
-                        PGTO_ID, PGTO_CLIENTE, PGTO_FORMA_PGTO, PGTO_VALOR, PGTO_DATA, PGTO_PARC },
+                        PGTO_ID, PGTO_CLIENTE, PGTO_FORMA_PGTO, PGTO_VALOR, PGTO_DATA, PGTO_JUROS, PGTO_PARC },
                 PGTO_ID + " = ?",
                 new String[] { String.valueOf(_id) },
                 null,
@@ -2816,7 +2793,8 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                 fp,
                 cursor.getDouble(3),
                 cursor.getString(4),
-                cursor.getInt(5)
+                cursor.getDouble(5),
+                cursor.getInt(6)
         );
 
         db.close();
@@ -2844,7 +2822,8 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                 fp,
                 cursor.getDouble(3),
                 cursor.getString(4),
-                cursor.getInt(5)
+                cursor.getDouble(5),
+                cursor.getInt(6)
         );
 
         db.close();
@@ -2860,6 +2839,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         values.put(PGTO_FORMA_PGTO, _pgto.getFormaPgto().getId());
         values.put(PGTO_VALOR, _pgto.getValor());
         values.put(PGTO_DATA, _pgto.getData());
+        values.put(PGTO_JUROS, _pgto.getJuros());
         values.put(PGTO_PARC, _pgto.getParcelas());
 
         db.update(PGTO_TABLE, values, PGTO_ID + " = ?",
@@ -2872,7 +2852,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     public List<Pgto> listAllPgtosOrdered() {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        List<Pgto> pgtos = new ArrayList<Pgto>();
+        List<Pgto> pgtos = new ArrayList<>();
 
         String QUERY = "SELECT * FROM " + PGTO_TABLE +
                 " ORDER BY " + PGTO_DATA;
@@ -2890,7 +2870,8 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                         fp,
                         cursor.getDouble(3),
                         cursor.getString(4),
-                        cursor.getInt(5)
+                        cursor.getDouble(5),
+                        cursor.getInt(6)
                 );
 
                 pgtos.add(pgto);
@@ -2905,7 +2886,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     public List<Pgto> listAllPgtosByCliente (Cliente _cliente) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        List<Pgto> pgtos = new ArrayList<Pgto>();
+        List<Pgto> pgtos = new ArrayList<>();
 
         String QUERY = "SELECT * FROM " + PGTO_TABLE +
                 " WHERE " + PGTO_CLIENTE + " == " + _cliente.getId() +
@@ -2924,7 +2905,8 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                         fp,
                         cursor.getDouble(3),
                         cursor.getString(4),
-                        cursor.getInt(5)
+                        cursor.getDouble(5),
+                        cursor.getInt(6)
                 );
 
                 pgtos.add(pgto);
@@ -2939,7 +2921,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     public List<Pgto> listAllPgtosByDate (String _date) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        List<Pgto> pgtos = new ArrayList<Pgto>();
+        List<Pgto> pgtos = new ArrayList<>();
 
         String QUERY = "SELECT * FROM " + PGTO_TABLE +
                 " WHERE " + PGTO_DATA + " == " + _date +
@@ -2958,7 +2940,8 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                         fp,
                         cursor.getDouble(3),
                         cursor.getString(4),
-                        cursor.getInt(5)
+                        cursor.getDouble(5),
+                        cursor.getInt(6)
                 );
 
                 pgtos.add(pgto);

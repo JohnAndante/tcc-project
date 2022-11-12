@@ -278,6 +278,18 @@ public class AddVenda extends AppCompatActivity {
                 }
             }
         });
+
+        btAvancar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (clienteSelecionado != null && vendaRascunho != null && !listaDinamicaProdVenda.isEmpty()) {
+                    saveVendaAndProdVenda();
+                    startNextAddVendaActivity();
+                } else {
+                    Log.e("INFO BT AVANÇAR", "/// não entrou no if " + String.valueOf(clienteSelecionado) + " " + String.valueOf(vendaRascunho) + " " + String.valueOf(listaDinamicaProdVenda));
+                }
+            }
+        });
     }
 
     private void initTextViews () {
@@ -336,6 +348,7 @@ public class AddVenda extends AppCompatActivity {
 
     private void criaVenda () {
         vendaRascunho = new Venda();
+        vendaRascunho.setId(db.selectMaxVenda().getId() + 1);
         vendaRascunho.setData(DateCustomText.getActualDateTime());
         vendaRascunho.setCliente(clienteSelecionado);
 
@@ -360,7 +373,7 @@ public class AddVenda extends AppCompatActivity {
             valorTotal += (pv.getValor_unit() * pv.getQtd());
             qtdProdutos += pv.getQtd();
         }
-
+        vendaRascunho.setValor(valorTotal);
         tvValorTotalProdutosVenda.setText(MaskEditUtil.doubleToMoneyValue(valorTotal));
         tvQtdProdutosVenda.setText(String.valueOf(qtdProdutos));
     }
@@ -383,6 +396,24 @@ public class AddVenda extends AppCompatActivity {
             Toast.makeText(AddVenda.this, "Insira uma quantidade válida para o produto selecionado", Toast.LENGTH_LONG);
         }
         return ok;
+    }
+
+    private void saveVendaAndProdVenda () {
+        db.addVenda(vendaRascunho);
+        vendaRascunho = db.selectMaxVenda();
+        for (ProdVenda p : listaDinamicaProdVenda) {
+            db.addProdVenda(p);
+        }
+    }
+
+    private void startNextAddVendaActivity () {
+        Intent intent = new Intent(AddVenda.this, AddVendaDetails.class);
+        Bundle bundle = new Bundle();
+
+        bundle.putInt("ID", vendaRascunho.getId());
+        intent.putExtras(bundle);
+
+        startActivity(intent);
     }
 
     public static void justifyListViewHeightBasedOnChildren (ListView listView) {
