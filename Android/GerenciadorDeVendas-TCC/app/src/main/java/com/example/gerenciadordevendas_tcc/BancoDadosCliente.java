@@ -151,6 +151,21 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         createTables();
+        db.execSQL(CLIENTE_QUERY);
+        db.execSQL(TELEFONE_QUERY);
+        db.execSQL(ENDERECO_QUERY);
+        db.execSQL(CIDADE_QUERY);
+        db.execSQL(ESTADO_QUERY);
+        db.execSQL(MARCA_QUERY);
+        db.execSQL(LINHA_QUERY);
+        db.execSQL(CATEGORIA_QUERY);
+        db.execSQL(SUBCAT_QUERY);
+        db.execSQL(PRODUTO_QUERY);
+        db.execSQL(PROD_SUBCAT_QUERY);
+        db.execSQL(FORMA_PGTO_QUERY);
+        db.execSQL(VENDA_QUERY);
+        db.execSQL(PROD_VENDA_QUERY);
+        db.execSQL(PGTO_QUERY);
     }
 
     @Override
@@ -236,13 +251,13 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                 + "REFERENCES "      + SUBCAT_TABLE       + " (" + PROD_SUBCAT_SUBCAT + "))";
 
         FORMA_PGTO_QUERY    = "CREATE TABLE " + FORMA_PGTO_TABLE + "( "
-                + FORMA_PGTO_ID      + " INTEGER, "
+                + FORMA_PGTO_ID      + " INTEGER PRIMARY KEY, "
                 + FORMA_PGTO_DESC    + " TEXT, "
                 + FORMA_PGTO_PRAZO   + " INTEGER, "
                 + FORMA_PGTO_PARC    + " INTEGER )";
 
         VENDA_QUERY         = "CREATE TABLE " + VENDA_TABLE + "( "
-                + VENDA_ID           + " INTEGER, "
+                + VENDA_ID           + " INTEGER PRIMARY KEY, "
                 + VENDA_DATA         + " TEXT, "
                 + VENDA_VALOR        + " DECIMAL(8, 2), "
                 + VENDA_CLIENTE      + " INTEGER, "
@@ -263,7 +278,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                 + "REFERENCES "      + PRODUTO_TABLE    + " (" + PROD_VENDA_PROD    + "))";
 
         PGTO_QUERY          = "CREATE TABLE " + PGTO_TABLE + "( "
-                + PGTO_ID            + " INTEGER, "
+                + PGTO_ID            + " INTEGER PRIMARY KEY, "
                 + PGTO_CLIENTE       + " INTEGER, "
                 + PGTO_FORMA_PGTO    + " INTEGER, "
                 + PGTO_VALOR         + " DECIMAL(8, 2), "
@@ -274,6 +289,8 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                 + "REFERENCES "      + CLIENTE_TABLE    + " (" + PGTO_CLIENTE       + "), "
                 + "FOREIGN KEY ("    + PGTO_FORMA_PGTO  + ") "
                 + "REFERENCES "      + FORMA_PGTO_TABLE + " (" + PGTO_FORMA_PGTO    + "))";
+
+
 
     }
 
@@ -2399,6 +2416,38 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
         String QUERY = "SELECT * FROM " + FORMA_PGTO_TABLE +
                 " ORDER BY " + FORMA_PGTO_DESC;
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                FormaPgto formaPgto = new FormaPgto();
+
+                formaPgto.setId(cursor.getInt(0));
+                formaPgto.setDescricao(cursor.getString(1));
+                formaPgto.setPrazo(cursor.getInt(2));
+                formaPgto.setParcelavel(cursor.getInt(3));
+
+                formaPgtos.add(formaPgto);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return formaPgtos;
+    }
+
+    public List<FormaPgto> listFormaPgtoByDesc (String _descricao) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<FormaPgto> formaPgtos = new ArrayList<FormaPgto>();
+
+        String QUERY = " SELECT " +
+                " F." + FORMA_PGTO_ID + ", F." + FORMA_PGTO_DESC +
+                ", F." + FORMA_PGTO_PRAZO + ", F." + FORMA_PGTO_PARC +
+                " FROM " + FORMA_PGTO_TABLE + " F" +
+                " WHERE P." + FORMA_PGTO_DESC + " LIKE '%" + _descricao + "%'" +
+                " ORDER BY P." + FORMA_PGTO_DESC;
+
         Cursor cursor = db.rawQuery(QUERY, null);
 
         if (cursor.moveToFirst()) {

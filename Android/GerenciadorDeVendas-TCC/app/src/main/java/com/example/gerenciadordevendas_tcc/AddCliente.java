@@ -16,7 +16,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,8 +45,6 @@ public class AddCliente extends AppCompatActivity {
 
 
     // Variáveis utilizadas no spinner do estado, ajustar depois para seguir o padrão
-    private ArrayList<String> arrayListEstado;
-    private ArrayList<String> arrayListCidade;
     Dialog dialogEstado;
     Dialog dialogCidade;
     private Estado estadoSelecionado = null;
@@ -62,23 +59,15 @@ public class AddCliente extends AppCompatActivity {
     private AdapterEstado adapterEstado;
     private ListView listViewCidades;
     private ListView listViewEstados;
-    private CharSequence charSequence = null;
-
-    private LinearLayout llButtons;
 
     BancoDadosCliente db = new BancoDadosCliente(this);
 
     int id_cliente;
 
-    private Boolean buttonsVisibility = true;
-    private Boolean isEditTextFocused = false;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_cliente);
-
-        llButtons = findViewById(R.id.llBotoesCliente);
 
         initButtonsCfg();
         initButtonsOnclick();
@@ -122,8 +111,8 @@ public class AddCliente extends AppCompatActivity {
     }
 
     private void initButtonsCfg(){
-        Salvar   = (Button) findViewById(R.id.btClienteSalvar);
-        Cancelar = (Button) findViewById(R.id.btClienteCancelar);
+        Salvar   = findViewById(R.id.btClienteSalvar);
+        Cancelar = findViewById(R.id.btClienteCancelar);
     }
 
     private void initButtonsOnclick(){
@@ -179,7 +168,7 @@ public class AddCliente extends AppCompatActivity {
                         e.setRua(rua);
                         e.setNum(num);
                         e.setComp(compl);
-                        e.setRef(ref);
+                        e.setRef(null);
                         e.setBairro(bairro);
                         e.setCidade(cidade);
                         e.setCliente(c);
@@ -200,6 +189,7 @@ public class AddCliente extends AppCompatActivity {
                     String telefone = editTextTelefone.getText().toString();
 
                     Cliente c = new Cliente(nome, telefone);
+                    c.setId(db.selectMaxCliente().getId() + 1);
                     db.addCliente(c);
 
                     c = db.selectMaxCliente();
@@ -219,7 +209,7 @@ public class AddCliente extends AppCompatActivity {
                         e.setRua(rua);
                         e.setNum(num);
                         e.setComp(compl);
-                        e.setRef(ref);
+                        e.setRef(null);
                         e.setBairro(bairro);
                         e.setCidade(cidade);
                         e.setCliente(c);
@@ -292,14 +282,14 @@ public class AddCliente extends AppCompatActivity {
     }
 
     private void initEditTexts(){
-        editTextNome        = (EditText) findViewById(R.id.editNomeCliente);
-        editTextTelefone    = (EditText) findViewById(R.id.editTelefoneCliente);
-        editTextRua         = (EditText) findViewById(R.id.editRuaEndereco);
-        editTextNum         = (EditText) findViewById(R.id.editNumEndereco);
-        editTextCompl       = (EditText) findViewById(R.id.editComplEndereco);
-        editTextBairro      = (EditText) findViewById(R.id.editBairroEndereco);
-        textUf              = (TextView) findViewById(R.id.editUfEndereco);
-        textCidade          = (TextView) findViewById(R.id.editCidadeEndereco);
+        editTextNome        = findViewById(R.id.editNomeCliente);
+        editTextTelefone    = findViewById(R.id.editTelefoneCliente);
+        editTextRua         = findViewById(R.id.editRuaEndereco);
+        editTextNum         = findViewById(R.id.editNumEndereco);
+        editTextCompl       = findViewById(R.id.editComplEndereco);
+        editTextBairro      = findViewById(R.id.editBairroEndereco);
+        textUf              = findViewById(R.id.editUfEndereco);
+        textCidade          = findViewById(R.id.editCidadeEndereco);
     }
 
     private void initEditOnFocus(){
@@ -374,11 +364,10 @@ public class AddCliente extends AppCompatActivity {
             public void onClick(View view) {
 
                 estados = db.listAllEstadosOrdered();
-                listaDinamicaEstado = new ArrayList<Estado>();
+                listaDinamicaEstado = new ArrayList<>();
 
                 if (!estados.isEmpty()) {
-                    for (Estado e : estados)
-                        listaDinamicaEstado.add(e);
+                    listaDinamicaEstado.addAll(estados);
                 }
 
                 dialogEstado = new Dialog(AddCliente.this);
@@ -391,10 +380,9 @@ public class AddCliente extends AppCompatActivity {
 
                 dialogEstado.show();
 
-                TextView tvEstado = dialogEstado.findViewById(R.id.tvSpinnerEstado);
                 EditText editEstado = dialogEstado.findViewById(R.id.editTextSpinnerEstado);
 
-                listViewEstados = (ListView) dialogEstado.findViewById(R.id.lvSpinnerEstado);
+                listViewEstados = dialogEstado.findViewById(R.id.lvSpinnerEstado);
                 listViewEstados.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
                 listViewEstados.setAdapter(adapterEstado);
 
@@ -430,8 +418,8 @@ public class AddCliente extends AppCompatActivity {
                             dialogEstado.dismiss();
                             cidadeDropdown();
                         } catch (Exception e) {
-                            Toast.makeText(getApplicationContext(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
-                            Log.e("ERROR", e.getMessage().toString());
+                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.e("ERROR", e.getMessage());
                         }
                     }
                 });
@@ -446,11 +434,10 @@ public class AddCliente extends AppCompatActivity {
             public void onClick(View view) {
 
                 cidades = db.listAllCidadesByEstado(estadoSelecionado);
-                listaDinamicaCidade = new ArrayList<Cidade>();
+                listaDinamicaCidade = new ArrayList<>();
 
                 if (!cidades.isEmpty()) {
-                    for (Cidade c : cidades)
-                        listaDinamicaCidade.add(c);
+                    listaDinamicaCidade.addAll(cidades);
                 }
 
                 dialogCidade = new Dialog(AddCliente.this);
@@ -463,10 +450,9 @@ public class AddCliente extends AppCompatActivity {
 
                 dialogCidade.show();
 
-                TextView textView = dialogCidade.findViewById(R.id.tvSpinnerCidade);
                 EditText editText = dialogCidade.findViewById(R.id.editTextSpinnerCidade);
 
-                listViewCidades = (ListView) dialogCidade.findViewById(R.id.lvSpinnerCidade);
+                listViewCidades = dialogCidade.findViewById(R.id.lvSpinnerCidade);
                 listViewCidades.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
                 listViewCidades.setAdapter(adapterCidade);
 
@@ -497,8 +483,8 @@ public class AddCliente extends AppCompatActivity {
                             cidadeSelecionada = (c);
                             dialogCidade.dismiss();
                         } catch (Exception e) {
-                            Toast.makeText(getApplicationContext(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
-                            Log.e("ERROR", e.getMessage().toString());
+                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.e("ERROR", e.getMessage());
                         }
                     }
                 });
@@ -508,9 +494,8 @@ public class AddCliente extends AppCompatActivity {
 
     private void atualizaListaCidades (CharSequence nome) {
         cidades = db.listAllCidadesByEstadoAndNome(estadoSelecionado, nome.toString());
-        listaDinamicaCidade = new ArrayList<Cidade>();
-        for (Cidade c : cidades)
-            listaDinamicaCidade.add(c);
+        listaDinamicaCidade = new ArrayList<>();
+        listaDinamicaCidade.addAll(cidades);
 
         adapterCidade = new AdapterCidade(dialogCidade.getContext(), 0, listaDinamicaCidade);
         listViewCidades.setAdapter(adapterCidade);
@@ -519,9 +504,8 @@ public class AddCliente extends AppCompatActivity {
 
     private void atualizaListaEstados (CharSequence nome) {
         estados = db.listAllEstadosByName(nome.toString());
-        listaDinamicaEstado = new ArrayList<Estado>();
-        for (Estado e : estados)
-            listaDinamicaEstado.add(e);
+        listaDinamicaEstado = new ArrayList<>();
+        listaDinamicaEstado.addAll(estados);
 
         adapterEstado = new AdapterEstado(dialogEstado.getContext(), 0, listaDinamicaEstado);
         listViewEstados.setAdapter(adapterEstado);

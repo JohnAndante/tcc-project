@@ -151,6 +151,13 @@ public class ViewVenda extends AppCompatActivity {
 
             }
         });
+
+        AdicionaPgto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startPgtoActivity();
+            }
+        });
     }
 
     private void justifyListViewHeightBasedOnChildren (ListView listView) {
@@ -168,6 +175,16 @@ public class ViewVenda extends AppCompatActivity {
             listView.setLayoutParams(params);
             listView.requestLayout();
         }
+    }
+
+    private void startPgtoActivity () {
+        Intent intent = new Intent(ViewVenda.this, AddVendaDetails.class);
+        Bundle bundle = new Bundle();
+
+        bundle.putInt("ID", venda.getId());
+        intent.putExtras(bundle);
+
+        startActivity(intent);
     }
 
 }

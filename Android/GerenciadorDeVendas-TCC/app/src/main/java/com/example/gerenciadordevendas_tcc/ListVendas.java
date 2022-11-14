@@ -198,8 +198,8 @@ public class ListVendas extends AppCompatActivity {
 
     private void addDefaultClientes () {
         // Adiciona os clientes usados em teste
-        db.addCliente(new Cliente(0, "Clieiton costa", "(44) 9 9951-0032"));
-        db.addCliente(new Cliente(1, "Maria dos Penhados", "(44) 9 8456-8774"));
+        db.addCliente(new Cliente(0, "Clieiton costa",      "(44) 9 9951-0032"));
+        db.addCliente(new Cliente(1, "Maria dos Penhados",  "(44) 9 8456-8774"));
     }
 
     private boolean checkFormaPgtos () {
@@ -218,8 +218,10 @@ public class ListVendas extends AppCompatActivity {
 
     private void addDefaultFormaPgtos () {
         // Adiciona as formas de pagamento utilizadas em teste
-        db.addFormaPgto(new FormaPgto(801, "Dinheiro", 0, 0));
-        db.addFormaPgto(new FormaPgto(802, "Cartão de Crédito", 0, 12));
+        db.addFormaPgto(new FormaPgto("Dinheiro",           0,  0));
+        db.addFormaPgto(new FormaPgto("Cartão de Crédito",  0,  12));
+        db.addFormaPgto(new FormaPgto("Cartão de Débito", 0, 0));
+        db.addFormaPgto(new FormaPgto("Pix", 0, 0));
     }
 
     // Produtos
@@ -263,18 +265,18 @@ public class ListVendas extends AppCompatActivity {
     private void addDefaultSubcats () {
         // Adiciona as subcategorias padrões para teste
         // teremos 9 subcategorias
-        db.addSubcat(new Subcat(1, "Colônia", db.selectCategoria(1)));
-        db.addSubcat(new Subcat(2, "Desodorante", db.selectCategoria(1)));
+        db.addSubcat(new Subcat(1, "Colônia",       db.selectCategoria(1)));
+        db.addSubcat(new Subcat(2, "Desodorante",   db.selectCategoria(1)));
 
-        db.addSubcat(new Subcat(3, "Blusa", db.selectCategoria(2)));
-        db.addSubcat(new Subcat(4, "Calça", db.selectCategoria(2)));
-        db.addSubcat(new Subcat(5, "Camiseta", db.selectCategoria(2)));
+        db.addSubcat(new Subcat(3, "Blusa",         db.selectCategoria(2)));
+        db.addSubcat(new Subcat(4, "Calça",         db.selectCategoria(2)));
+        db.addSubcat(new Subcat(5, "Camiseta",      db.selectCategoria(2)));
 
-        db.addSubcat(new Subcat(6, "Batom", db.selectCategoria(3)));
-        db.addSubcat(new Subcat(7, "Rímel", db.selectCategoria(3)));
+        db.addSubcat(new Subcat(6, "Batom",         db.selectCategoria(3)));
+        db.addSubcat(new Subcat(7, "Rímel",         db.selectCategoria(3)));
 
-        db.addSubcat(new Subcat(8, "Masculino", db.selectCategoria(4)));
-        db.addSubcat(new Subcat(9, "Unissex", db.selectCategoria(4)));
+        db.addSubcat(new Subcat(8, "Masculino",     db.selectCategoria(4)));
+        db.addSubcat(new Subcat(9, "Unissex",       db.selectCategoria(4)));
     }
 
     private boolean checkMarcas () {
@@ -315,11 +317,11 @@ public class ListVendas extends AppCompatActivity {
     private void addDefaultLinhas () {
         // Adiciona as linhas padrões para teste
         // teremos 4 linhas
-        db.addLinha(new Linha(1, "Kaiak", db.selectMarca(1)));
-        db.addLinha(new Linha(2, "Faces", db.selectMarca(1)));
+        db.addLinha(new Linha(1, "Kaiak",       db.selectMarca(1)));
+        db.addLinha(new Linha(2, "Faces",       db.selectMarca(1)));
 
-        db.addLinha(new Linha(3, "Athna", db.selectMarca(2)));
-        db.addLinha(new Linha(4, "Persephone", db.selectMarca(2)));
+        db.addLinha(new Linha(3, "Athna",       db.selectMarca(2)));
+        db.addLinha(new Linha(4, "Persephone",  db.selectMarca(2)));
     }
 
     private boolean checkProdutos () {

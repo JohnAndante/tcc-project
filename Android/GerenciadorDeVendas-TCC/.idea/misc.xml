@@ -10,19 +10,23 @@
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadorDeVendas-TCC/app/src/main/res/layout/activity_add_produto.xml" value="0.25" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadorDeVendas-TCC/app/src/main/res/layout/activity_add_venda.xml" value="0.37447916666666664" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadorDeVendas-TCC/app/src/main/res/layout/activity_add_venda_01.xml" value="0.40162271805273836" />
-        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadorDeVendas-TCC/app/src/main/res/layout/activity_add_venda_02.xml" value="0.33" />
+        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadorDeVendas-TCC/app/src/main/res/layout/activity_add_venda_02.xml" value="0.5" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadorDeVendas-TCC/app/src/main/res/layout/activity_add_venda_details.xml" value="0.33" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadorDeVendas-TCC/app/src/main/res/layout/activity_list_clients_zero.xml" value="0.37447916666666664" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadorDeVendas-TCC/app/src/main/res/layout/activity_list_produtos.xml" value="0.37447916666666664" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadorDeVendas-TCC/app/src/main/res/layout/activity_list_vendas.xml" value="0.33" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadorDeVendas-TCC/app/src/main/res/layout/activity_view_produto.xml" value="0.37447916666666664" />
-        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadorDeVendas-TCC/app/src/main/res/layout/activity_view_venda.xml" value="0.5810344827586207" />
+        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadorDeVendas-TCC/app/src/main/res/layout/activity_view_venda.xml" value="0.3996023856858847" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadorDeVendas-TCC/app/src/main/res/layout/card_cliente.xml" value="0.37447916666666664" />
+        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadorDeVendas-TCC/app/src/main/res/layout/card_estado.xml" value="0.18211752786220872" />
+        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadorDeVendas-TCC/app/src/main/res/layout/card_forma_pgto.xml" value="0.18161094224924013" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadorDeVendas-TCC/app/src/main/res/layout/card_produto.xml" value="0.6408544726301736" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadorDeVendas-TCC/app/src/main/res/layout/card_produto_venda.xml" value="0.1" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadorDeVendas-TCC/app/src/main/res/layout/card_produto_venda_2.xml" value="0.67" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadorDeVendas-TCC/app/src/main/res/layout/card_venda.xml" value="0.37447916666666664" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadorDeVendas-TCC/app/src/main/res/layout/spinner_cliente.xml" value="0.18161094224924013" />
+        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadorDeVendas-TCC/app/src/main/res/layout/spinner_estado.xml" value="0.18211752786220872" />
+        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadorDeVendas-TCC/app/src/main/res/layout/spinner_forma_pgto.xml" value="0.18161094224924013" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadorDeVendas-TCC/app/src/main/res/layout/spinner_marca.xml" value="0.1" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadorDeVendas-TCC/app/src/main/res/layout/spinner_produto.xml" value="0.18211752786220872" />
       </map>
