@@ -333,7 +333,8 @@
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="16dp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:nextFocusForward="@id/editPercJurosParcela"/>
 
                 <ImageView
                     android:id="@+id/imgMoreQtdParcela"
@@ -378,7 +379,7 @@
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <TextView
                     android:id="@+id/tvPerc"

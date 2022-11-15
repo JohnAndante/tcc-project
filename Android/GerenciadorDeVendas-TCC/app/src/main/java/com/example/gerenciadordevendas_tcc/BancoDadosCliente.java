@@ -284,7 +284,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                 + PGTO_VALOR         + " DECIMAL(8, 2), "
                 + PGTO_DATA          + " TEXT,"
                 + PGTO_JUROS         + " DECIMAL(8, 2), "
-                + PGTO_PARC          + " INTEGER,"
+                + PGTO_PARC          + " INTEGER, "
                 + "FOREIGN KEY ("    + PGTO_CLIENTE     + ") "
                 + "REFERENCES "      + CLIENTE_TABLE    + " (" + PGTO_CLIENTE       + "), "
                 + "FOREIGN KEY ("    + PGTO_FORMA_PGTO  + ") "
@@ -2821,7 +2821,9 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
         Cursor cursor = db.query( PGTO_TABLE,
                 new String[] {
-                        PGTO_ID, PGTO_CLIENTE, PGTO_FORMA_PGTO, PGTO_VALOR, PGTO_DATA, PGTO_JUROS, PGTO_PARC },
+                        PGTO_ID, PGTO_CLIENTE, PGTO_FORMA_PGTO,
+                        PGTO_VALOR, PGTO_DATA, PGTO_JUROS,
+                        PGTO_PARC},
                 PGTO_ID + " = ?",
                 new String[] { String.valueOf(_id) },
                 null,
@@ -2830,8 +2832,11 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                 null
         );
 
-        if (cursor != null)
+        if (cursor != null) {
             cursor.moveToFirst();
+        } else {
+            return null;
+        }
 
         Cliente c = selectCliente(cursor.getInt(1));
         FormaPgto fp = selectFormaPgto(cursor.getInt(2));
@@ -2859,8 +2864,11 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                 "FROM " + PGTO_TABLE +
                 ")", null);
 
-        if (cursor != null)
+        if (cursor != null) {
             cursor.moveToFirst();
+        } else {
+            return null;
+        }
 
         Cliente c = selectCliente(cursor.getInt(1));
         FormaPgto fp = selectFormaPgto(cursor.getInt(2));
@@ -2925,6 +2933,8 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
                 pgtos.add(pgto);
             } while (cursor.moveToNext());
+        } else {
+            return null;
         }
 
         db.close();
@@ -2960,6 +2970,8 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
                 pgtos.add(pgto);
             } while (cursor.moveToNext());
+        } else {
+            return null;
         }
 
         db.close();
@@ -2995,6 +3007,8 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
                 pgtos.add(pgto);
             } while (cursor.moveToNext());
+        } else {
+            return null;
         }
 
         db.close();

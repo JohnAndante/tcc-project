@@ -2,11 +2,9 @@ package com.example.gerenciadordevendas_tcc;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -15,12 +13,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.net.Inet4Address;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class ViewVenda extends AppCompatActivity {
 
@@ -32,13 +27,15 @@ public class ViewVenda extends AppCompatActivity {
     private TextView textTelefoneCliente;
     private TextView textDataVenda;
     private TextView textHoraVenda;
-    private TextView textValorTotal;
+    private TextView textValorVenda;
     private TextView textFormaPgto;
     private TextView textPgtoVenda;
     private TextView textQtdParcelas;
-    private TextView textValorParcela;
+    private TextView textValorJuros;
+    private TextView textValorTotalVenda;
     private ListView listProdutos;
     private ConstraintLayout clFormaPgto;
+    private ConstraintLayout clJurosAplicados;
 
     BancoDadosCliente db = new BancoDadosCliente(this);
 
@@ -85,17 +82,25 @@ public class ViewVenda extends AppCompatActivity {
             textNomeCliente.setText(cliente.getNome());
             textTelefoneCliente.setText(cliente.getTelefone());
 
-            textValorTotal.setText(MaskEditUtil.doubleToMoneyValue(venda.getValor()));
+            textValorVenda.setText(MaskEditUtil.doubleToMoneyValue(venda.getValor()));
 
-            clFormaPgto = (ConstraintLayout) findViewById(R.id.clFormaPgto);
+            clFormaPgto         = (ConstraintLayout) findViewById(R.id.clFormaPgto);
+            clJurosAplicados    = (ConstraintLayout) findViewById(R.id.clJurosAplicados);
 
             if (pgto == null || pgto.getId() < 0){
                 clFormaPgto.setVisibility(View.GONE);
                 AdicionaPgto.setVisibility(View.VISIBLE);
             } else {
+                clFormaPgto.setVisibility(View.VISIBLE);
                 textPgtoVenda.setText(pgto.getFormaPgto().getDescricao());
-                textQtdParcelas.setText(pgto.getParcelas());
-                textValorParcela.setText(Double.valueOf(pgto.getValor()/pgto.getParcelas()).toString());
+                textQtdParcelas.setText(Integer.toString(pgto.getParcelas()));
+                textValorTotalVenda.setText(MaskEditUtil.doubleToMoneyValue(pgto.getValor()));
+                if (pgto.getJuros() != 0.00) {
+                    clJurosAplicados.setVisibility(View.VISIBLE);
+                    textValorJuros.setText(MaskEditUtil.doubleToMoneyValue(pgto.getJuros()));
+                } else {
+                    clJurosAplicados.setVisibility(View.GONE);
+                }
                 AdicionaPgto.setVisibility(View.GONE);
             }
 
@@ -110,15 +115,16 @@ public class ViewVenda extends AppCompatActivity {
     }
 
     private void initTextViews () {
-        textNomeCliente = (TextView) findViewById(R.id.tvNomeClienteVenda);
+        textNomeCliente     = (TextView) findViewById(R.id.tvNomeClienteVenda);
         textTelefoneCliente = (TextView) findViewById(R.id.tvTelefoneClienteVenda);
-        textDataVenda = (TextView) findViewById(R.id.textDataVenda);
-        textHoraVenda = (TextView) findViewById(R.id.textHoraVenda);
-        textValorTotal = (TextView) findViewById(R.id.tvValorTotalVenda);
-        textFormaPgto = (TextView) findViewById(R.id.textFormaPgto);
-        textPgtoVenda = (TextView) findViewById(R.id.tvFormaPgtoVenda);
-        textQtdParcelas = (TextView) findViewById(R.id.tvQtdParcela);
-        textValorParcela = (TextView) findViewById(R.id.tvValorParcela);
+        textDataVenda       = (TextView) findViewById(R.id.textDataVenda);
+        textHoraVenda       = (TextView) findViewById(R.id.textHoraVenda);
+        textValorVenda      = (TextView) findViewById(R.id.tvValorVenda);
+        textFormaPgto       = (TextView) findViewById(R.id.textFormaPgto);
+        textPgtoVenda       = (TextView) findViewById(R.id.tvFormaPgtoDesc);
+        textQtdParcelas     = (TextView) findViewById(R.id.tvQtdParcela);
+        textValorJuros      = (TextView) findViewById(R.id.tvValorJurosAplicados);
+        textValorTotalVenda = (TextView) findViewById(R.id.tvValorTotalComJuros);
     }
 
     private void initButtons () {
@@ -132,8 +138,9 @@ public class ViewVenda extends AppCompatActivity {
         Voltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setResult(RESULT_CANCELED);
-                finish();
+                Intent i = new Intent(ViewVenda.this, ListVendas.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(i);
             }
         });
 

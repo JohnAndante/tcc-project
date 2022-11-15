@@ -20,6 +20,7 @@ public class Pgto {
         this.formaPgto = _formaPgto;
         this.valor = _valor;
         this.data = _data;
+        this.juros = _juros;
         this.parcelas = _parcelas;
     }
 
@@ -28,6 +29,7 @@ public class Pgto {
         this.formaPgto = _formaPgto;
         this.valor = _valor;
         this.data = _data;
+        this.juros = _juros;
         this.parcelas = _parcelas;
     }
 

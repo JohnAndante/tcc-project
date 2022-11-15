@@ -1,6 +1,7 @@
 package com.example.gerenciadordevendas_tcc;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -9,8 +10,11 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -46,12 +50,15 @@ public class AddVendaDetails extends AppCompatActivity {
     private TextView tvTituloParcelas;
     private TextView tvTituloJuros;
     private TextView tvValorTotalJuros;
+    private TextView tvValorJuros;
     private EditText editParcelas;
     private EditText editJuros;
     private ListView lvProdutosVenda;
     private LinearLayout llParcelas;
+    private LinearLayout llBotoesVenda;
     private ConstraintLayout clJuros;
     private ConstraintLayout clValorJuros;
+    private ConstraintLayout clJurosAplicados;
     private ScrollView svVendaDetails;
     private ImageView imgLessParcela;
     private ImageView imgMoreParcela;
@@ -116,6 +123,7 @@ public class AddVendaDetails extends AppCompatActivity {
             llParcelas.setVisibility(View.GONE);
             tvTituloJuros.setVisibility(View.GONE);
             clJuros.setVisibility(View.GONE);
+            clJurosAplicados.setVisibility(View.GONE);
 
             adapterProdutoVenda = new AdapterProdutoVenda(this, 0, arrayListProdVenda);
             lvProdutosVenda.setAdapter(adapterProdutoVenda);
@@ -126,19 +134,21 @@ public class AddVendaDetails extends AppCompatActivity {
             initImageViewsOnClick();
             dropdownFormaPgto();
 
-            editJuros.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View view, boolean b) {
-                    if (editJuros.isFocused())
-                        autoFocus(editJuros);
+            editJuros.setOnFocusChangeListener((view, b) -> {
+                if (editJuros.isFocused()) {
+                    autoFocus(editJuros);
+                    llBotoesVenda.setVisibility(View.GONE);
+                } else {
+                    llBotoesVenda.setVisibility(View.VISIBLE);
                 }
             });
 
-            editParcelas.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View view, boolean b) {
-                    if (editParcelas.isFocused())
-                        autoFocus(editParcelas);
+            editParcelas.setOnFocusChangeListener((view, b) -> {
+                if (editParcelas.isFocused()) {
+                    autoFocus(editParcelas);
+                    llBotoesVenda.setVisibility(View.GONE);
+                } else {
+                    llBotoesVenda.setVisibility(View.VISIBLE);
                 }
             });
 
@@ -195,7 +205,25 @@ public class AddVendaDetails extends AppCompatActivity {
                     changeTotalJuros();
                 }
             });
+
+            editJuros.setOnEditorActionListener((textView, i, keyEvent) -> {
+                if ((i & EditorInfo.IME_MASK_ACTION) != 0) {
+                    closeSoftKeyboard();
+                    llBotoesVenda.setVisibility(View.VISIBLE);
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            });
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (llBotoesVenda.getVisibility() == View.GONE)
+            llBotoesVenda.setVisibility(View.VISIBLE);
     }
 
     private void initTextViews () {
@@ -208,6 +236,7 @@ public class AddVendaDetails extends AppCompatActivity {
         tvTituloParcelas    = findViewById(R.id.textParcelas);
         tvTituloJuros       = findViewById(R.id.textJurosParcela);
         tvValorTotalJuros   = findViewById(R.id.tvValorTotalComJuros);
+        tvValorJuros        = findViewById(R.id.tvValorJurosAplicados);
     }
 
     private void initEditTexts () {
@@ -216,8 +245,8 @@ public class AddVendaDetails extends AppCompatActivity {
     }
 
     private void initButtons () {
-        btSalvar = findViewById(R.id.btViewSalvar);
-        btVoltar = findViewById(R.id.btViewVoltar);
+        btSalvar        = findViewById(R.id.btViewSalvar);
+        btVoltar        = findViewById(R.id.btViewVoltar);
     }
 
     private void initListViews () {
@@ -227,8 +256,10 @@ public class AddVendaDetails extends AppCompatActivity {
 
     private void initLayouts() {
         llParcelas      = findViewById(R.id.llParcelas);
+        llBotoesVenda   = findViewById(R.id.llBotoesVenda);
         clJuros         = findViewById(R.id.clJurosParcela);
         clValorJuros    = findViewById(R.id.clValorComJuros);
+        clJurosAplicados= findViewById(R.id.clJurosAplicados);
         svVendaDetails  = findViewById(R.id.svVendaDetails);
     }
 
@@ -260,8 +291,34 @@ public class AddVendaDetails extends AppCompatActivity {
         });
 
         btSalvar.setOnClickListener(view -> {
-
+            adicionarPgto();
         });
+    }
+
+    private void adicionarPgto () {
+        Pgto pgto = new Pgto ();
+        pgto.setCliente(venda.getCliente());
+        pgto.setFormaPgto(formaPgtoSelecionado);
+        pctJuros = Double.parseDouble(editJuros.getText().toString());
+        if (pctJuros > 0) {
+            pgto.setValor(valorComJuros);
+            pgto.setJuros(pctJuros);
+        } else {
+            pgto.setValor(venda.getValor());
+        }
+        pgto.setData(DateCustomText.getActualDateTime());
+        pgto.setParcelas(Integer.parseInt(editParcelas.getText().toString()));
+
+        db.addPgto(pgto);
+        pgto = db.selectMaxPgto();
+        venda.setPgto(pgto);
+        db.updateVenda(venda);
+
+        Intent intent = new Intent(AddVendaDetails.this, ViewVenda.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt("ID", venda.getId());
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     private void initImageViewsOnClick () {
@@ -336,12 +393,16 @@ public class AddVendaDetails extends AppCompatActivity {
                         tvTituloJuros.setVisibility(View.VISIBLE);
                         editParcelas.setText("1");
                         clJuros.setVisibility(View.VISIBLE);
+                        clValorJuros.setVisibility(View.VISIBLE);
+                        clJurosAplicados.setVisibility(View.VISIBLE);
                     }
                     else {
                         tvTituloParcelas.setVisibility(View.GONE);
                         llParcelas.setVisibility(View.GONE);
                         tvTituloJuros.setVisibility(View.GONE);
                         clJuros.setVisibility(View.GONE);
+                        clValorJuros.setVisibility(View.GONE);
+                        clJurosAplicados.setVisibility(View.GONE);
                     }
                     dialogFormaPgto.dismiss();
             });
@@ -359,7 +420,7 @@ public class AddVendaDetails extends AppCompatActivity {
     }
 
     private void autoFocus (EditText editText) {
-        int xy[] = new int[2];
+        int[] xy = new int[2];
         editText.getLocationOnScreen(xy);
         Log.e("INFO EDIT TEXT", xy[0] + " " + xy[1]);
         svVendaDetails.getLocationOnScreen(xy);
@@ -367,25 +428,39 @@ public class AddVendaDetails extends AppCompatActivity {
         svVendaDetails.smoothScrollTo(xy[0], xy[1]);
     }
 
+    private void closeSoftKeyboard () {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
     private void changeTotalJuros () {
-        if (editJuros.getText().toString() != "") {
+        qtdParcelas = Integer.parseInt(editParcelas.getText().toString());
+
+        if (editJuros.getText().toString() != null) {
             try {
                 pctJuros = Double.parseDouble(editJuros.getText().toString());
-                if (pctJuros > 0 || pctJuros != 0) {
-                    clValorJuros.setVisibility(View.VISIBLE);
-                    valorComJuros = venda.getValor();
-                    for (int i = 0; i < qtdParcelas - 1; i++) {
-                        valorComJuros = valorComJuros + ((valorComJuros * pctJuros) / 100);
-                    }
-                } else {
-                    valorComJuros = venda.getValor();
-                }
             } catch (Exception e) {
-                Log.e("INFO ERROR", e.getStackTrace().toString());
+                Log.e("INFO ERROR", e.getMessage());
             }
-        }
-        if (editJuros.getText() == null || pctJuros == 0.0) {
+        } else {
             valorComJuros = venda.getValor();
+            Log.e("INFO ERROR", "editJuros is null ???");
+        }
+
+        if (pctJuros > 0) {
+            valorComJuros = venda.getValor();
+            double valorTotal = 0.00;
+            double valorParcela = valorComJuros / qtdParcelas;
+            for (int i = 0; i < qtdParcelas; i++) {
+                double y = (valorParcela * (pctJuros / 100));
+                valorParcela = valorParcela + y;
+                valorTotal = valorTotal + valorParcela;
+            }
+            valorComJuros = MaskEditUtil.moneyToDouble(MaskEditUtil.doubleToMoneyValue(valorTotal));
+            tvValorJuros.setText(MaskEditUtil.doubleToMoneyValue(valorComJuros - venda.getValor()));
         }
         tvValorTotalJuros.setText(MaskEditUtil.doubleToMoneyValue(valorComJuros));
     }
