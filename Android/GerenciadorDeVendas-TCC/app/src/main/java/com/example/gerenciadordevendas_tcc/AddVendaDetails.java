@@ -30,6 +30,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -169,6 +170,7 @@ public class AddVendaDetails extends AppCompatActivity {
 
                     if (editJuros == null) return;
                     String s = editJuros.getText().toString();
+                    Log.e("INFO STRING 1", s);
                     if (s.isEmpty()) return;
 
                     editJuros.removeTextChangedListener(this);
