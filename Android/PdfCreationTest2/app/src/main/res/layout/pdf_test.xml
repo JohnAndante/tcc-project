@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/dark_gray_01">
+
+    <TextView
+        android:id="@+id/textNomeVendedor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:text="Nome do Vendedor"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:fontFamily="sans-serif-condensed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/textEnderecoVendedor"
+        android:layout_width="wrap_content"
+        android:maxWidth="220dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="2dp"
+        android:text="Rua do Vendedor, 53 — Cidade — ES"
+        android:textSize="14sp"
+        android:textColor="@color/white"
+        android:fontFamily="sans-serif-condensed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textNomeVendedor" />
+
+    <TextView
+        android:id="@+id/textTelefoneVendedor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="Whatsapp: (44) 99888-7766"
+        android:textSize="14sp"
+        android:textColor="@color/white"
+        android:fontFamily="sans-serif-condensed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textEnderecoVendedor" />
+
+    <TextView
+        android:id="@+id/textNumVenda"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"
+        android:text="#01"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:fontFamily="sans-serif-condensed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/textNomeCliente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15sp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Fulano da Silva"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textTelefoneVendedor" />
+
+    <TextView
+        android:id="@+id/textDataVenda"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="15sp"
+        android:text="Segunda, 8 de janeiro de 2022"
+        android:textSize="14sp"
+        android:textColor="@color/white"
+        android:fontFamily="sans-serif-condensed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textTelefoneVendedor" />
+
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="409dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="13dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textNomeCliente" />
+
+    <ListView
+        android:id="@+id/lvProdutosVenda"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/divider3"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/textQtdItens"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15sp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="9 itens"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lvProdutosVenda" />
+
+    <TextView
+        android:id="@+id/textSubtotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15sp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Sub-Total: "
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/textValorSubtotal"
+        app:layout_constraintTop_toBottomOf="@id/lvProdutosVenda" />
+
+    <TextView
+        android:id="@+id/textValorSubtotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10sp"
+        android:layout_marginTop="15sp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="R$ 99,00"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lvProdutosVenda" />
+
+    <TextView
+        android:id="@+id/textDesconto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Desconto: "
+        android:textColor="@color/light_gray_02"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/textValorDesconto"
+        app:layout_constraintTop_toBottomOf="@id/textValorSubtotal" />
+
+    <TextView
+        android:id="@+id/textValorDesconto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="(10%) R$ 15,50"
+        android:textColor="@color/light_gray_02"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textValorSubtotal" />
+
+    <TextView
+        android:id="@+id/textTotalVenda"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15sp"
+        android:layout_marginStart="10sp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Total: "
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/textValorTotalVenda"
+        app:layout_constraintTop_toBottomOf="@id/textValorDesconto" />
+
+    <TextView
+        android:id="@+id/textValorTotalVenda"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15sp"
+        android:layout_marginEnd="10sp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="R$ 149,80"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textValorDesconto" />
+
+    <TextView
+        android:id="@+id/textFormaPgto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15sp"
+        android:layout_marginStart="10dp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Forma de Pagamento: "
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textValorTotalVenda" />
+
+    <TextView
+        android:id="@+id/textFormaPgtoOpcao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Cartão de Crédito em 2x"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textFormaPgto" />
+
+    <TextView
+        android:id="@+id/textTributos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15sp"
+        android:layout_marginStart="10dp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Tributos: "
+        android:textColor="@color/light_gray_02"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/textValorTributos"
+        app:layout_constraintTop_toBottomOf="@id/textValorTotalVenda" />
+
+    <TextView
+        android:id="@+id/textValorTributos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15sp"
+        android:layout_marginEnd="10dp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="R$ 9,98"
+        android:textColor="@color/light_gray_02"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textValorTotalVenda" />
+
+    <TextView
+        android:id="@+id/textTotalPago"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15sp"
+        android:layout_marginStart="10sp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Total a Pagar: "
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/textValorTotalVenda"
+        app:layout_constraintTop_toBottomOf="@id/textFormaPgtoOpcao" />
+
+    <TextView
+        android:id="@+id/textValorTotalPago"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15sp"
+        android:layout_marginEnd="10sp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="R$ 189,80"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textFormaPgtoOpcao" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

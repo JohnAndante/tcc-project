@@ -45,7 +45,7 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/editNomeCliente"
+                    android:id="@+id/editEmailUsuario"
                     android:layout_width="290dp"
                     android:layout_height="45dp"
                     android:layout_marginLeft="5dp"
@@ -350,9 +350,9 @@
         android:id="@+id/llBotoesCliente"
         android:layout_width="match_parent"
         android:layout_height="55dp"
+        android:layout_alignParentBottom="true"
         android:gravity="center_horizontal|center"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true">
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/btClienteSalvar"

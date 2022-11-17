@@ -3,9 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.gerenciadordevendas_tcc">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -17,52 +16,42 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GerenciadorDeVendasTCC"
         tools:targetApi="31">
-
         <activity
-            android:name=".AddCliente"
-            />
-
+            android:name=".UserRegister"
+            android:exported="false" />
         <activity
-            android:name=".ListClientes"
-            />
+            android:name=".UserLogin"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-        <activity android:name=".ViewCliente"
-            />
-
-        <activity android:name=".AddProduto"
-            />
-
-        <activity android:name=".ListProdutos"
-            />
-
-        <activity android:name=".ViewProduto"
-            />
-
-        <activity android:name=".AddVenda"
-            android:windowSoftInputMode="stateHidden"/>
-
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".AddCliente" />
+        <activity android:name=".ListClientes" />
+        <activity android:name=".ViewCliente" />
+        <activity android:name=".AddProduto" />
+        <activity android:name=".ListProdutos" />
+        <activity android:name=".ViewProduto" />
+        <activity
+            android:name=".AddVenda"
+            android:windowSoftInputMode="stateHidden" />
         <activity android:name=".AddVendaDetails" />
-
-        <activity android:name=".ListVendas"
-            />
-
-        <activity android:name=".ViewVenda"
-            />
-
-        <activity android:name=".ListPgtos"
+        <activity android:name=".ListVendas" />
+        <activity android:name=".ViewVenda" />
+        <activity
+            android:name=".ListPgtos"
             tools:ignore="Instantiatable" />
-
         <activity
             android:name=".MainActivity"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-
     </application>
 
 </manifest>

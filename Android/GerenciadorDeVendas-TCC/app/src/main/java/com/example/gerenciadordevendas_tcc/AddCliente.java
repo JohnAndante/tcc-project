@@ -282,7 +282,7 @@ public class AddCliente extends AppCompatActivity {
     }
 
     private void initEditTexts(){
-        editTextNome        = findViewById(R.id.editNomeCliente);
+        editTextNome        = findViewById(R.id.editEmailUsuario);
         editTextTelefone    = findViewById(R.id.editTelefoneCliente);
         editTextRua         = findViewById(R.id.editRuaEndereco);
         editTextNum         = findViewById(R.id.editNumEndereco);
