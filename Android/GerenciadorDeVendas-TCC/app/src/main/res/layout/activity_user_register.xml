@@ -1,9 +1,285 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".UserRegister">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fillViewport="true"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/dark_gray_01"
+        tools:context=".UserLogin">
+
+        <TextView
+            android:id="@+id/textTituloRegister"
+            android:layout_width="wrap_content"
+            android:maxWidth="160dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Criando sua Conta."
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="32sp"
+            app:layout_constraintStart_toStartOf="@id/textEmailUsuario"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/textDescLogin"
+            android:layout_width="wrap_content"
+            android:maxWidth="220dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Precisamos de alguns dados para prosseguirmos com o registro de sua nova conta."
+            android:textColor="@color/light_gray_02"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@id/textEmailUsuario"
+            app:layout_constraintTop_toBottomOf="@id/textTituloRegister" />
+
+
+        <TextView
+            android:id="@+id/textNomeUsuario"
+            android:layout_width="330dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Nome Completo"
+            android:textColor="@color/light_gray_02"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/textDescLogin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <LinearLayout
+            android:id="@+id/llNomeRegister"
+            android:layout_width="330dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/cardbg_roundcorners_lightgray"
+            android:gravity="center_horizontal|center"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textNomeUsuario">
+
+            <EditText
+                android:id="@+id/editNomeUsuario"
+                android:layout_width="290dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:backgroundTint="@color/light_gray_01"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:hint="Insira seu nome"
+                android:textColorHint="@color/light_gray_02"/>
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_baseline_edit_24_white" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textEmailUsuario"
+            android:layout_width="330dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="E-mail"
+            android:textColor="@color/light_gray_02"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/llNomeRegister"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <LinearLayout
+            android:id="@+id/llEmailRegister"
+            android:layout_width="330dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/cardbg_roundcorners_lightgray"
+            android:gravity="center_horizontal|center"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textEmailUsuario">
+
+            <EditText
+                android:id="@+id/editEmailUsuario"
+                android:layout_width="290dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:backgroundTint="@color/light_gray_01"
+                android:ems="10"
+                android:inputType="textEmailSubject|textWebEmailAddress"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:hint="Insira seu E-mail"
+                android:textColorHint="@color/light_gray_02"
+                android:nextFocusForward="@id/editTelefoneCliente"/>
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_baseline_edit_24_white" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textTelefoneUsuario"
+            android:layout_width="330dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Nº Celular"
+            android:textColor="@color/light_gray_02"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/llEmailRegister"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <LinearLayout
+            android:id="@+id/llTelefoneRegister"
+            android:layout_width="330dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/cardbg_roundcorners_lightgray"
+            android:gravity="center_horizontal|center"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textTelefoneUsuario">
+
+            <EditText
+                android:id="@+id/editTelefoneUsuario"
+                android:layout_width="290dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:backgroundTint="@color/light_gray_01"
+                android:ems="10"
+                android:inputType="phone"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:hint="Insira seu número de celular"
+                android:textColorHint="@color/light_gray_02"
+                android:nextFocusForward="@id/editTelefoneCliente"/>
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_baseline_edit_24_white" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textSenhaUsuario"
+            android:layout_width="330dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Senha"
+            android:textColor="@color/light_gray_02"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/llTelefoneRegister"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <LinearLayout
+            android:id="@+id/llSenhaRegister"
+            android:layout_width="330dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/cardbg_roundcorners_lightgray"
+            android:gravity="center_horizontal|center"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textSenhaUsuario">
+
+            <EditText
+                android:id="@+id/editSenhaUsuario"
+                android:layout_width="290dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:backgroundTint="@color/light_gray_01"
+                android:ems="10"
+                android:inputType="textPassword"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:hint="Insira sua senha"
+                android:textColorHint="@color/light_gray_02"
+                android:nextFocusForward="@id/editTelefoneCliente"/>
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_baseline_edit_24_white" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Fazer Log-in"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:backgroundTint="@color/light_gray_01"
+            app:layout_constraintTop_toBottomOf="@id/llSenhaRegister"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            app:layout_constraintTop_toBottomOf="@id/btLogin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <LinearLayout
+            android:id="@+id/llBotoesLogin"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_horizontal|center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <Button
+                android:id="@+id/btRegisterVoltar"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="50dp"
+                android:focusable="false"
+                android:backgroundTint="@color/light_gray_01"
+                android:text="Voltar" />
+
+            <Button
+                android:id="@+id/btRegisterCriar"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:backgroundTint="@color/light_blue_01"
+                android:text="Criar Conta" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
