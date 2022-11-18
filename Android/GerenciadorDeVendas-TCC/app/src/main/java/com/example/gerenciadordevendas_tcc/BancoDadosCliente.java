@@ -37,7 +37,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     private static final String VENDA_TABLE         = "venda_tb";
     private static final String PROD_VENDA_TABLE    = "prod_venda_tb";
     private static final String PGTO_TABLE          = "pgto_tb";
-    private static final String PARC_TABLE          = "parc_tb";
+    private static final String USER_TABLE          = "user_tb";
 
     // Colunas da tabela cliente
     private static final String CLIENTE_ID          = "id_cliente";

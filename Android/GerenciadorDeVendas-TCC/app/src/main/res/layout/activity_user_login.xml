@@ -2,13 +2,13 @@
 
 <androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:fillViewport="true"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dark_gray_01"
@@ -17,15 +17,16 @@
     <TextView
         android:id="@+id/textTituloLogin"
         android:layout_width="wrap_content"
-        android:maxWidth="140dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:fontFamily="sans-serif-black"
+        android:maxWidth="140dp"
         android:text="Vamos Começar."
         android:textColor="@color/white"
-        android:textStyle="bold"
         android:textSize="32sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@id/textEmailUsuario"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textDescLogin"
@@ -143,6 +144,7 @@
         android:layout_marginTop="20dp"
         android:text="Esqueci minha senha"
         android:textStyle="bold"
+        android:textColor="@color/white"
         android:textAllCaps="false"
         style="@style/Widget.AppCompat.Button.Borderless"
         app:layout_constraintTop_toBottomOf="@id/llSenhaLogin"
@@ -156,7 +158,9 @@
         android:layout_marginTop="20dp"
         android:text="Criar conta"
         android:textStyle="bold"
+        android:textColor="@color/white"
         android:textAllCaps="false"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:backgroundTint="@color/light_gray_01"
         app:layout_constraintTop_toBottomOf="@id/btEsqueciSenhaLogin"
         app:layout_constraintStart_toStartOf="parent"

@@ -2,13 +2,13 @@
 
 <androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:fillViewport="true"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/dark_gray_01"
@@ -17,15 +17,16 @@
         <TextView
             android:id="@+id/textTituloRegister"
             android:layout_width="wrap_content"
-            android:maxWidth="160dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:fontFamily="sans-serif-black"
+            android:maxWidth="160dp"
             android:text="Criando sua Conta."
             android:textColor="@color/white"
-            android:textStyle="bold"
             android:textSize="32sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/textEmailUsuario"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textDescLogin"
@@ -74,7 +75,7 @@
                 android:layout_marginRight="5dp"
                 android:backgroundTint="@color/light_gray_01"
                 android:ems="10"
-                android:inputType="textPersonName"
+                android:inputType="textPersonName|textCapWords"
                 android:textColor="@color/white"
                 android:textSize="16dp"
                 android:textStyle="bold"
@@ -232,6 +233,19 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/textSenhaDescRegister"
+            android:layout_width="wrap_content"
+            android:maxWidth="3000dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Insira uma senha de no mínimo 8 caracteres."
+            android:textColor="@color/light_gray_02"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@id/textEmailUsuario"
+            app:layout_constraintTop_toBottomOf="@id/llSenhaRegister" />
+
         <Button
             android:id="@+id/btLogin"
             android:layout_width="wrap_content"
@@ -239,9 +253,11 @@
             android:layout_marginTop="20dp"
             android:text="Fazer Log-in"
             android:textStyle="bold"
+            android:textColor="@color/white"
             android:textAllCaps="false"
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:backgroundTint="@color/light_gray_01"
-            app:layout_constraintTop_toBottomOf="@id/llSenhaRegister"
+            app:layout_constraintTop_toBottomOf="@id/textSenhaDescRegister"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
