@@ -13,4 +13,7 @@
     <color name="dark_gray_01">#1A1A1A</color>
 
     <color name="light_blue_01">#1E90FF</color>
+
+    <color name="dark_red_01">#2C0000</color>
+    <color name="green_01">#0A2C00</color>
 </resources>

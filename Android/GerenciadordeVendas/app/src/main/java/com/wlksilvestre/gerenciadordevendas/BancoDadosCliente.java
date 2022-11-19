@@ -126,6 +126,13 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     private static final String PGTO_JUROS          = "juros";
     private static final String PGTO_PARC           = "parcelas";
 
+    // Colunas da tabela Usuario
+    private static final String USER_ID             = "id_usuario";
+    private static final String USER_NOME           = "nome_usuario";
+    private static final String USER_EMAIL          = "email_usuario";
+    private static final String USER_TELEFONE       = "telefone_usuario";
+    private static final String USER_UID            = "uid_usuario";
+
     // Strings para query de criação
     private String CLIENTE_QUERY        = "SELECT * FROM " + CLIENTE_TABLE;
     private String ENDERECO_QUERY       = "SELECT * FROM " + ENDERECO_TABLE;
@@ -142,6 +149,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     private String VENDA_QUERY          = "SELECT * FROM " + VENDA_TABLE;
     private String PROD_VENDA_QUERY     = "SELECT * FROM " + PROD_VENDA_TABLE;
     private String PGTO_QUERY           = "SELECT * FROM " + PGTO_TABLE;
+    private String USER_QUERY           = "SELECT * FROM " + USER_TABLE;
 
     public BancoDadosCliente(@Nullable Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -166,6 +174,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.execSQL(VENDA_QUERY);
         db.execSQL(PROD_VENDA_QUERY);
         db.execSQL(PGTO_QUERY);
+        db.execSQL(USER_TABLE);
     }
 
     @Override
@@ -290,7 +299,12 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                 + "FOREIGN KEY ("    + PGTO_FORMA_PGTO  + ") "
                 + "REFERENCES "      + FORMA_PGTO_TABLE + " (" + PGTO_FORMA_PGTO    + "))";
 
-
+        USER_QUERY          = "CREATE TABLE " + USER_TABLE + "( "
+                + USER_ID            + " INTEGER PRIMARY KEY, "
+                + USER_NOME          + " TEXT, "
+                + USER_EMAIL         + " TEXT, "
+                + USER_TELEFONE      + " TEXT, "
+                + USER_UID           + " TEXT )";
 
     }
 
@@ -327,7 +341,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.close();
     }
 
-   Cliente selectCliente (int codigo) {
+    Cliente selectCliente (int codigo) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         Cursor cursor = db.query(CLIENTE_TABLE,
@@ -341,8 +355,11 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                 null
         );
 
-        if (cursor != null)
+        if (cursor != null) {
             cursor.moveToFirst();
+        } else {
+            return null;
+        }
 
         Cliente cliente1 = new Cliente(
                 cursor.getInt(0),
@@ -877,7 +894,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return listCidades;
     }
 
-    public List<Cidade> listAllCidadesByEstado (Estado estado) {
+    public List<Cidade> listAllCidadesByEstado (@NonNull Estado estado) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         List<Cidade> listCidades = new ArrayList<>();
@@ -908,7 +925,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return listCidades;
     }
 
-    public List<Cidade> listAllCidadesByEstadoAndNome (Estado estado, String nome) {
+    public List<Cidade> listAllCidadesByEstadoAndNome (@NonNull Estado estado, String nome) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         List<Cidade> listCidades = new ArrayList<>();
@@ -940,7 +957,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return listCidades;
     }
 
-    public void updateCidade (Cidade cidade) {
+    public void updateCidade (@NonNull Cidade cidade) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -957,7 +974,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
     // CRUD ENDEREÇO ////////////////////////////////////////////////////////////////////////////
 
-    public void addEndereco (Endereco endereco) {
+    public void addEndereco (@NonNull Endereco endereco) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -972,7 +989,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.insert(ENDERECO_TABLE, null, values);
     }
 
-    public void deleteEndereco (Endereco endereco) {
+    public void deleteEndereco (@NonNull Endereco endereco) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.delete(ENDERECO_TABLE, ENDERECO_ID + " = ? ", new String[]{
@@ -1030,7 +1047,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return endereco;
     }
 
-    public Endereco selectEnderecoByCliente (Cliente _cliente) {
+    public Endereco selectEnderecoByCliente (@NonNull Cliente _cliente) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         String QUERY = " SELECT " +
@@ -1067,7 +1084,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return endereco;
     }
 
-    public void updateEndereco (Endereco endereco) {
+    public void updateEndereco (@NonNull Endereco endereco) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -1087,7 +1104,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
     // CRUD MARCA ///////////////////////////////////////////////////////////////////////////////
 
-    public void addMarca (Marca marca) {
+    public void addMarca (@NonNull Marca marca) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -1098,7 +1115,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void deleteMarca (Marca marca) {
+    public void deleteMarca (@NonNull Marca marca) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.delete(MARCA_TABLE, MARCA_ID + " = ? ", new String[]{
@@ -1148,7 +1165,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return marca;
     }
 
-    public void updateMarca (Marca marca) {
+    public void updateMarca (@NonNull Marca marca) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -1240,7 +1257,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
     // CRUD LINHA ///////////////////////////////////////////////////////////////////////////////
 
-    public void addLinha (Linha linha) {
+    public void addLinha (@NonNull Linha linha) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -1252,7 +1269,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void deleteLinha (Linha linha) {
+    public void deleteLinha (@NonNull Linha linha) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.delete(LINHA_TABLE, LINHA_ID + " = ? ", new String[]{
@@ -1304,7 +1321,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return linha;
     }
 
-    public void updateLinha (Linha linha) {
+    public void updateLinha (@NonNull Linha linha) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -1343,7 +1360,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return linhas;
     }
 
-    public List<Linha> listLinhasByMarca (Marca marca) {
+    public List<Linha> listLinhasByMarca (@NonNull Marca marca) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         List<Linha> linhas = new ArrayList<Linha>();
@@ -1371,7 +1388,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return linhas;
     }
 
-    public List<Linha> listLinhasByMarcaOrdered (Marca marca) {
+    public List<Linha> listLinhasByMarcaOrdered (@NonNull Marca marca) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         List<Linha> linhas = new ArrayList<Linha>();
@@ -1400,7 +1417,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return linhas;
     }
 
-    public List<Linha> listLinhasByMarcaDesc (Marca marca, String _descricao) {
+    public List<Linha> listLinhasByMarcaDesc (@NonNull Marca marca, String _descricao) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         List<Linha> linhas = new ArrayList<Linha>();
@@ -1435,7 +1452,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
     // CRUD CATEGORIA ///////////////////////////////////////////////////////////////////////////
 
-    public void addCategoria (Categoria categoria) {
+    public void addCategoria (@NonNull Categoria categoria) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -1447,7 +1464,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void deleteCategoria (Categoria categoria) {
+    public void deleteCategoria (@NonNull Categoria categoria) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.delete(CATEGORIA_TABLE, CATEGORIA_ID + " = ? ", new String[]{
@@ -1498,7 +1515,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return categoria;
     }
 
-    public void updateCategoria (Categoria categoria) {
+    public void updateCategoria (@NonNull Categoria categoria) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -1596,7 +1613,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
     // CRUD SUBCATEGORIA ////////////////////////////////////////////////////////////////////////
 
-    public void addSubcat (Subcat subcat) {
+    public void addSubcat (@NonNull Subcat subcat) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -1608,7 +1625,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void deleteSubcat (Subcat subcat) {
+    public void deleteSubcat (@NonNull Subcat subcat) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.delete(SUBCAT_TABLE, SUBCAT_ID + " = ? ", new String[]{
@@ -1684,7 +1701,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
     }
 
-    public void updateSubcat (Subcat subcat) {
+    public void updateSubcat (@NonNull Subcat subcat) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -1723,7 +1740,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return subcats;
     }
 
-    public List<Subcat> listSubcatsByCategoria (Categoria _categoria) {
+    public List<Subcat> listSubcatsByCategoria (@NonNull Categoria _categoria) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         List<Subcat> subcats = new ArrayList<Subcat>();
@@ -1751,7 +1768,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return subcats;
     }
 
-    public List<Subcat> listSubcatsByCategoriaOrdered (Categoria _categoria) {
+    public List<Subcat> listSubcatsByCategoriaOrdered (@NonNull Categoria _categoria) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         List<Subcat> subcats = new ArrayList<Subcat>();
@@ -1780,7 +1797,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return subcats;
     }
 
-    public List<Subcat> listSubcatsByCategoriaDesc (Categoria _categoria, String _descricao) {
+    public List<Subcat> listSubcatsByCategoriaDesc (@NonNull Categoria _categoria, String _descricao) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         List<Subcat> subcats = new ArrayList<Subcat>();
@@ -1813,7 +1830,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return subcats;
     }
 
-    public boolean checkSubcatOnProdSubcats (Produto _produto, Subcat _subcat) {
+    public boolean checkSubcatOnProdSubcats (@NonNull Produto _produto, @NonNull Subcat _subcat) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         String QUERY = " SELECT * " +
@@ -1833,7 +1850,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
     // CRUD PRODUTO /////////////////////////////////////////////////////////////////////////////
 
-    public void addProduto (Produto _produto) {
+    public void addProduto (@NonNull Produto _produto) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -1845,7 +1862,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.insert(PRODUTO_TABLE, null, values);
     }
 
-    public void deleteProduto (Produto _produto) {
+    public void deleteProduto (@NonNull Produto _produto) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.delete(PRODUTO_TABLE, PRODUTO_ID + " = ? ", new String[]{
@@ -1922,7 +1939,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return produto;
     }
 
-    public void updateProduto (Produto produto) {
+    public void updateProduto (@NonNull Produto produto) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -2152,7 +2169,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
     // CRUD PROD_SUBCAT /////////////////////////////////////////////////////////////////////////
 
-    public void addProdSubcat (ProdSubcat prodSubcat) {
+    public void addProdSubcat (@NonNull ProdSubcat prodSubcat) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -2164,7 +2181,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.insert(PROD_SUBCAT_TABLE, null, values);
     }
 
-    public void deleteProdSubcat (ProdSubcat prodSubcat) {
+    public void deleteProdSubcat (@NonNull ProdSubcat prodSubcat) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         String QUERY = (" DELETE FROM " + PROD_SUBCAT_TABLE +
@@ -2175,7 +2192,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.close();
     }
 
-    public ProdSubcat selectFirstProdSubcatByProd (Produto produto) {
+    public ProdSubcat selectFirstProdSubcatByProd (@NonNull Produto produto) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ProdSubcat prodSubcat = new ProdSubcat();
@@ -2224,7 +2241,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return prodSubcats;
     }
 
-    public List<ProdSubcat> listProdSubcatsByProduto (Produto _produto) {
+    public List<ProdSubcat> listProdSubcatsByProduto (@NonNull Produto _produto) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         List<ProdSubcat> prodSubcats = new ArrayList<ProdSubcat>();
@@ -2250,7 +2267,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return prodSubcats;
     }
 
-    public List<ProdSubcat> ListProdSubcatsBySubcats (Subcat _subcat) {
+    public List<ProdSubcat> ListProdSubcatsBySubcats (@NonNull Subcat _subcat) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         List<ProdSubcat> prodSubcats = new ArrayList<ProdSubcat>();
@@ -2278,7 +2295,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
     // CRUD FORMA_PGTO //////////////////////////////////////////////////////////////////////////
 
-    public void addFormaPgto (FormaPgto _formaPgto) {
+    public void addFormaPgto (@NonNull FormaPgto _formaPgto) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -2291,7 +2308,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void deleteFormaPgto (FormaPgto _formaPgto) {
+    public void deleteFormaPgto (@NonNull FormaPgto _formaPgto) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.delete(FORMA_PGTO_TABLE, FORMA_PGTO_ID + " = ? ", new String[]{
@@ -2367,7 +2384,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return fp;
     }
 
-    public void updateFormaPgto (FormaPgto _formaPgto) {
+    public void updateFormaPgto (@NonNull FormaPgto _formaPgto) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -2470,7 +2487,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
     // CRUD VENDA ///////////////////////////////////////////////////////////////////////////////
 
-    public void addVenda (Venda _venda) {
+    public void addVenda (@NonNull Venda _venda) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -2493,7 +2510,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void deleteVenda (Venda _venda) {
+    public void deleteVenda (@NonNull Venda _venda) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.delete(VENDA_TABLE, VENDA_ID + " = ? ", new String[]{
@@ -2580,7 +2597,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return venda;
     }
 
-    public void updateVenda (Venda _venda) {
+    public void updateVenda (@NonNull Venda _venda) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -2631,7 +2648,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return vendas;
     }
 
-    public List<Venda> listAllVendasByCliente (Cliente _cliente) {
+    public List<Venda> listAllVendasByCliente (@NonNull Cliente _cliente) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         List<Venda> vendas = new ArrayList<Venda>();
@@ -2705,7 +2722,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
     // CRUD PRODUTO X VENDA /////////////////////////////////////////////////////////////////////
 
-    public void addProdVenda (ProdVenda _prodVenda) {
+    public void addProdVenda (@NonNull ProdVenda _prodVenda) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -2718,7 +2735,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.insert(PROD_VENDA_TABLE, null, values);
     }
 
-    public void deleteProdVenda (ProdVenda _prodVenda) {
+    public void deleteProdVenda (@NonNull ProdVenda _prodVenda) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         String QUERY = (" DELETE FROM " + PROD_VENDA_TABLE +
@@ -2729,7 +2746,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.close();
     }
 
-    public List<ProdVenda> listProdVendaByVenda (Venda _venda) {
+    public List<ProdVenda> listProdVendaByVenda (@NonNull Venda _venda) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         List<ProdVenda> prodVendas = new ArrayList<>();
@@ -2759,7 +2776,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return prodVendas;
     }
 
-    public int qtdProdVendaByVenda (Venda _venda) {
+    public int qtdProdVendaByVenda (@NonNull Venda _venda) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         String QUERY = " SELECT COUNT(*) FROM " + PROD_VENDA_TABLE +
@@ -2778,7 +2795,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
     // CRUD PAGAMENTO ///////////////////////////////////////////////////////////////////////////
 
-    public void addPgto (Pgto _pgto) {
+    public void addPgto (@NonNull Pgto _pgto) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -2794,7 +2811,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void deletePgto (Pgto _pgto) {
+    public void deletePgto (@NonNull Pgto _pgto) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         String QUERY = (" DELETE FROM " + PGTO_TABLE +
@@ -2887,7 +2904,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return pgto;
     }
 
-    public void updatePgto (Pgto _pgto) {
+    public void updatePgto (@NonNull Pgto _pgto) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -2942,7 +2959,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return pgtos;
     }
 
-    public List<Pgto> listAllPgtosByCliente (Cliente _cliente) {
+    public List<Pgto> listAllPgtosByCliente (@NonNull Cliente _cliente) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         List<Pgto> pgtos = new ArrayList<>();
@@ -3014,6 +3031,115 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.close();
 
         return pgtos;
+    }
+
+    // CRUD USUARIO /////////////////////////////////////////////////////////////////////////////
+
+    public void addUsuario (@NonNull Usuario _usuario) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        if (_usuario.getId() >= 0)
+            values.put(USER_ID, _usuario.getId());
+        values.put(USER_NOME, _usuario.getNome());
+        values.put(USER_EMAIL, _usuario.getEmail());
+        values.put(USER_TELEFONE, _usuario.getTelefone());
+        values.put(USER_UID, _usuario.getUid());
+
+        db.insert(USER_TABLE, null, values);
+        db.close();
+    }
+
+    public void deleteUsuario (Usuario usuario, int id) {
+        if (usuario != null) {
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            db.delete(USER_TABLE, USER_ID + " = ? ", new String[] {
+                    String.valueOf(usuario.getId())
+            });
+            db.close();
+        } else
+        if (id >= 0) {
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            db.delete(USER_TABLE, USER_ID + " = ? ", new String[] {
+                    String.valueOf(id)
+            });
+            db.close();
+        }
+    }
+
+    public Usuario selectUsuario (int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.query(USER_TABLE,
+                new String[] {
+                        USER_ID, USER_NOME, USER_EMAIL, USER_TELEFONE, USER_UID},
+                USER_ID + " = ?",
+                new String[] { String.valueOf(id) },
+                null,
+                null,
+                null,
+                null
+        );
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+        } else {
+            return null;
+        }
+
+        Usuario usuario = new Usuario(
+                cursor.getInt(0),
+                cursor.getString(1),
+                cursor.getString(2),
+                cursor.getString(3),
+                cursor.getString(4)
+        );
+
+        db.close();
+        return usuario;
+    }
+
+    Usuario selectMaxUsuario () {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM "    + USER_TABLE
+                        + " WHERE "     + USER_ID + " = (SELECT MAX(" + USER_ID + ") "
+                        + " FROM "      + USER_TABLE + ")",
+                null);
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+        } else {
+            return null;
+        }
+
+        Usuario usuario = new Usuario(
+                cursor.getInt(0),
+                cursor.getString(1),
+                cursor.getString(2),
+                cursor.getString(3),
+                cursor.getString(4)
+        );
+
+        db.close();
+        return usuario;
+    }
+
+    public void updateUsuario (@NonNull Usuario usuario) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(USER_NOME, usuario.getNome());
+        values.put(USER_EMAIL, usuario.getEmail());
+        values.put(USER_TELEFONE, usuario.getTelefone());
+        values.put(USER_UID, usuario.getUid());
+
+        db.update(USER_TABLE, values, USER_ID + " = ?",
+                new String[] { String.valueOf(usuario.getId()) });
+        db.close();
     }
 
     // Preenchimento estados e cidades //////////////////////////////////////////////////////////
