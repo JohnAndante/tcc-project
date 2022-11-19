@@ -3,6 +3,7 @@ package com.wlksilvestre.gerenciadordevendas;
 import static android.content.ContentValues.TAG;
 
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -29,7 +30,11 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class UserRegister extends AppCompatActivity {
@@ -128,6 +133,7 @@ public class UserRegister extends AppCompatActivity {
         String telefone = editTelefoneUsuario.getText().toString();
         String senha = editSenhaUsuario.getText().toString();
 
+        usuario = new Usuario();
         usuario.setNome(nome);
         usuario.setEmail(email);
         usuario.setTelefone(telefone);
@@ -150,6 +156,9 @@ public class UserRegister extends AppCompatActivity {
                                 if (user != null) {
                                     usuario.setUid(user.getUid());
                                     db.addUsuario(usuario);
+
+                                    usuario = db.selectMaxUsuario();
+                                    saveUserData(usuario);
                                 }
 
                                 Snackbar snackbar = Snackbar.make(view, "Cadastro realizado com sucesso!", Snackbar.LENGTH_SHORT);
@@ -225,6 +234,7 @@ public class UserRegister extends AppCompatActivity {
                             if (user != null) {
                                 usuario.setUid(user.getUid());
                                 db.addUsuario(usuario);
+                                saveUserData(usuario);
                             }
 
                             Snackbar snackbar = Snackbar.make(view, "Cadastro realizado com sucesso!", Snackbar.LENGTH_SHORT);
@@ -240,6 +250,42 @@ public class UserRegister extends AppCompatActivity {
 
             Log.e("INFO ERROR CATCH", e.getMessage());
         }
+    }
+
+    private void saveUserData(@NonNull Usuario usuario) {
+        final boolean[] info = {false};
+        FirebaseFirestore fireDB = FirebaseFirestore.getInstance();
+
+        /*
+        ContentValues values = new ContentValues();
+        values.put("id", usuario.getId());
+        values.put("nome", usuario.getNome());
+        values.put("email", usuario.getEmail());
+        values.put("telefone", usuario.getTelefone());
+        values.put("uid", usuario.getUid());
+        */
+
+        Map<String, Object> values = new HashMap<>();
+        values.put("id", usuario.getId());
+        values.put("nome", usuario.getNome());
+        values.put("email", usuario.getEmail());
+        values.put("telefone", usuario.getTelefone());
+        values.put("uid", usuario.getUid());
+
+        DocumentReference dr = fireDB.collection("Usuarios").document(String.valueOf(usuario.getId()));
+        dr.set(values)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d("INFO FIREDB SUCCESS", "Sucesso ao salvar dados");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("INFO FIREDB FAILURE", "Erro ao salvar dados \n" + e.toString());
+                    }
+                });
     }
 
     private boolean checkFields () {

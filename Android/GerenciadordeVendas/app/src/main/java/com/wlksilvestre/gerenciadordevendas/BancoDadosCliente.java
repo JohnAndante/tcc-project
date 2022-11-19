@@ -10,6 +10,9 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -151,6 +154,8 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     private String PGTO_QUERY           = "SELECT * FROM " + PGTO_TABLE;
     private String USER_QUERY           = "SELECT * FROM " + USER_TABLE;
 
+    DocumentReference dr;
+
     public BancoDadosCliente(@Nullable Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
@@ -174,7 +179,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.execSQL(VENDA_QUERY);
         db.execSQL(PROD_VENDA_QUERY);
         db.execSQL(PGTO_QUERY);
-        db.execSQL(USER_TABLE);
+        db.execSQL(USER_QUERY);
     }
 
     @Override
@@ -3039,14 +3044,14 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        if (_usuario.getId() >= 0)
-            values.put(USER_ID, _usuario.getId());
         values.put(USER_NOME, _usuario.getNome());
         values.put(USER_EMAIL, _usuario.getEmail());
         values.put(USER_TELEFONE, _usuario.getTelefone());
         values.put(USER_UID, _usuario.getUid());
 
         db.insert(USER_TABLE, null, values);
+
+
         db.close();
     }
 
