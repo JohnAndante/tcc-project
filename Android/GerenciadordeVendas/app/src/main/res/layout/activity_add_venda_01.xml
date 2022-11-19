@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/dark_gray_01"
+    tools:context=".AddVenda">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/llClienteNovaVenda"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/dark_gray_01"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textClienteVenda"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="2dp"
+                android:text="Cliente"
+                android:textColor="@color/light_gray_01"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/ClienteNovaVenda"
+                android:layout_width="330dp"
+                android:layout_height="45dp"
+                android:background="@drawable/cardbg_roundcorners_lightgray"
+                android:gravity="center_horizontal|center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvClienteVenda"
+                    android:layout_width="290dp"
+                    android:layout_height="45dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:backgroundTint="@color/light_gray_01"
+                    android:ems="10"
+                    android:gravity="center|start"
+                    android:text="Selecione o Cliente"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24_white" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textProdutoVenda"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="2dp"
+                android:text="Produto"
+                android:textColor="@color/light_gray_01"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/llProdutoNovaVenda"
+                android:layout_width="330dp"
+                android:layout_height="45dp"
+                android:background="@drawable/cardbg_roundcorners_lightgray"
+                android:gravity="center_horizontal|center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvProdutoVenda"
+                    android:layout_width="290dp"
+                    android:layout_height="45dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:backgroundTint="@color/light_gray_01"
+                    android:ems="10"
+                    android:gravity="center|start"
+                    android:textColor="@color/white"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24_white" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textQtdProduto"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="2dp"
+                android:text="Quantidade"
+                android:textColor="@color/light_gray_01"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/llQtdProdutoNovaVenda"
+                android:layout_width="330dp"
+                android:layout_height="45dp"
+                android:background="@drawable/cardbg_roundcorners_lightgray"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:gravity="center_horizontal|center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imgLessQtdProduto"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_baseline_horizontal_rule_24_white" />
+
+                <EditText
+                    android:id="@+id/editQtdProdutoVenda"
+                    android:layout_width="270dp"
+                    android:layout_height="45dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:backgroundTint="@color/light_gray_01"
+                    android:ems="10"
+                    android:gravity="center|start"
+                    android:inputType="number"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/imgMoreQtdProduto"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_baseline_add_24_white" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textValorProdutoVenda"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="2dp"
+                android:text="Valor Unitário"
+                android:textColor="@color/light_gray_01"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/llValorProdutoNovaVenda"
+                android:layout_width="330dp"
+                android:layout_height="45dp"
+                android:background="@drawable/cardbg_roundcorners_lightgray"
+                android:gravity="center_horizontal|center"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:id="@+id/tvCifraValorProdutoVenda"
+                    android:layout_width="25dp"
+                    android:layout_height="45dp"
+                    android:layout_marginLeft="5dp"
+                    android:backgroundTint="@color/light_gray_01"
+                    android:ems="10"
+                    android:gravity="center|start"
+                    android:text="R$ "
+                    android:textColor="@color/white"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/editValorProdutoVenda"
+                    android:layout_width="270dp"
+                    android:layout_height="45dp"
+                    android:backgroundTint="@color/light_gray_01"
+                    android:ems="10"
+                    android:gravity="center|start"
+                    android:inputType="number"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:hint="0,00"
+                    android:textStyle="bold"
+                    android:importantForAutofill="no" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_baseline_edit_24_white" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btAdicionarProdutoVenda"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="2dp"
+                android:text="Adicionar Produto" />
+
+            <LinearLayout
+                android:id="@+id/llProdutosAdicionadosNovaVenda"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textProdutosAdicionados"
+                    android:layout_width="330dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="2dp"
+                    android:text="Produtos Adicionados"
+                    android:textColor="@color/light_gray_01"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="330dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|center"
+                    android:background="@drawable/cardbg_roundcorners_lightgray"
+                    android:orientation="vertical">
+
+                    <ListView
+                        android:id="@+id/lvProdVendaAdicionados"
+                        android:layout_width="330dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/cardbg_roundcorners_lightgray" />
+
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="?android:attr/listDivider" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="330dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="4dp">
+
+                        <ImageView
+                            android:id="@+id/imgIgualNovaVenda"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginLeft="14dp"
+                            android:src="@drawable/ic_baseline_drag_handle_24_white"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tvCifraValorTotalVenda"
+                            android:layout_width="20dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="14dp"
+                            android:text="R$ "
+                            android:textColor="@color/white"
+                            android:textSize="14dp"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toEndOf="@id/imgIgualNovaVenda"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:layout_editor_absoluteX="62dp" />
+
+                        <TextView
+                            android:id="@+id/tvValorTotalVenda"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:text="0,00"
+                            android:textColor="@color/white"
+                            android:textSize="14dp"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toEndOf="@+id/tvCifraValorTotalVenda"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tvQtdTotalVenda"
+                            android:layout_width="25dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:text="0"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/white"
+                            android:textSize="14dp"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toEndOf="@id/tvValorTotalVenda"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tvProdutosNovaVenda"
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:text=" Itens"
+                            android:textColor="@color/white"
+                            android:textSize="14dp"
+                            android:textStyle="bold"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/tvQtdTotalVenda" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="80dp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/llBotoesVenda"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:gravity="center_horizontal|center"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/btAvancarVenda"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="50dp"
+            android:focusable="false"
+            android:text="Avançar" />
+
+        <Button
+            android:id="@+id/btCancelarVenda"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:text="Cancelar" />
+
+    </LinearLayout>
+
+</RelativeLayout>

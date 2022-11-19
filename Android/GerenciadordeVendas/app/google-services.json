@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "870667591779",
+    "project_id": "gerenciador-de-vendas-48af1",
+    "storage_bucket": "gerenciador-de-vendas-48af1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:870667591779:android:bb56cb80867a9e31525856",
+        "android_client_info": {
+          "package_name": "com.wlksilvestre.gerenciadordevendas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "870667591779-3agpl08rvhnhksevn77dp79kjv0dtpkh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLurO8b4lVsHKNrH-hSt4VeHUfIv1vljA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "870667591779-3agpl08rvhnhksevn77dp79kjv0dtpkh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

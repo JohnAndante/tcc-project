@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:descendantFocusability="blocksDescendants">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:background="@drawable/cardbg_roundcorners_black_bordered_test" >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:background="@drawable/cardbg_roundcorners_lightgray2" >
+
+            <TextView
+                android:id="@+id/tvDescSubcat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Subcategoria"
+                android:textSize="16dp"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

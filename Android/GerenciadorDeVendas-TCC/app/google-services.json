@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "11041567431",
-    "project_id": "gerenciadordevendas-tcc",
-    "storage_bucket": "gerenciadordevendas-tcc.appspot.com"
+    "project_number": "283367520343",
+    "project_id": "gerenciador-de-vendas---tcc",
+    "storage_bucket": "gerenciador-de-vendas---tcc.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:11041567431:android:9f07bdd830c5351400c4e2",
+        "mobilesdk_app_id": "1:283367520343:android:0bf308b40581cd73350b12",
         "android_client_info": {
           "package_name": "com.example.gerenciadordevendas_tcc"
         }
       },
       "oauth_client": [
         {
-          "client_id": "11041567431-v2d80bcgduifgrmehbduamefkgbv3muc.apps.googleusercontent.com",
+          "client_id": "283367520343-kct9cb85ote0umsjcmr34h65fq08qo7t.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBisTQGn9F5RZ-1tI7BxcOjQwxJiYdWCeY"
+          "current_key": "AIzaSyBDG4ufKhOpCyUqenXmN5wGrB5tq3nh_oA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "11041567431-v2d80bcgduifgrmehbduamefkgbv3muc.apps.googleusercontent.com",
+              "client_id": "283367520343-kct9cb85ote0umsjcmr34h65fq08qo7t.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

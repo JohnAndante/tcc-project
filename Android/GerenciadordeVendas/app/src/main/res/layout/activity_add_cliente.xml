@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/dark_gray_01"
+    tools:context=".AddCliente">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/dark_gray_01"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imgvwIconCliente"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/cardbg_roundcorners_lightgray"
+                android:src="@drawable/ic_baseline_person_outline_24_white" />
+
+            <TextView
+                android:id="@+id/adicionarNomeCliente"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="2dp"
+                android:text="Nome"
+                android:textColor="@color/light_gray_01"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="330dp"
+                android:layout_height="45dp"
+                android:background="@drawable/cardbg_roundcorners_lightgray"
+                android:gravity="center_horizontal|center"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/editEmailUsuario"
+                    android:layout_width="290dp"
+                    android:layout_height="45dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:backgroundTint="@color/light_gray_01"
+                    android:ems="10"
+                    android:inputType="textPersonName|textCapWords"
+                    android:textColor="@color/white"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    android:hint="Nome do Cliente"
+                    android:textColorHint="@color/light_gray_02"
+                    android:nextFocusForward="@id/editTelefoneCliente"/>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_baseline_edit_24_white" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/adicionarTelefoneCliente"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="2dp"
+                android:text="Telefone"
+                android:textColor="@color/light_gray_01"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/llAdicionarTelefone"
+                android:layout_width="330dp"
+                android:layout_height="45dp"
+                android:background="@drawable/cardbg_roundcorners_lightgray"
+                android:gravity="center_horizontal|center"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/editTelefoneCliente"
+                    android:layout_width="290dp"
+                    android:layout_height="45dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:backgroundTint="@color/light_gray_01"
+                    android:ems="10"
+                    android:inputType="number|phone"
+                    android:textColor="@color/white"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    android:hint="(XX) 9 9999-9999"
+                    android:textColorHint="@color/light_gray_02"
+                    android:nextFocusForward="@id/editRuaEndereco"/>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_baseline_add_24_white" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/adicionarEnderecoCliente"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="2dp"
+                android:text="Endereco"
+                android:textColor="@color/light_gray_01"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/llAdicionarEndereco"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/cardbg_roundcorners_lightgray"
+                android:gravity="center_horizontal|center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/llRuaEndereco"
+                    android:layout_width="330dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal|center"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/editRuaEndereco"
+                        android:layout_width="290dp"
+                        android:layout_height="45dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:backgroundTint="@color/light_gray_01"
+                        android:ems="10"
+                        android:inputType="textCapWords"
+                        android:textColor="@color/white"
+                        android:textSize="16dp"
+                        android:textStyle="bold"
+                        android:hint="Rua"
+                        android:textColorHint="@color/light_gray_02"
+                        android:nextFocusForward="@id/editNumEndereco"/>
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_baseline_edit_24_white" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider" />
+
+                <LinearLayout
+                    android:id="@+id/llNumEndereco"
+                    android:layout_width="330dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal|center"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/editNumEndereco"
+                        android:layout_width="290dp"
+                        android:layout_height="45dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:backgroundTint="@color/light_gray_01"
+                        android:ems="10"
+                        android:inputType="text"
+                        android:textColor="@color/white"
+                        android:textSize="16dp"
+                        android:textStyle="bold"
+                        android:hint="Número"
+                        android:textColorHint="@color/light_gray_02"
+                        android:nextFocusForward="@id/editComplEndereco"/>
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_baseline_edit_24_white" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider" />
+
+                <LinearLayout
+                    android:id="@+id/llComplEndereco"
+                    android:layout_width="330dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal|center"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/editComplEndereco"
+                        android:layout_width="290dp"
+                        android:layout_height="45dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:backgroundTint="@color/light_gray_01"
+                        android:ems="10"
+                        android:inputType="text"
+                        android:textColor="@color/white"
+                        android:textSize="16dp"
+                        android:textStyle="bold"
+                        android:hint="Complemento"
+                        android:textColorHint="@color/light_gray_02"
+                        android:nextFocusForward="@id/editBairroEndereco"/>
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_baseline_edit_24_white" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider" />
+
+                <LinearLayout
+                    android:id="@+id/llBairroEndereco"
+                    android:layout_width="330dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal|center"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/editBairroEndereco"
+                        android:layout_width="290dp"
+                        android:layout_height="45dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:backgroundTint="@color/light_gray_01"
+                        android:ems="10"
+                        android:inputType="textCapWords"
+                        android:textColor="@color/white"
+                        android:textSize="16dp"
+                        android:textStyle="bold"
+                        android:hint="Bairro"
+                        android:textColorHint="@color/light_gray_02"
+                        android:nextFocusForward="@id/editUfEndereco"/>
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_baseline_edit_24_white" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider" />
+
+                <LinearLayout
+                    android:id="@+id/llUfEndereco"
+                    android:layout_width="330dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal|center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/editUfEndereco"
+                        android:layout_width="290dp"
+                        android:layout_height="45dp"
+                        android:paddingLeft="4dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:backgroundTint="@color/light_gray_01"
+                        android:ems="10"
+                        android:textColor="@color/white"
+                        android:textSize="16dp"
+                        android:textStyle="bold"
+                        android:hint="UF"
+                        android:textColorHint="@color/light_gray_02"
+                        android:nextFocusForward="@id/editCidadeEndereco"
+                        android:gravity="center|left"/>
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_baseline_edit_24_white" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider" />
+
+                <LinearLayout
+                    android:id="@+id/llCidadeEndereco"
+                    android:layout_width="330dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal|center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/editCidadeEndereco"
+                        android:layout_width="290dp"
+                        android:layout_height="45dp"
+                        android:paddingLeft="4dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:backgroundTint="@color/light_gray_01"
+                        android:ems="10"
+                        android:inputType="text"
+                        android:textColor="@color/white"
+                        android:textSize="16dp"
+                        android:textStyle="bold"
+                        android:hint="Cidade"
+                        android:textColorHint="@color/light_gray_02"
+                        android:nextFocusForward="@id/btClienteSalvar"
+                        android:gravity="center|left" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_baseline_edit_24_white" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="80dp"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/llBotoesCliente"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal|center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btClienteSalvar"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="50dp"
+            android:focusable="false"
+            android:text="Salvar" />
+
+        <Button
+            android:id="@+id/btClienteCancelar"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:text="Cancelar" />
+    </LinearLayout>
+
+</RelativeLayout>
