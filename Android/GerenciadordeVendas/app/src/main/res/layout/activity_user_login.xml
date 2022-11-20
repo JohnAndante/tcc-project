@@ -16,155 +16,87 @@
 
     <TextView
         android:id="@+id/textTituloLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Text_BigTitulo"
         android:layout_marginTop="20dp"
-        android:fontFamily="sans-serif-black"
-        android:maxWidth="140dp"
-        android:text="Vamos Começar."
-        android:textColor="@color/white"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@id/textEmailUsuario"
+        android:maxWidth="155sp"
+        android:maxLines="2"
+        android:text="Vamos  Começar."
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textDescLogin"
-        android:layout_width="wrap_content"
+        style="@style/Text_Default_light_gray"
         android:maxWidth="220dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:text="Insira os dados necessários para fazer login no aplicativo."
-        android:textColor="@color/light_gray_02"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@id/textEmailUsuario"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textTituloLogin" />
 
 
     <TextView
         android:id="@+id/textEmailUsuario"
-        android:layout_width="330dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        style="@style/Text_Default_light_gray"
+        android:layout_marginTop="25dp"
         android:text="E-mail"
-        android:textColor="@color/light_gray_02"
-        android:textSize="15dp"
-        android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/textDescLogin"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <LinearLayout
         android:id="@+id/llEmailLogin"
-        android:layout_width="330dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="4dp"
-        android:background="@drawable/cardbg_roundcorners_lightgray"
-        android:gravity="center_horizontal|center"
-        android:orientation="horizontal"
+        style="@style/LL_editText_default"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textEmailUsuario">
 
         <EditText
             android:id="@+id/editEmailUsuario"
-            android:layout_width="290dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:backgroundTint="@color/light_gray_01"
-            android:ems="10"
-            android:inputType="textEmailSubject|textWebEmailAddress"
-            android:textColor="@color/white"
-            android:textSize="16dp"
-            android:textStyle="bold"
+            style="@style/EditText_default"
+            android:inputType="textEmailSubject"
             android:hint="Insira seu E-mail"
-            android:textColorHint="@color/light_gray_02"
             android:nextFocusForward="@id/editTelefoneCliente"/>
-
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/ic_baseline_edit_24_white" />
 
     </LinearLayout>
 
     <TextView
         android:id="@+id/textSenhaUsuario"
-        android:layout_width="330dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        style="@style/Text_Default_light_gray"
         android:text="Senha"
-        android:textColor="@color/light_gray_02"
-        android:textSize="15dp"
-        android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/llEmailLogin"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <LinearLayout
         android:id="@+id/llSenhaLogin"
-        android:layout_width="330dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="4dp"
-        android:background="@drawable/cardbg_roundcorners_lightgray"
-        android:gravity="center_horizontal|center"
-        android:orientation="horizontal"
+        style="@style/LL_editText_default"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textSenhaUsuario">
 
         <EditText
             android:id="@+id/editSenhaUsuario"
-            android:layout_width="290dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:backgroundTint="@color/light_gray_01"
-            android:ems="10"
+            style="@style/EditText_default"
             android:inputType="textPassword"
-            android:textColor="@color/white"
-            android:textSize="16dp"
-            android:textStyle="bold"
             android:hint="Insira sua senha"
-            android:textColorHint="@color/light_gray_02"
             android:nextFocusForward="@id/btLoginEntrar"/>
-
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/ic_baseline_edit_24_white" />
 
     </LinearLayout>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btEsqueciSenhaLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Button_big_transparent"
         android:layout_marginTop="20dp"
         android:text="Esqueci minha senha"
-        android:textStyle="bold"
-        android:textColor="@color/white"
-        android:textAllCaps="false"
-        style="@style/Widget.AppCompat.Button.Borderless"
         android:focusable="false"
         app:layout_constraintTop_toBottomOf="@id/llSenhaLogin"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"/>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btCriarContaLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Button_big_transparent"
         android:layout_marginTop="20dp"
         android:text="Criar conta"
-        android:textStyle="bold"
-        android:textColor="@color/white"
-        android:textAllCaps="false"
-        style="@style/Widget.AppCompat.Button.Borderless"
         android:focusable="false"
-        android:backgroundTint="@color/light_gray_01"
         app:layout_constraintTop_toBottomOf="@id/btEsqueciSenhaLogin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -177,33 +109,25 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <LinearLayout
-        android:id="@+id/llBotoesLogin"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_alignParentBottom="true"
-        android:gravity="center_horizontal|center"
-        android:orientation="horizontal"
+        style="@style/LL_bottom_buttons"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btLoginVoltar"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="50dp"
+            style="@style/Button_bottom_gray"
             android:focusable="false"
-            android:backgroundTint="@color/light_gray_01"
-            android:text="Voltar" />
+            android:text="Voltar"/>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btLoginEntrar"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
+            style="@style/Button_bottom_blue"
             android:focusable="false"
-            android:backgroundTint="@color/light_blue_01"
-            android:text="Entrar" />
+            android:text="Entrar"/>
 
     </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

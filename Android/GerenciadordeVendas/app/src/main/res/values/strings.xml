@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Gerenciador de Vendas - TCC</string>
+    <string name="app_name">Gerenciador de Vendas</string>
     <string name="title_activity_lista_clientes">ListaClientes</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>

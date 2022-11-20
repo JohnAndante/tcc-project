@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dark_gray_01"
+    tools:context=".StartScreen">
+
+    <ImageView
+        android:id="@+id/imgDeskInicial"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/desk_roundcorners"
+        android:adjustViewBounds="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textTituloInicial"
+        style="@style/Text_BigTitulo"
+        android:maxWidth="220dp"
+        android:text="Seus lucros começam agora."
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgDeskInicial" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btLoginStart"
+        style="@style/Button_big_blue"
+        android:text="Entrar com E-mail"
+        android:layout_marginTop="30dp"
+        app:layout_constraintTop_toBottomOf="@id/textTituloInicial"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btRegisterStart"
+        style="@style/Button_big_gray"
+        android:text="Criar conta"
+        app:layout_constraintTop_toBottomOf="@id/btLoginStart"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btSairStart"
+        style="@style/Button_big_gray"
+        android:text="Sair"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

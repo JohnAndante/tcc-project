@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.wlksilvestre.gerenciadordevendas" >
+    package="com.wlksilvestre.gerenciadordevendas">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -18,41 +18,49 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GerenciadorDeVendas"
         android:usesCleartextTraffic="true"
-        tools:targetApi="31" >
+        tools:targetApi="31">
         <activity
-            android:name=".UserRegister"
+            android:name=".UserPasswordRetrieval"
             android:exported="false" />
         <activity
-            android:name=".UserLogin"
-            android:exported="true" >
+            android:name=".StartScreen"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddCliente" />
-        <activity android:name=".ListClientes" />
-        <activity android:name=".ViewCliente" />
-        <activity android:name=".AddProduto" />
-        <activity android:name=".ListProdutos" />
-        <activity android:name=".ViewProduto" />
+        <activity
+            android:name=".UserRegister"
+            android:exported="false" />
+        <activity
+            android:name=".UserLogin"
+            android:exported="true" />
+        <activity
+            android:name=".AddCliente"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".AddProduto"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".AddVenda"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".AddVendaDetails" />
+        <activity android:name=".ListClientes" />
+        <activity android:name=".ListProdutos" />
         <activity android:name=".ListVendas" />
-        <activity android:name=".ViewVenda" />
         <activity
             android:name=".ListPgtos"
             tools:ignore="Instantiatable" />
+        <activity android:name=".ViewCliente" />
+        <activity android:name=".ViewProduto" />
+        <activity android:name=".ViewVenda" />
         <activity
             android:name=".MainActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 

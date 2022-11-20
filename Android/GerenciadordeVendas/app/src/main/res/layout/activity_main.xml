@@ -4,16 +4,148 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/dark_gray_01"
     tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/textTituloMain"
+        style="@style/Text_BigTitulo"
+        android:maxWidth="300dp"
+        android:maxLines="2"
+        android:text="Olá"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/textCategoriasMain"
+        style="@style/Text_Medium_white"
+        android:text="Categorias"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/textTituloMain"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/llGrid01"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/textCategoriasMain"
+        app:layout_constraintStart_toStartOf="parent" >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/rlClientes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:padding="15dp"
+            android:background="@drawable/cardbg_roundcorners_lightgray">
+
+            <ImageView
+                android:id="@+id/imgIconClientes"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="8dp"
+                android:src="@drawable/ic_baseline_person_add_24_white"
+                android:background="@drawable/iconbg_roundcorners_lightblue_01"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:src="@drawable/ic_baseline_arrow_forward_ios_24_white"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/textClientes"
+                style="@style/Text_Medium_white"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="0dp"
+                android:text="Clientes"
+                app:layout_constraintTop_toBottomOf="@id/imgIconClientes"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textQtdClientes"
+                style="@style/Text_Medium_white"
+                android:background="@drawable/iconbg_roundcorners_lightblue_01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="0"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/rlProdutos"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:padding="15dp"
+            android:background="@drawable/cardbg_roundcorners_lightgray">
+
+            <ImageView
+                android:id="@+id/imgIconProdutos"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="8dp"
+                android:src="@drawable/ic_baseline_person_add_24_white"
+                android:background="@drawable/iconbg_roundcorners_yellow_01"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:src="@drawable/ic_baseline_arrow_forward_ios_24_white"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/textProdutos"
+                style="@style/Text_Medium_white"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="0dp"
+                android:text="Produtos"
+                app:layout_constraintTop_toBottomOf="@id/imgIconProdutos"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textQtdProdutos"
+                style="@style/Text_Medium_white"
+                android:background="@drawable/iconbg_roundcorners_yellow_01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="0"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/Teste"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        app:layout_constraintTop_toBottomOf="@id/llGrid01">
 
         <Button
             android:id="@+id/btCliente"
@@ -37,7 +169,7 @@
             android:id="@+id/btPgtos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pagamentos"/>
+            android:text="Logout"/>
 
 
     </LinearLayout>

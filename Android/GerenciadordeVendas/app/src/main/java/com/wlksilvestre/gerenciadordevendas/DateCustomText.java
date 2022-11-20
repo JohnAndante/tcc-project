@@ -138,4 +138,18 @@ public class DateCustomText {
 
         return now;
     }
+
+    public static String getCurrentTurno () {
+        GregorianCalendar gc = new GregorianCalendar();
+        Date d = Calendar.getInstance().getTime();
+        gc.setTime(d);
+        int hour =  gc.get(Calendar.HOUR_OF_DAY);
+
+        if ( hour >= 5 && hour < 11 )
+            return "Bom dia";
+        else if ( hour >= 11 && hour < 19 )
+            return "Boa tarde";
+        else
+            return "Boa noite";
+    }
 }

@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/drawable/big_button_blue.xml" value="0.235" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/drawable/cardbg_roundcorners_black_bordered_test.xml" value="0.109" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/drawable/cardbg_roundcorners_lightgray.xml" value="0.109" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/drawable/cardbg_roundcorners_lightgray2.xml" value="0.109" />
@@ -21,15 +22,27 @@
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/drawable/ic_baseline_person_outline_24_black.xml" value="0.109" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/drawable/ic_baseline_person_outline_24_white.xml" value="0.109" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/drawable/ic_baseline_post_add_24_white.xml" value="0.109" />
+        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/drawable/ic_baseline_savings_white_24.xml" value="0.2945" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/drawable/ic_baseline_shopping_bag_24_white.xml" value="0.109" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/drawable/iconbg_roundcorners_blue_stroke.xml" value="0.109" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/drawable/iconbg_roundcorners_darkgray_01_stroke.xml" value="0.109" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/drawable/iconbg_roundcorners_lightblue_01.xml" value="0.109" />
+        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/drawable/iconbg_roundcorners_lightgray_01_stroke.xml" value="0.1" />
+        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/drawable/iconbg_roundcorners_yellow_01.xml" value="0.158" />
+        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/drawable/style_big_button_gray.xml" value="0.204" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/font/alata.xml" value="0.20185185185185187" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/activity_a.xml" value="0.18161094224924013" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/activity_add_cliente.xml" value="0.18161094224924013" />
+        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/activity_main.xml" value="0.37344398340248963" />
+        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/activity_start_screen.xml" value="0.33" />
+        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/activity_user_login.xml" value="0.33" />
+        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/activity_user_register.xml" value="0.33" />
+        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/card_categ_main.xml" value="0.3723958333333333" />
+        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/icongb_roundcorners_yellow_01.xml" value="0.3723958333333333" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/spinner_estado.xml" value="0.18211752786220872" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/spinner_loading_user_reg.xml" value="0.33" />
+        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2945" />
+        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.2945" />
       </map>
     </option>
   </component>

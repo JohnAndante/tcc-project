@@ -3106,6 +3106,38 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return usuario;
     }
 
+    public Usuario selectUsuarioByUID (String UID) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.query(USER_TABLE,
+                new String[] {
+                        USER_ID, USER_NOME, USER_EMAIL, USER_TELEFONE, USER_UID},
+                USER_UID + " = ?",
+                new String[] { UID },
+                null,
+                null,
+                null,
+                null
+        );
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+        } else {
+            return null;
+        }
+
+        Usuario usuario = new Usuario(
+                cursor.getInt(0),
+                cursor.getString(1),
+                cursor.getString(2),
+                cursor.getString(3),
+                cursor.getString(4)
+        );
+
+        db.close();
+        return usuario;
+    }
+
     Usuario selectMaxUsuario () {
         SQLiteDatabase db = this.getWritableDatabase();
 

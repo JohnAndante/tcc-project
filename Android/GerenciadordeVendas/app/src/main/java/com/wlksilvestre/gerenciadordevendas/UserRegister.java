@@ -3,28 +3,22 @@ package com.wlksilvestre.gerenciadordevendas;
 import static android.content.ContentValues.TAG;
 
 import android.app.Dialog;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCanceledListener;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
@@ -56,20 +50,6 @@ public class UserRegister extends AppCompatActivity {
     public final int deviceWidth    = Resources.getSystem().getDisplayMetrics().widthPixels;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_register);
-        Objects.requireNonNull(getSupportActionBar()).hide();
-
-        mAuth = FirebaseAuth.getInstance();
-
-        initEditTexts();
-        initButtons();
-        initButtonsOnClick();
-        initDialogCfg();
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
         mAuth = FirebaseAuth.getInstance();
@@ -82,7 +62,19 @@ public class UserRegister extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_user_register);
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
+        mAuth = FirebaseAuth.getInstance();
+
+        initEditTexts();
+        initButtons();
+        initButtonsOnClick();
+        initDialogCfg();
+    }
 
     private void initEditTexts () {
         editNomeUsuario = findViewById(R.id.editNomeUsuario);
@@ -98,26 +90,16 @@ public class UserRegister extends AppCompatActivity {
     }
 
     private void initButtonsOnClick () {
-        btLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                intentFazerLogin();
-            }
+        btLogin.setOnClickListener(view -> intentFazerLogin());
+
+        btVoltar.setOnClickListener(view -> {
+            Intent intent = new Intent(UserRegister.this, StartScreen.class);
+            startActivity(intent);
         });
 
-        btVoltar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-        btCriarConta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (checkFields()) {
-                    getDataFromRegister(view);
-                }
+        btCriarConta.setOnClickListener(view -> {
+            if (checkFields()) {
+                getDataFromRegister(view);
             }
         });
     }
@@ -125,6 +107,13 @@ public class UserRegister extends AppCompatActivity {
     private void intentFazerLogin () {
         Intent intent = new Intent(UserRegister.this, UserLogin.class);
         startActivity(intent);
+        finish();
+    }
+
+    private void intentMainActivity () {
+        Intent intent = new Intent(UserRegister.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void getDataFromRegister (View view) {
@@ -139,111 +128,104 @@ public class UserRegister extends AppCompatActivity {
         usuario.setTelefone(telefone);
 
         try {
-            Log.e("INFO TRY CATCH", "Iniciando tentativa de criação de usuário" +
+            Log.e("INFO TRY CATCH REGISTER", "Iniciando tentativa de criação de usuário" +
                     "\n " + email + " - " + senha);
 
             loadingDialog.show();
 
             mAuth.getInstance()
                     .createUserWithEmailAndPassword(email, senha)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                Log.d("INFO LOG", "createUserWithEmail:success");
-                                FirebaseUser user = mAuth.getInstance().getCurrentUser();
-
-                                if (user != null) {
-                                    usuario.setUid(user.getUid());
-                                    db.addUsuario(usuario);
-
-                                    usuario = db.selectMaxUsuario();
-                                    saveUserData(usuario);
-                                }
-
-                                Snackbar snackbar = Snackbar.make(view, "Cadastro realizado com sucesso!", Snackbar.LENGTH_SHORT);
-                                snackbar.setBackgroundTint(getColor(R.color.green_01));
-                                snackbar.setTextColor(getColor(R.color.white));
-                                snackbar.show();
-
-                                loadingDialog.dismiss();
-                            } else {
-                                String msg = "Cadastro não realizado, tente novamente.";
-
-                                try {
-                                    throw task.getException();
-                                } catch (FirebaseAuthWeakPasswordException e) {
-                                    msg = "Digite uma senha com no mínimo 8 caracteres.";
-                                } catch (FirebaseAuthUserCollisionException e) {
-                                    msg = "Essa conta já foi cadastrada";
-                                } catch (FirebaseAuthInvalidCredentialsException e) {
-                                    msg = "E-mail inválido";
-                                } catch (Exception e) {
-                                    msg = "Cadastro não realizado. Erro ao cadastrar usuário";
-                                }
-
-                                loadingDialog.dismiss();
-
-                                Snackbar snackbar = Snackbar.make(view, msg, Snackbar.LENGTH_SHORT);
-                                snackbar.setBackgroundTint(getColor(R.color.dark_red_01));
-                                snackbar.setTextColor(getColor(R.color.white));
-                                snackbar.show();
-
-                                Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            }
-                        }
-                    })
-                    .addOnCanceledListener(this, new OnCanceledListener() {
-                        @Override
-                        public void onCanceled(){
-                            loadingDialog.dismiss();
-
-                            Log.e("INFO CANCELED LOGIN", "Canceled");
-                                Snackbar snackbar = Snackbar.make(view, "Cadastro não realizado, revise os dados e tente novamente.", Snackbar.LENGTH_SHORT);
-                                snackbar.setBackgroundTint(getColor(R.color.dark_red_01));
-                                snackbar.setTextColor(getColor(R.color.white));
-                                snackbar.show();
-                        }
-                    })
-                    .addOnFailureListener(this, new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            String msg = "Cadastro não realizado, revise os dados e tente novamente.";
-                            if (e.getMessage().toString() == "An internal error has occurred. [ The service is currently unavailable. ]") {
-                                msg = "Erro interno. Serviço temporariamente indisponível.";
-                            }
-                            if (e.getMessage().toString() == "The email address is already in use by another account.") {
-                                msg = "O e-mail inserido já está sendo utilizado por outra conta.";
-                                editEmailUsuario.requestFocus();
-                            }
-                            loadingDialog.dismiss();
-
-                            Log.e("INFO FAILURE LOGIN", " =" + e.getMessage() + "= ");
-                            Snackbar snackbar = Snackbar.make(view, msg, Snackbar.LENGTH_LONG);
-                            snackbar.setBackgroundTint(getColor(R.color.dark_red_01));
-                            snackbar.setTextColor(getColor(R.color.white));
-                            snackbar.show();
-                        }
-                    })
-                    .addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
-                        @Override
-                        public void onSuccess(AuthResult authResult) {
-                            Log.e("INFO SUCESS LOGIN", "SUCCESS");
+                    .addOnCompleteListener(this, task -> {
+                        if (task.isSuccessful()) {
+                            Log.d("INFO LOG REGISTER", "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getInstance().getCurrentUser();
 
                             if (user != null) {
                                 usuario.setUid(user.getUid());
                                 db.addUsuario(usuario);
+
+                                usuario = db.selectMaxUsuario();
                                 saveUserData(usuario);
                             }
+
+                            loadingDialog.dismiss();
 
                             Snackbar snackbar = Snackbar.make(view, "Cadastro realizado com sucesso!", Snackbar.LENGTH_SHORT);
                             snackbar.setBackgroundTint(getColor(R.color.green_01));
                             snackbar.setTextColor(getColor(R.color.white));
                             snackbar.show();
 
+                            new Handler().postDelayed(this::intentMainActivity, 500);
+
+                        } else {
+                            String msg;
+
+                            try {
+                                throw Objects.requireNonNull(task.getException());
+                            } catch (FirebaseAuthWeakPasswordException e) {
+                                msg = "Digite uma senha com no mínimo 8 caracteres.";
+                            } catch (FirebaseAuthUserCollisionException e) {
+                                msg = "Essa conta já foi cadastrada";
+                            } catch (FirebaseAuthInvalidCredentialsException e) {
+                                msg = "E-mail inválido";
+                            } catch (Exception e) {
+                                msg = "Cadastro não realizado. Erro ao cadastrar usuário";
+                            }
+
                             loadingDialog.dismiss();
+
+                            Snackbar snackbar = Snackbar.make(view, msg, Snackbar.LENGTH_SHORT);
+                            snackbar.setBackgroundTint(getColor(R.color.dark_red_01));
+                            snackbar.setTextColor(getColor(R.color.white));
+                            snackbar.show();
+
+                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
                         }
+                    })
+                    .addOnCanceledListener(this, () -> {
+                        loadingDialog.dismiss();
+
+                        Log.e("INFO CANCELED REGISTER", "Canceled");
+                            Snackbar snackbar = Snackbar.make(view, "Cadastro não realizado, revise os dados e tente novamente.", Snackbar.LENGTH_SHORT);
+                            snackbar.setBackgroundTint(getColor(R.color.dark_red_01));
+                            snackbar.setTextColor(getColor(R.color.white));
+                            snackbar.show();
+                    })
+                    .addOnFailureListener(this, e -> {
+                        String msg = "Cadastro não realizado, revise os dados e tente novamente.";
+                        if (Objects.equals(e.getMessage(), "An internal error has occurred. [ The service is currently unavailable. ]")) {
+                            msg = "Erro interno. Serviço temporariamente indisponível.";
+                        }
+                        if (Objects.equals(e.getMessage(), "The email address is already in use by another account.")) {
+                            msg = "O e-mail inserido já está sendo utilizado por outra conta.";
+                            editEmailUsuario.requestFocus();
+                        }
+                        loadingDialog.dismiss();
+
+                        Log.e("INFO FAILURE REGISTER", " =" + e.getMessage() + "= ");
+                        Snackbar snackbar = Snackbar.make(view, msg, Snackbar.LENGTH_LONG);
+                        snackbar.setBackgroundTint(getColor(R.color.dark_red_01));
+                        snackbar.setTextColor(getColor(R.color.white));
+                        snackbar.show();
+                    })
+                    .addOnSuccessListener(this, authResult -> {
+                        Log.e("INFO SUCESS REGISTER", "SUCCESS");
+                        FirebaseUser user = mAuth.getInstance().getCurrentUser();
+
+                        if (user != null) {
+                            usuario.setUid(user.getUid());
+                            db.addUsuario(usuario);
+                            saveUserData(usuario);
+                        }
+
+                        Snackbar snackbar = Snackbar.make(view, "Cadastro realizado com sucesso!", Snackbar.LENGTH_SHORT);
+                        snackbar.setBackgroundTint(getColor(R.color.green_01));
+                        snackbar.setTextColor(getColor(R.color.white));
+                        snackbar.show();
+
+                        new Handler().postDelayed(this::intentMainActivity, 3000);
+
+                        loadingDialog.dismiss();
                     });
         } catch (Exception e) {
             loadingDialog.dismiss();
@@ -253,17 +235,7 @@ public class UserRegister extends AppCompatActivity {
     }
 
     private void saveUserData(@NonNull Usuario usuario) {
-        final boolean[] info = {false};
         FirebaseFirestore fireDB = FirebaseFirestore.getInstance();
-
-        /*
-        ContentValues values = new ContentValues();
-        values.put("id", usuario.getId());
-        values.put("nome", usuario.getNome());
-        values.put("email", usuario.getEmail());
-        values.put("telefone", usuario.getTelefone());
-        values.put("uid", usuario.getUid());
-        */
 
         Map<String, Object> values = new HashMap<>();
         values.put("id", usuario.getId());
@@ -274,18 +246,8 @@ public class UserRegister extends AppCompatActivity {
 
         DocumentReference dr = fireDB.collection("Usuarios").document(String.valueOf(usuario.getId()));
         dr.set(values)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Log.d("INFO FIREDB SUCCESS", "Sucesso ao salvar dados");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("INFO FIREDB FAILURE", "Erro ao salvar dados \n" + e.toString());
-                    }
-                });
+                .addOnSuccessListener(unused -> Log.d("INFO FIREDB SUCCESS", "Sucesso ao salvar dados"))
+                .addOnFailureListener(e -> Log.d("INFO FIREDB FAILURE", "Erro ao salvar dados \n" + e));
     }
 
     private boolean checkFields () {
@@ -294,7 +256,7 @@ public class UserRegister extends AppCompatActivity {
         String telefone = editTelefoneUsuario.getText().toString();
         String senha = editSenhaUsuario.getText().toString();
 
-        if (nome.isEmpty() || nome == " " || nome.matches("[0-9]+[$%|_\\*!]+[$%|_\\*!]+[$%|_\\*!]")) {
+        if (nome.isEmpty() || nome.equals(" ") || nome.matches("[0-9]+[$%|_*!]+[$%|_*!]+[$%|_*!]")) {
             // Toast.makeText(this, "Favor preencha corretamente o nome de usuário", Toast.LENGTH_SHORT).show();
             Snackbar snackbar = Snackbar.make(getCurrentFocus(), "Favor preencha corretamente o nome de usuário", Snackbar.LENGTH_SHORT);
             snackbar.setBackgroundTint(getColor(R.color.light_gray_01));
@@ -303,7 +265,7 @@ public class UserRegister extends AppCompatActivity {
             editNomeUsuario.requestFocus();
             return false;
         }
-        if (email.isEmpty() || email == "" || (!email.contains("@"))) {
+        if (email.isEmpty() || !email.contains("@")) {
             // Toast.makeText(this, "Favor insira um endereço de e-mail válido", Toast.LENGTH_SHORT).show();
             Snackbar snackbar = Snackbar.make(getCurrentFocus(), "Favor insira um endereço de e-mail válido", Snackbar.LENGTH_SHORT);
             snackbar.setBackgroundTint(getColor(R.color.light_gray_01));
@@ -336,6 +298,8 @@ public class UserRegister extends AppCompatActivity {
     private void initDialogCfg () {
         loadingDialog = new Dialog(UserRegister.this);
         loadingDialog.setContentView(R.layout.spinner_loading_user_reg);
+        TextView tv = loadingDialog.getWindow().findViewById(R.id.textView3);
+        tv.setText("Cadastrando dados do usuário");
         loadingDialog.getWindow().setLayout((int)(deviceWidth * 0.75), (int) (deviceHeight * 0.75));
         loadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
