@@ -180,6 +180,15 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.execSQL(PROD_VENDA_QUERY);
         db.execSQL(PGTO_QUERY);
         db.execSQL(USER_QUERY);
+
+        /*
+        ini_addDefaultEstados(db);
+        ini_addDefaultCidades(db);
+        ini_addDefaultFormaPgto(db);
+        ini_addDefaultCategorias(db);
+        ini_addDefaultMarcas(db);
+        ini_addDefaultLinhas(db);
+        */
     }
 
     @Override
@@ -382,9 +391,11 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
         if (cursor != null)
             cursor.moveToFirst();
+        else
+            return null;
 
         Cliente cliente1 = new Cliente(
-                Integer.parseInt(cursor.getString(0)),
+                cursor.getInt(0),
                 cursor.getString(1),
                 cursor.getString(2));
 
@@ -482,6 +493,20 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
             db.close();
             return null;
         }
+    }
+
+    public int selectCountClientes () {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        int count = 0;
+
+        String QUERY = "SELECT COUNT(*) FROM " + CLIENTE_TABLE;
+        Cursor c = db.rawQuery(QUERY, null);
+
+        if (c.moveToFirst())
+            count =  c.getInt(0);
+
+        return count;
     }
 
     // CRUD ENDEREÇO ////////////////////////////////////////////////////////////////////////////
@@ -2172,6 +2197,20 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return produtos;
     }
 
+    public int selectCountProdutos () {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        int count = 0;
+
+        String QUERY = "SELECT COUNT(*) FROM " + PRODUTO_TABLE;
+        Cursor c = db.rawQuery(QUERY, null);
+
+        if (c.moveToFirst())
+            count =  c.getInt(0);
+
+        return count;
+    }
+
     // CRUD PROD_SUBCAT /////////////////////////////////////////////////////////////////////////
 
     public void addProdSubcat (@NonNull ProdSubcat prodSubcat) {
@@ -2725,6 +2764,20 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return vendas;
     }
 
+    public int selectCountVendas () {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        int count = 0;
+
+        String QUERY = "SELECT COUNT(*) FROM " + VENDA_TABLE;
+        Cursor c = db.rawQuery(QUERY, null);
+
+        if (c.moveToFirst())
+            count =  c.getInt(0);
+
+        return count;
+    }
+
     // CRUD PRODUTO X VENDA /////////////////////////////////////////////////////////////////////
 
     public void addProdVenda (@NonNull ProdVenda _prodVenda) {
@@ -3036,6 +3089,20 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.close();
 
         return pgtos;
+    }
+
+    public int selectCountPagamentos () {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        int count = 0;
+
+        String QUERY = "SELECT COUNT(*) FROM " + PGTO_TABLE;
+        Cursor c = db.rawQuery(QUERY, null);
+
+        if (c.moveToFirst())
+            count =  c.getInt(0);
+
+        return count;
     }
 
     // CRUD USUARIO /////////////////////////////////////////////////////////////////////////////

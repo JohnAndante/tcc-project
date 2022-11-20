@@ -12,6 +12,7 @@
         style="@style/Text_BigTitulo"
         android:maxWidth="300dp"
         android:maxLines="2"
+        android:layout_marginTop="20dp"
         android:text="Olá"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
@@ -19,10 +20,11 @@
     <TextView
         android:id="@+id/textCategoriasMain"
         style="@style/Text_Medium_white"
+        android:layout_marginTop="30dp"
         android:text="Categorias"
         android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/textTituloMain"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textTituloMain" />
 
     <LinearLayout
         android:id="@+id/llGrid01"
@@ -35,12 +37,13 @@
         app:layout_constraintStart_toStartOf="parent" >
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/rlClientes"
+            android:id="@+id/clClientes"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="10dp"
             android:padding="15dp"
+            android:clickable="true"
             android:background="@drawable/cardbg_roundcorners_lightgray">
 
             <ImageView
@@ -87,12 +90,13 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/rlProdutos"
+            android:id="@+id/clProdutos"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="10dp"
             android:padding="15dp"
+            android:clickable="true"
             android:background="@drawable/cardbg_roundcorners_lightgray">
 
             <ImageView
@@ -100,7 +104,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:padding="8dp"
-                android:src="@drawable/ic_baseline_person_add_24_white"
+                android:src="@drawable/ic_baseline_sports_baseball_24_white3"
                 android:background="@drawable/iconbg_roundcorners_yellow_01"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
@@ -140,35 +144,149 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/llGrid02"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/llGrid01"
+        app:layout_constraintStart_toStartOf="parent" >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clVendas"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:padding="15dp"
+            android:clickable="true"
+            android:background="@drawable/cardbg_roundcorners_lightgray">
+
+            <ImageView
+                android:id="@+id/imgIconVendas"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="8dp"
+                android:src="@drawable/ic_baseline_checklist_24_white"
+                android:background="@drawable/icongb_roundcorners_pink_01"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:src="@drawable/ic_baseline_arrow_forward_ios_24_white"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/textVendas"
+                style="@style/Text_Medium_white"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="0dp"
+                android:text="Clientes"
+                app:layout_constraintTop_toBottomOf="@id/imgIconVendas"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textQtdVendas"
+                style="@style/Text_Medium_white"
+                android:background="@drawable/icongb_roundcorners_pink_01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="0"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clPagamentos"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:padding="15dp"
+            android:clickable="true"
+            android:background="@drawable/cardbg_roundcorners_lightgray">
+
+            <ImageView
+                android:id="@+id/imgIconPagamentos"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="8dp"
+                android:src="@drawable/ic_baseline_attach_money_24_white"
+                android:background="@drawable/icongb_roundcorners_red_01"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:src="@drawable/ic_baseline_arrow_forward_ios_24_white"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/textPagamentos"
+                style="@style/Text_Medium_white"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="0dp"
+                android:text="Produtos"
+                app:layout_constraintTop_toBottomOf="@id/imgIconPagamentos"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textQtdPagamentos"
+                style="@style/Text_Medium_white"
+                android:background="@drawable/icongb_roundcorners_red_01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="0"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/Teste"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center_horizontal"
-        app:layout_constraintTop_toBottomOf="@id/llGrid01">
+        app:layout_constraintTop_toBottomOf="@id/llGrid02">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btCliente"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/Button_big_blue"
             android:text="Clientes"/>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btProduto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/Button_big_blue"
             android:text="Produtos"/>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btVendas"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/Button_big_blue"
             android:text="Vendas"/>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btPgtos"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/Button_big_blue"
             android:text="Logout"/>
 
 
@@ -190,9 +308,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            android:tint="@color/white"
+            app:tint="@color/white"
             app:fabSize="mini"
             android:src="@drawable/ic_baseline_person_add_24_white"
+            app:backgroundTint="@color/light_blue_01"
             />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -200,7 +319,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            android:tint="@color/white"
+            app:tint="@color/white"
+            app:backgroundTint="@color/light_blue_01"
             app:fabSize="mini"
             android:src="@drawable/ic_baseline_post_add_24_white"
             />
@@ -210,7 +330,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            android:tint="@color/white"
+            app:tint="@color/white"
+            app:backgroundTint="@color/light_blue_01"
             app:fabSize="mini"
             android:src="@drawable/ic_baseline_add_card_24_white"
             />
@@ -221,7 +342,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:tint="@color/white"
+            app:tint="@color/white"
+            app:backgroundTint="@color/light_blue_01"
             app:fabSize="normal"
             android:src="@drawable/ic_baseline_add_24_black"
             />

@@ -61,7 +61,7 @@ public class ListVendas extends AppCompatActivity {
             }
         });
 
-        addDefaultData();
+        //addDefaultData();
         //adjustView();
     }
 
@@ -155,8 +155,6 @@ public class ListVendas extends AppCompatActivity {
     // Funções de teste
 
     private void addDefaultData () {
-        if (!checkClientes())
-            addDefaultClientes();
         if (!checkFormaPgtos())
             addDefaultFormaPgtos();
         if (!checkCategorias())
@@ -175,29 +173,6 @@ public class ListVendas extends AppCompatActivity {
             addDefaultVendas();
             addDefaultProdVenda();
         }
-    }
-
-    private boolean checkClientes () {
-        // Confere se a quantia de clientes registrados é o desejado para testes
-        // No momento teremos 2 clientes
-        int correto = 2;
-        List<Cliente> clientes = db.listAllClientes();
-        Log.e("INFO SIZE CLIENTES", String.valueOf(clientes.size()));
-
-        if (clientes.size() < correto)
-            return false;
-        else {
-            Log.e("INFO SIZE CLIENTES", String.valueOf(clientes.size()));
-            for (Cliente c : clientes)
-                Log.e("INFO CLIENTE ID + NOME", c.getId() + " " + c.getNome());
-        }
-        return true;
-    }
-
-    private void addDefaultClientes () {
-        // Adiciona os clientes usados em teste
-        db.addCliente(new Cliente(0, "Clieiton costa",      "(44) 9 9951-0032"));
-        db.addCliente(new Cliente(1, "Maria dos Penhados",  "(44) 9 8456-8774"));
     }
 
     private boolean checkFormaPgtos () {

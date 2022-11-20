@@ -189,9 +189,7 @@ public class AddCliente extends AppCompatActivity {
                     String telefone = editTextTelefone.getText().toString();
 
                     Cliente c = new Cliente(nome, telefone);
-                    c.setId(db.selectMaxCliente().getId() + 1);
                     db.addCliente(c);
-
                     c = db.selectMaxCliente();
 
                     Telefone t = new Telefone(telefone, c);
