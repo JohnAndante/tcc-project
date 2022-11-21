@@ -8,22 +8,23 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ListVendas extends AppCompatActivity {
 
     private Button btVendaVoltar;
     private Button btVendaAdicionar;
     private ImageButton imgbtNovaVenda;
-    private LinearLayout llAdicionarVenda;
+    private ConstraintLayout clAdicionarVenda;
     private ListView listViewVendas;
     private AdapterVenda adapter;
     private ArrayList<Venda> listaDinamicaVendas;
@@ -41,6 +42,7 @@ public class ListVendas extends AppCompatActivity {
     protected void onCreate (Bundle savedBundleState) {
         super.onCreate(savedBundleState);
         setContentView(R.layout.activity_list_vendas);
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         initButtonsHub();
         listVendas();
@@ -53,8 +55,8 @@ public class ListVendas extends AppCompatActivity {
             }
         });
 
-        llAdicionarVenda = findViewById(R.id.llAdicionarVenda);
-        llAdicionarVenda.setOnClickListener(new View.OnClickListener() {
+        clAdicionarVenda = findViewById(R.id.clPaiAdicionarVenda);
+        clAdicionarVenda.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 addNovaVenda();

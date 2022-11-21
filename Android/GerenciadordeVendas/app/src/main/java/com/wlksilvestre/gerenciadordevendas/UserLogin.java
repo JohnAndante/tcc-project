@@ -13,11 +13,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCanceledListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Objects;
 
@@ -29,12 +38,19 @@ public class UserLogin extends AppCompatActivity {
     private Button btEntrar;
     private Button btEsqueciSenha;
     private Button btCriarConta;
-    private FirebaseAuth mAuth;
     private Dialog loadingDialog;
-    private Usuario usuario;
+    private Dialog resetPasswdDialog;
 
-    public final int deviceHeight   = Resources.getSystem().getDisplayMetrics().heightPixels;
-    public final int deviceWidth    = Resources.getSystem().getDisplayMetrics().widthPixels;
+    public static final int RESETAR_SENHA = 401;
+
+    final static int deviceHeight   = Resources.getSystem().getDisplayMetrics().heightPixels;
+    final static int deviceWidth    = Resources.getSystem().getDisplayMetrics().widthPixels;
+
+    private final BancoDadosCliente db = new BancoDadosCliente(this);
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
+    private FirebaseFirestore fireDB;
+    private Usuario usuario;
 
     @Override
     public void onStart() {
@@ -42,12 +58,6 @@ public class UserLogin extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            Log.e("INFO USER", currentUser.getEmail());
-            intentMainActivity();
-        } else {
-            Log.e("INFO USER", "Nenhum usuário conectado");
-        }
     }
 
     @Override
@@ -62,6 +72,18 @@ public class UserLogin extends AppCompatActivity {
         initButtons();
         initButtonsOnClick();
         initDialogCfg();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if ((requestCode == RESETAR_SENHA) && (resultCode == RESULT_OK)) {
+            Snackbar snackbar = Snackbar.make(getCurrentFocus(), "E-mail para redefinição de senha enviado", Snackbar.LENGTH_SHORT);
+            snackbar.setBackgroundTint(getColor(R.color.yellow_02));
+            snackbar.setTextColor(getColor(R.color.white));
+            snackbar.show();
+        }
     }
 
     private void initEditTexts() {
@@ -88,7 +110,12 @@ public class UserLogin extends AppCompatActivity {
         });
 
         btEsqueciSenha.setOnClickListener(view -> {
+            Intent intent = new Intent(UserLogin.this, UserPasswordRetrieval.class);
+            Bundle bundle = new Bundle();
 
+            bundle.putString("email", editEmailLogin.getText().toString());
+            intent.putExtras(bundle);
+            startActivityForResult(intent, RESETAR_SENHA);
         });
 
         btCriarConta.setOnClickListener(view -> intentCriarConta());
@@ -130,7 +157,7 @@ public class UserLogin extends AppCompatActivity {
                             snackbar.setTextColor(getColor(R.color.white));
                             snackbar.show();
 
-                            new Handler().postDelayed(this::intentMainActivity, 500);
+                            recoverUserData();
 
                             loadingDialog.dismiss();
                         }
@@ -168,9 +195,6 @@ public class UserLogin extends AppCompatActivity {
                         snackbar.setBackgroundTint(getColor(R.color.dark_red_01));
                         snackbar.setTextColor(getColor(R.color.white));
                         snackbar.show();
-                    })
-                    .addOnSuccessListener(authResult -> {
-
                     });
         } catch (Exception e) {
             Log.e("INFO ERROR CATCH", e.getMessage());
@@ -203,12 +227,59 @@ public class UserLogin extends AppCompatActivity {
         return true;
     }
 
+    private void recoverUserData () {
+        usuario = new Usuario();
+
+        if (db.selectCountUsuarios() > 0) {
+            usuario = db.selectUsuarioByUID(currentUser.getUid());
+            Log.e("INFO recoverUserData", "usuario recuperado do banco de dados - " + usuario.getNome());
+
+
+            new Handler().postDelayed(this::intentMainActivity, 500);
+
+        } else {
+            DocumentReference docUsuarios = fireDB.collection("usuarios").document(currentUser.getUid());
+            docUsuarios.get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists())
+                                    Log.e("INFO recoverUserData", "DocumentSnapshot data: " + document.getData());
+
+                                else
+                                    Log.e("INFO recoverUserData", "No such document");
+                            } else {
+                                Log.e("INFO recoverUserData", "get failed with ", task.getException());
+                            }
+                        }
+                    })
+                    .addOnCanceledListener(new OnCanceledListener() {
+                        @Override
+                        public void onCanceled() {
+                            Log.e("INFO recoverUserData", "DOCUMENT GET CANCELED");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e("INFO recoverUserData", "DOCUMENT GET FAILED");
+                        }
+                    });
+        }
+    }
+
     private void initDialogCfg () {
+        // Dialog de Loading
         loadingDialog = new Dialog(UserLogin.this);
         loadingDialog.setContentView(R.layout.spinner_loading_user_reg);
+
         TextView tv = loadingDialog.getWindow().findViewById(R.id.textView3);
         tv.setText("Verificando dados...");
+
         loadingDialog.getWindow().setLayout((int)(deviceWidth * 0.75), (int) (deviceHeight * 0.75));
         loadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
     }
 }

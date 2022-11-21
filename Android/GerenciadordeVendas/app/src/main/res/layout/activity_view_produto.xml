@@ -1,239 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/dark_gray_01"
     tools:context=".ViewProduto">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/dark_gray_01"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textDescricaoProduto"
-                android:layout_width="330dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="2dp"
+                android:id="@+id/textLabelDescricaoProduto"
+                style="@style/Text_Default_light_gray"
                 android:text="Descrição"
-                android:textColor="@color/light_gray_01"
-                android:textSize="15dp"
-                android:textStyle="bold" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <LinearLayout
-                android:layout_width="330dp"
-                android:layout_height="45dp"
-                android:background="@drawable/cardbg_roundcorners_lightgray"
-                android:gravity="center_horizontal|center"
-                android:orientation="horizontal">
+                android:id="@+id/llDescricaoProduto"
+                style="@style/LL_editText_default"
+                app:layout_constraintTop_toBottomOf="@id/textLabelDescricaoProduto"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
 
                 <TextView
                     android:id="@+id/tvDescricaoProduto"
-                    android:layout_width="290dp"
-                    android:layout_height="45dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:backgroundTint="@color/light_gray_01"
-                    android:ems="10"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:gravity="center|left"/>
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_baseline_edit_24_white"
-                    android:visibility="invisible"/>
+                    style="@style/Text_default"
+                    android:hint="Descrição do Produto"/>
 
             </LinearLayout>
 
             <TextView
-                android:id="@+id/textValorProduto"
-                android:layout_width="330dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="2dp"
+                android:id="@+id/textLabelValorProduto"
+                style="@style/Text_Default_light_gray"
                 android:text="Valor"
-                android:textColor="@color/light_gray_01"
-                android:textSize="15dp"
-                android:textStyle="bold" />
+                app:layout_constraintTop_toBottomOf="@id/llDescricaoProduto"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <LinearLayout
-                android:layout_width="330dp"
-                android:layout_height="45dp"
-                android:background="@drawable/cardbg_roundcorners_lightgray"
-                android:gravity="center_horizontal|center"
-                android:orientation="horizontal">
+                android:id="@+id/llValorProduto"
+                style="@style/LL_editText_default"
+                app:layout_constraintTop_toBottomOf="@id/textLabelValorProduto"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
 
                 <TextView
                     android:id="@+id/tvValorProduto"
-                    android:layout_width="290dp"
-                    android:layout_height="45dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:backgroundTint="@color/light_gray_01"
-                    android:ems="10"
-                    android:textColor="@color/white"
-                    android:textSize="16dp"
-                    android:textStyle="bold"
-                    android:gravity="center|left"/>
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_baseline_edit_24_white"
-                    android:visibility="invisible"/>
+                    style="@style/Text_default"
+                    android:hint="Valor do Produto"
+                    android:gravity="center_vertical"/>
 
             </LinearLayout>
 
             <TextView
-                android:id="@+id/textMarcaProduto"
-                android:layout_width="330dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="2dp"
+                android:id="@+id/textLabelMarcaProduto"
+                style="@style/Text_Default_light_gray"
                 android:text="Marca"
-                android:textColor="@color/light_gray_01"
-                android:textSize="15dp"
-                android:textStyle="bold" />
+                app:layout_constraintTop_toBottomOf="@id/llValorProduto"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <LinearLayout
-                android:layout_width="330dp"
-                android:layout_height="45dp"
-                android:background="@drawable/cardbg_roundcorners_lightgray"
-                android:gravity="center_horizontal|center"
-                android:orientation="horizontal">
+                android:id="@+id/llMarcaProduto"
+                style="@style/LL_editText_default"
+                app:layout_constraintTop_toBottomOf="@id/textLabelMarcaProduto"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
 
                 <TextView
                     android:id="@+id/tvMarcaProduto"
-                    android:layout_width="290dp"
+                    style="@style/EditText_default"
                     android:layout_height="45dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:backgroundTint="@color/light_gray_01"
-                    android:ems="10"
-                    android:textColor="@color/white"
-                    android:textSize="16dp"
-                    android:textStyle="bold"
-                    android:gravity="center|left"/>
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24_white"
-                    android:visibility="invisible"/>
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="7dp"
+                    android:gravity="center|left"
+                    android:text="Marca do Produto"
+                    android:paddingLeft="4dp"
+                    app:drawableRightCompat="@drawable/ic_baseline_arrow_drop_down_24_white" />
 
             </LinearLayout>
 
             <TextView
-                android:id="@+id/textLinhaProduto"
-                android:layout_width="330dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="2dp"
+                android:id="@+id/textLabelLinhaProduto"
+                style="@style/Text_Default_light_gray"
                 android:text="Linha"
-                android:textColor="@color/light_gray_01"
-                android:textSize="15dp"
-                android:textStyle="bold" />
+                app:layout_constraintTop_toBottomOf="@id/llMarcaProduto"
+                app:layout_constraintStart_toStartOf="parent"  />
 
             <LinearLayout
-                android:layout_width="330dp"
-                android:layout_height="45dp"
-                android:background="@drawable/cardbg_roundcorners_lightgray"
-                android:gravity="center_horizontal|center"
-                android:orientation="horizontal">
+                android:id="@+id/llLinhaProduto"
+                style="@style/LL_editText_default"
+                app:layout_constraintTop_toBottomOf="@id/textLabelLinhaProduto"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
 
                 <TextView
                     android:id="@+id/tvLinhaProduto"
-                    android:layout_width="290dp"
+                    style="@style/EditText_default"
                     android:layout_height="45dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:backgroundTint="@color/light_gray_01"
-                    android:ems="10"
-                    android:textColor="@color/white"
-                    android:textSize="16dp"
-                    android:textStyle="bold"
-                    android:gravity="center|left"/>
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24_white"
-                    android:visibility="invisible"/>
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="7dp"
+                    android:gravity="center|left"
+                    android:text="Linha do Produto"
+                    android:paddingLeft="4dp"
+                    app:drawableRightCompat="@drawable/ic_baseline_arrow_drop_down_24_white"/>
 
             </LinearLayout>
 
             <TextView
-                android:id="@+id/textCategoriaProduto"
-                android:layout_width="330dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="2dp"
+                android:id="@+id/textLabelCategoriaProduto"
+                style="@style/Text_Default_light_gray"
                 android:text="Categoria"
-                android:textColor="@color/light_gray_01"
-                android:textSize="15dp"
-                android:textStyle="bold" />
+                app:layout_constraintTop_toBottomOf="@id/llLinhaProduto"
+                app:layout_constraintStart_toStartOf="parent"  />
 
             <LinearLayout
-                android:layout_width="330dp"
-                android:layout_height="45dp"
-                android:background="@drawable/cardbg_roundcorners_lightgray"
-                android:gravity="center_horizontal|center"
-                android:orientation="horizontal">
+                android:id="@+id/llCategoriaProduto"
+                style="@style/LL_editText_default"
+                app:layout_constraintTop_toBottomOf="@id/textLabelCategoriaProduto"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
 
                 <TextView
                     android:id="@+id/tvCategoriaProduto"
-                    android:layout_width="290dp"
+                    style="@style/EditText_default"
                     android:layout_height="45dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:backgroundTint="@color/light_gray_01"
-                    android:ems="10"
-                    android:textColor="@color/white"
-                    android:textSize="16dp"
-                    android:textStyle="bold"
-                    android:gravity="center|left"/>
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24_white"
-                    android:visibility="invisible"/>
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="7dp"
+                    android:gravity="center|left"
+                    android:text="Categoria do Produto"
+                    android:paddingLeft="4dp"
+                    app:drawableRightCompat="@drawable/ic_baseline_arrow_drop_down_24_white" />
 
             </LinearLayout>
 
             <TextView
-                android:id="@+id/textSubcategoriaProduto"
-                android:layout_width="330dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="2dp"
+                android:id="@+id/textLabelSubcatProduto"
+                style="@style/Text_Default_light_gray"
                 android:text="Subcategoria(s)"
-                android:textColor="@color/light_gray_01"
-                android:textSize="15dp"
-                android:textStyle="bold" />
+                app:layout_constraintTop_toBottomOf="@id/llCategoriaProduto"
+                app:layout_constraintStart_toStartOf="parent"/>
 
             <LinearLayout
-                android:id="@+id/llSubcatTeste"
-                android:layout_width="330dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/cardbg_roundcorners_lightgray"
+                android:id="@+id/llSubcatProduto"
+                style="@style/LL_editText_default"
                 android:orientation="vertical"
-                android:padding="5dp">
+                android:gravity="start"
+                android:padding="7dp"
+                app:layout_constraintTop_toBottomOf="@id/textLabelSubcatProduto"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/chipGroupViewProduto"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    app:singleSelection="false">
 
                 </com.google.android.material.chip.ChipGroup>
 
@@ -241,34 +169,33 @@
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="80dp"/>
+                android:layout_height="80dp"
+                app:layout_constraintTop_toBottomOf="@id/llSubcatProduto"/>
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 
     <LinearLayout
         android:id="@+id/llBotoesProduto"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:gravity="center_horizontal|center"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true">
+        style="@style/LL_bottom_buttons"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btViewProdutoVoltar"
+            style="@style/Button_bottom_gray"
+            android:focusable="false"
+            android:text="Voltar" />
+
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btViewProdutoEditar"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="50dp"
+            style="@style/Button_bottom_blue"
             android:focusable="false"
             android:text="Editar" />
 
-        <Button
-            android:id="@+id/btViewProdutoVoltar"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:focusable="false"
-            android:text="Voltar" />
+
     </LinearLayout>
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,8 @@
 package com.wlksilvestre.gerenciadordevendas;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -8,12 +10,14 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ComplexColorCompat;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ViewProduto extends AppCompatActivity {
 
@@ -45,6 +49,7 @@ public class ViewProduto extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_produto);
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         Marca marca = new Marca();
         Linha linha = new Linha();
@@ -177,12 +182,13 @@ public class ViewProduto extends AppCompatActivity {
         });
     }
 
+    @SuppressLint("ResourceAsColor")
     private void addChipSubcat (String text) {
         Chip chip = new Chip(this);
         chip.setText(text);
         //chip.setChipStrokeColor();
         //chip.setChipWidth();
-        chip.setBackgroundColor(R.color.dark_gray_01);
+        chip.setBackgroundColor(R.color.light_blue_01);
         chip.setTextColor(R.color.light_gray_02);
         chip.setChipIconResource(R.drawable.ic_baseline_keyboard_arrow_down_24_white);
 

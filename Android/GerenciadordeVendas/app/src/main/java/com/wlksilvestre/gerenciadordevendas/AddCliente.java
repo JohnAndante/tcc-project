@@ -20,11 +20,20 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class AddCliente extends AppCompatActivity {
 
@@ -64,10 +73,36 @@ public class AddCliente extends AppCompatActivity {
 
     int id_cliente;
 
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
+    private Usuario usuario;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_cliente);
+        Objects.requireNonNull(getSupportActionBar()).hide();
+
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+
+        if (currentUser != null) {
+            Log.e("INFO USER ADDCLIENTE", currentUser.getEmail());
+            try {
+                usuario = db.selectUsuarioByUID(currentUser.getUid());
+                Log.d("INFO UID USUARIO ADDCLIENTE", usuario.getUid());
+            } catch (Exception e) {
+                Log.e("INFO ERROR GET USER", e.getMessage());
+            }
+        }
 
         initButtonsCfg();
         initButtonsOnclick();
@@ -90,7 +125,7 @@ public class AddCliente extends AppCompatActivity {
             if (t != null) {
                 editTextTelefone.setText(t.getNum());
             } else {
-                editTextTelefone.setText(c.getTelefone());
+
             }
 
             if (e != null && e.getCidade() != null) {
@@ -132,18 +167,19 @@ public class AddCliente extends AppCompatActivity {
 
                     c.setId(id_cliente);
                     c.setNome(editTextNome.getText().toString());
-                    c.setTelefone(editTextTelefone.getText().toString());
+                    c.setUid(usuario.getUid());
+                    String telefoneText = editTextTelefone.getText().toString();
 
                     // Em algum momento, verificar se este if está filtrando, e fazer o possível pra simplificar ele
                     if (t == null) {
                         t = new Telefone();
                         t.setCliente(c);
-                        t.setNum(c.getTelefone());
+                        t.setNum(telefoneText);
                         db.addTelefone(t);
                         Log.e("INFO ENTROU NO IF DO TELEFONE NULO", "ADICIONOU TELEFONE");
                     }
                     else if (t.getId() > 0) {
-                        t.setNum(c.getTelefone());
+                        t.setNum(telefoneText);
                         db.updateTelefone(t);
                         Log.e("INFO ENTROU NO IF DO ID DO TELEFONE MAIOR QUE ZERO", "ATUALIZOU TELEFONE");
                     } else {
@@ -188,12 +224,14 @@ public class AddCliente extends AppCompatActivity {
                     String nome = editTextNome.getText().toString();
                     String telefone = editTextTelefone.getText().toString();
 
-                    Cliente c = new Cliente(nome, telefone);
+                    Cliente c = new Cliente(nome, usuario.getUid(), DateCustomText.getActualDateTime());
                     db.addCliente(c);
-                    c = db.selectMaxCliente();
+                    saveClienteData(c);
+                    c = db.selectMaxCliente(usuario.getUid());
 
                     Telefone t = new Telefone(telefone, c);
                     db.addTelefone(t);
+                    saveTelefoneData(t);
 
                     if (cidadeSelecionada != null) {
                         Endereco e = new Endereco();
@@ -213,6 +251,7 @@ public class AddCliente extends AppCompatActivity {
                         e.setCliente(c);
 
                         db.addEndereco(e);
+                        saveEnderecoData(e);
                     }
 
                     setResult(RESULT_OK);
@@ -280,7 +319,7 @@ public class AddCliente extends AppCompatActivity {
     }
 
     private void initEditTexts(){
-        editTextNome        = findViewById(R.id.editEmailUsuario);
+        editTextNome        = findViewById(R.id.editNomeCliente);
         editTextTelefone    = findViewById(R.id.editTelefoneCliente);
         editTextRua         = findViewById(R.id.editRuaEndereco);
         editTextNum         = findViewById(R.id.editNumEndereco);
@@ -508,5 +547,52 @@ public class AddCliente extends AppCompatActivity {
         adapterEstado = new AdapterEstado(dialogEstado.getContext(), 0, listaDinamicaEstado);
         listViewEstados.setAdapter(adapterEstado);
         adapterEstado.notifyDataSetChanged();
+    }
+
+    private void saveClienteData(@NonNull Cliente cliente) {
+        FirebaseFirestore fireDB = FirebaseFirestore.getInstance();
+
+        Map<String, Object> values = new HashMap<>();
+        values.put("id", cliente.getId());
+        values.put("nome", cliente.getNome());
+        values.put("usuario_uid", cliente.getUid());
+        values.put("data_update", cliente.getDataUpdate());
+
+        DocumentReference dr = fireDB.collection("clientes").document(String.valueOf(cliente.getId()));
+        dr.set(values)
+                .addOnSuccessListener(unused -> Log.d("INFO FIREDB SUCCESS", "Sucesso ao salvar dados"))
+                .addOnFailureListener(e -> Log.d("INFO FIREDB FAILURE", "Erro ao salvar dados \n" + e));
+    }
+
+    private void saveTelefoneData(@NonNull Telefone telefone) {
+        FirebaseFirestore fireDB = FirebaseFirestore.getInstance();
+
+        Map<String, Object> values = new HashMap<>();
+        values.put("id", telefone.getId());
+        values.put("numero", telefone.getNum());
+        values.put("cliente_id", telefone.getCliente().getId());
+
+        DocumentReference dr = fireDB.collection("telefones").document(String.valueOf(telefone.getId()));
+        dr.set(values)
+                .addOnSuccessListener(unused -> Log.d("INFO FIREDB SUCCESS", "Sucesso ao salvar dados"))
+                .addOnFailureListener(e -> Log.d("INFO FIREDB FAILURE", "Erro ao salvar dados \n" + e));
+    }
+
+    private void saveEnderecoData(@NonNull Endereco endereco) {
+        FirebaseFirestore fireDB = FirebaseFirestore.getInstance();
+
+        Map<String, Object> values = new HashMap<>();
+        values.put("id", endereco.getId());
+        values.put("rua", endereco.getRua());
+        values.put("num", endereco.getNum());
+        values.put("compl", endereco.getComp());
+        values.put("bairro", endereco.getBairro());
+        values.put("cidade", endereco.getCidade().getId());
+        values.put("cliente_id", endereco.getCliente().getId());
+
+        DocumentReference dr = fireDB.collection("enderecos").document(String.valueOf(usuario.getUid()));
+        dr.set(values)
+                .addOnSuccessListener(unused -> Log.d("INFO FIREDB SUCCESS", "Sucesso ao salvar dados"))
+                .addOnFailureListener(e -> Log.d("INFO FIREDB FAILURE", "Erro ao salvar dados \n" + e));
     }
 }

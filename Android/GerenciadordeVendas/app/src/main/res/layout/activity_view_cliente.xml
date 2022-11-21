@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/dark_gray_01"
     tools:context=".ViewCliente">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/dark_gray_01"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/imgvwIconCliente"
@@ -23,329 +21,213 @@
                 android:layout_height="100dp"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/cardbg_roundcorners_lightgray"
-                android:src="@drawable/ic_baseline_person_outline_24_white" />
+                android:src="@drawable/ic_baseline_person_outline_24_white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <TextView
-                android:id="@+id/textNomeCliente"
-                android:layout_width="330dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="2dp"
+                android:id="@+id/textLabelNomeCliente"
+                style="@style/Text_Default_light_gray"
+                android:layout_marginTop="25dp"
                 android:text="Nome"
-                android:textColor="@color/light_gray_01"
-                android:textSize="15dp"
-                android:textStyle="bold" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imgvwIconCliente"/>
 
             <LinearLayout
-                android:layout_width="330dp"
-                android:layout_height="45dp"
-                android:background="@drawable/cardbg_roundcorners_lightgray"
-                android:gravity="center_horizontal|center"
-                android:orientation="horizontal">
+                android:id="@+id/llNomeClienteNovo"
+                style="@style/LL_editText_default"
+                android:padding="2dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textLabelNomeCliente">
 
                 <TextView
                     android:id="@+id/tvNomeCliente"
-                    android:layout_width="290dp"
+                    style="@style/Text_Default_light_gray"
+                    android:layout_width="match_parent"
                     android:layout_height="45dp"
+                    android:layout_marginTop="0dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:backgroundTint="@color/light_gray_01"
-                    android:ems="10"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:gravity="center|left"/>
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_baseline_edit_24_white"
-                    android:visibility="invisible"/>
+                    android:gravity="center|left"
+                    android:text="Nome do cliente"/>
 
             </LinearLayout>
 
             <TextView
                 android:id="@+id/textTelefoneCliente"
-                android:layout_width="330dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="2dp"
+                style="@style/Text_Default_light_gray"
+                android:layout_marginTop="10dp"
                 android:text="Telefone"
-                android:textColor="@color/light_gray_01"
-                android:textSize="15dp"
-                android:textStyle="bold" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/llNomeClienteNovo" />
 
             <LinearLayout
                 android:id="@+id/llAdicionarTelefone"
-                android:layout_width="330dp"
-                android:layout_height="45dp"
-                android:background="@drawable/cardbg_roundcorners_lightgray"
-                android:gravity="center_horizontal|center"
-                android:orientation="horizontal">
+                style="@style/LL_editText_default"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textTelefoneCliente">
 
                 <TextView
                     android:id="@+id/tvTelefoneCliente"
-                    android:layout_width="290dp"
+                    style="@style/Text_Default_light_gray"
+                    android:layout_width="0dp"
                     android:layout_height="45dp"
+                    android:layout_weight="8"
+                    android:layout_marginTop="0dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:backgroundTint="@color/light_gray_01"
-                    android:ems="10"
-                    android:textColor="@color/white"
-                    android:textSize="16dp"
-                    android:textStyle="bold"
-                    android:gravity="center|left"/>
+                    android:gravity="center|left"
+                    android:text="Telefone do cliente"/>
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:src="@drawable/ic_baseline_local_phone_24_white" />
 
             </LinearLayout>
 
             <TextView
                 android:id="@+id/textEnderecoCliente"
-                android:layout_width="330dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="2dp"
+                style="@style/Text_Default_light_gray"
                 android:text="Endereco"
-                android:textColor="@color/light_gray_01"
-                android:textSize="15dp"
-                android:textStyle="bold" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/llAdicionarTelefone" />
 
             <LinearLayout
                 android:id="@+id/llAdicionarEndereco"
-                android:layout_width="330dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/cardbg_roundcorners_lightgray"
-                android:gravity="center_horizontal|center"
-                android:orientation="vertical">
+                style="@style/LL_editText_default"
+                android:orientation="vertical"
+                android:padding="2dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textEnderecoCliente">
 
-                <LinearLayout
-                    android:id="@+id/llRuaEndereco"
-                    android:layout_width="330dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal|center"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tvRuaEndereco"
-                        android:layout_width="290dp"
-                        android:layout_height="45dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:backgroundTint="@color/light_gray_01"
-                        android:ems="10"
-                        android:textColor="@color/white"
-                        android:textSize="16dp"
-                        android:textStyle="bold"
-                        android:gravity="center|left"/>
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_baseline_edit_24_white"
-                        android:visibility="invisible" />
-
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/tvRuaEndereco"
+                    style="@style/Text_Default_light_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:gravity="center|left"
+                    android:hint="Rua"/>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="?android:attr/listDivider" />
 
-                <LinearLayout
-                    android:id="@+id/llNumEndereco"
-                    android:layout_width="330dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal|center"
-                    android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tvNumEndereco"
+                    style="@style/Text_Default_light_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:gravity="center|left"
+                    android:hint="Número"/>
 
-                    <TextView
-                        android:id="@+id/tvNumEndereco"
-                        android:layout_width="290dp"
-                        android:layout_height="45dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:backgroundTint="@color/light_gray_01"
-                        android:ems="10"
-                        android:textColor="@color/white"
-                        android:textSize="16dp"
-                        android:textStyle="bold"
-                        android:gravity="center|left"/>
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_baseline_edit_24_white"
-                        android:visibility="invisible" />
-
-                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="?android:attr/listDivider" />
 
-                <LinearLayout
-                    android:id="@+id/llComplEndereco"
-                    android:layout_width="330dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal|center"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tvComplEndereco"
-                        android:layout_width="290dp"
-                        android:layout_height="45dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:backgroundTint="@color/light_gray_01"
-                        android:ems="10"
-                        android:textColor="@color/white"
-                        android:textSize="16dp"
-                        android:textStyle="bold"
-                        android:gravity="center|left"/>
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_baseline_edit_24_white"
-                        android:visibility="invisible" />
-
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/tvComplEndereco"
+                    style="@style/Text_Default_light_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:gravity="center|left"
+                    android:hint="Complemento"/>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="?android:attr/listDivider" />
 
-                <LinearLayout
-                    android:id="@+id/llBairroEndereco"
-                    android:layout_width="330dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal|center"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tvBairroEndereco"
-                        android:layout_width="290dp"
-                        android:layout_height="45dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:backgroundTint="@color/light_gray_01"
-                        android:ems="10"
-                        android:textColor="@color/white"
-                        android:textSize="16dp"
-                        android:textStyle="bold"
-                        android:gravity="center|left"/>
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_baseline_edit_24_white"
-                        android:visibility="invisible" />
-
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/tvBairroEndereco"
+                    style="@style/Text_Default_light_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:gravity="center|left"
+                    android:hint="Bairro"/>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="?android:attr/listDivider" />
 
-                <LinearLayout
-                    android:id="@+id/llUfEndereco"
-                    android:layout_width="330dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal|center"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tvUfEndereco"
-                        android:layout_width="290dp"
-                        android:layout_height="45dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:backgroundTint="@color/light_gray_01"
-                        android:ems="10"
-                        android:textColor="@color/white"
-                        android:textSize="16dp"
-                        android:textStyle="bold"
-                        android:gravity="center|left"/>
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_baseline_edit_24_white"
-                        android:visibility="invisible" />
-
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/tvUfEndereco"
+                    style="@style/Text_Default_light_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:gravity="center|left"
+                    android:hint="Estado"/>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="?android:attr/listDivider" />
 
-                <LinearLayout
-                    android:id="@+id/llCidadeEndereco"
-                    android:layout_width="330dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal|center"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tvCidadeEndereco"
-                        android:layout_width="290dp"
-                        android:layout_height="45dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:backgroundTint="@color/light_gray_01"
-                        android:ems="10"
-                        android:textColor="@color/white"
-                        android:textSize="16dp"
-                        android:textStyle="bold"
-                        android:gravity="center|left"/>
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_baseline_edit_24_white"
-                        android:visibility="invisible" />
-
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/tvCidadeEndereco"
+                    style="@style/Text_Default_light_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:gravity="center|left"
+                    android:hint="Cidade"/>
 
             </LinearLayout>
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="80dp"/>
+                android:layout_height="80dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/llAdicionarEndereco"/>
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 
     <LinearLayout
         android:id="@+id/llBotoesCliente"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:gravity="center_horizontal|center"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true">
+        style="@style/LL_bottom_buttons"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <Button
-            android:id="@+id/btClienteEditar"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="50dp"
-            android:focusable="false"
-            android:text="Editar" />
-
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btClienteVoltar"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
+            style="@style/Button_bottom_gray"
             android:focusable="false"
             android:text="Voltar" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btClienteEditar"
+            style="@style/Button_bottom_blue"
+            android:focusable="false"
+            android:text="Editar" />
     </LinearLayout>
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

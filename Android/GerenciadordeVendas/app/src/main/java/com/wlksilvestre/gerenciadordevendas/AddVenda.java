@@ -24,8 +24,12 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class AddVenda extends AppCompatActivity {
 
@@ -51,7 +55,9 @@ public class AddVenda extends AppCompatActivity {
     BancoDadosCliente db = new BancoDadosCliente(this);
 
     private List<Cliente> clientes;
+    private List<ClienteTelefone> clienteTelefoneList;
     private ArrayList<Cliente> listaDinamicaClientes;
+    private ArrayList<ClienteTelefone> listaDinamicaClienteTelefone;
     private AdapterCliente adapterCliente;
     private Dialog dialogCliente;
     private ListView listViewClientes;
@@ -70,13 +76,29 @@ public class AddVenda extends AppCompatActivity {
     private Produto produtoSelecionado = null;
     private Venda vendaRascunho = null;
 
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
+    private Usuario usuario;
+
     private int qtdProdutos = 0;
     private Double valorTotal = 0.00;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_venda_01);
+        Objects.requireNonNull(getSupportActionBar()).hide();
+
+        usuario = new Usuario();
+        usuario = db.selectUsuarioByUID(currentUser.getUid());
 
         initButtons();
         initTextViews();
@@ -106,18 +128,21 @@ public class AddVenda extends AppCompatActivity {
         tvClienteVenda.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clientes = db.listAllClientes();
-                listaDinamicaClientes = new ArrayList<Cliente>();
+                //clientes = db.listClientesOrdered(usuario.getUid());
+                //listaDinamicaClientes = new ArrayList<Cliente>();
 
-                if (!clientes.isEmpty()) {
-                    for (Cliente c : clientes)
-                        listaDinamicaClientes.add(c);
+                clienteTelefoneList = db.listClientesAdapterOrdered(usuario.getUid());
+                listaDinamicaClienteTelefone = new ArrayList<>();
+
+                if (!clienteTelefoneList.isEmpty()) {
+                    for (ClienteTelefone ct : clienteTelefoneList)
+                        listaDinamicaClienteTelefone.add(ct);
                 }
 
                 dialogCliente = new Dialog(AddVenda.this);
                 dialogCliente.setContentView(R.layout.spinner_cliente);
 
-                adapterCliente = new AdapterCliente(dialogCliente.getContext(), 0, listaDinamicaClientes);
+                adapterCliente = new AdapterCliente(dialogCliente.getContext(), 0, listaDinamicaClienteTelefone);
 
                 dialogCliente.getWindow().setLayout((int) (deviceWidth * 0.75), (int) (deviceHeight * 0.75));
                 dialogCliente.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -236,15 +261,19 @@ public class AddVenda extends AppCompatActivity {
     }
 
     private void atualizaListaClientes (CharSequence _nome) {
-        clientes = db.listClientesByNome(_nome.toString());
-        listaDinamicaClientes = new ArrayList<Cliente>();
+        //clientes = db.listClientesOrdered(usuario.getUid());
+        //listaDinamicaClientes = new ArrayList<Cliente>();
 
-        if (clientes != null && !clientes.isEmpty()) {
-            for (Cliente c : clientes)
-                listaDinamicaClientes.add(c);
+        clienteTelefoneList = db.listClientesAdapterOrdered(usuario.getUid());
+        listaDinamicaClienteTelefone = new ArrayList<>();
+
+        if (!clienteTelefoneList.isEmpty()) {
+            for (ClienteTelefone ct : clienteTelefoneList)
+                listaDinamicaClienteTelefone.add(ct);
         }
 
-        adapterCliente = new AdapterCliente(dialogCliente.getContext(), 0, listaDinamicaClientes);
+
+        adapterCliente = new AdapterCliente(dialogCliente.getContext(), 0, listaDinamicaClienteTelefone);
         listViewClientes.setAdapter(adapterCliente);
         adapterCliente.notifyDataSetChanged();
     }
@@ -254,8 +283,7 @@ public class AddVenda extends AppCompatActivity {
         listaDinamicaProdutos = new ArrayList<Produto>();
 
         if (produtos != null && !produtos.isEmpty()) {
-            for (Produto p : produtos)
-                listaDinamicaProdutos.add(p);
+            listaDinamicaProdutos.addAll(produtos);
         }
 
         adapterProduto = new AdapterProduto(dialogProduto.getContext(), 0, listaDinamicaProdutos);

@@ -45,7 +45,8 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
     // Colunas da tabela cliente
     private static final String CLIENTE_ID          = "id_cliente";
     private static final String CLIENTE_NOME        = "nome";
-    private static final String CLIENTE_TELEFONE    = "telefone";
+    private static final String CLIENTE_UID         = "user_uid";
+    private static final String CLIENTE_DATA        = "data_alteracao";
 
     // Colunas da tabela endereco
     private static final String ENDERECO_ID         = "id_endereco";
@@ -201,7 +202,8 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         CLIENTE_QUERY       = "CREATE TABLE " + CLIENTE_TABLE + "("
                 + CLIENTE_ID        + " INTEGER PRIMARY KEY, "
                 + CLIENTE_NOME      + " TEXT, "
-                + CLIENTE_TELEFONE  + " TEXT)";
+                + CLIENTE_UID       + " TEXT, "
+                + CLIENTE_DATA      + " TEXT )";
 
         TELEFONE_QUERY      = "CREATE TABLE " + TELEFONE_TABLE + "("
                 + TELEFONE_ID       + " INTEGER PRIMARY KEY, "
@@ -328,10 +330,10 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        if (cliente.getId() >= 0)
-            values.put(CLIENTE_ID, cliente.getId());
+
         values.put(CLIENTE_NOME, cliente.getNome());
-        values.put(CLIENTE_TELEFONE, cliente.getTelefone());
+        values.put(CLIENTE_UID, cliente.getUid());
+        values.put(CLIENTE_DATA, cliente.getDataUpdate());
 
         db.insert(CLIENTE_TABLE, null, values);
         db.close();
@@ -360,7 +362,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
         Cursor cursor = db.query(CLIENTE_TABLE,
                 new String[] {
-                        CLIENTE_ID, CLIENTE_NOME, CLIENTE_TELEFONE},
+                        CLIENTE_ID, CLIENTE_NOME, CLIENTE_UID, CLIENTE_DATA},
                 CLIENTE_ID + " = ?",
                 new String[] { String.valueOf(codigo) },
                 null,
@@ -378,16 +380,22 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         Cliente cliente1 = new Cliente(
                 cursor.getInt(0),
                 cursor.getString(1),
-                cursor.getString(2));
+                cursor.getString(2),
+                cursor.getString(3));
 
         db.close();
         return cliente1;
     }
 
-    Cliente selectMaxCliente () {
+    Cliente selectMaxCliente (String uid) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM " + CLIENTE_TABLE + " WHERE " + CLIENTE_ID + " = (SELECT MAX(" + CLIENTE_ID + ") " + "FROM " + CLIENTE_TABLE + ")", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + CLIENTE_TABLE +
+                " WHERE " + CLIENTE_ID +
+                    " = (SELECT MAX(" + CLIENTE_ID + ") " +
+                    " FROM " + CLIENTE_TABLE +
+                    " WHERE " + CLIENTE_UID + " LIKE '%" + uid + "%')",
+                null);
 
         if (cursor != null)
             cursor.moveToFirst();
@@ -397,7 +405,8 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         Cliente cliente1 = new Cliente(
                 cursor.getInt(0),
                 cursor.getString(1),
-                cursor.getString(2));
+                cursor.getString(2),
+                cursor.getString(3));
 
         db.close();
         return cliente1;
@@ -408,7 +417,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(CLIENTE_NOME, cliente.getNome());
-        values.put(CLIENTE_TELEFONE, cliente.getTelefone());
+        values.put(CLIENTE_UID, cliente.getUid());
 
         db.update(CLIENTE_TABLE, values, CLIENTE_ID + " = ?",
                 new String[] { String.valueOf(cliente.getId()) });
@@ -429,7 +438,8 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                 Cliente cliente = new Cliente();
                 cliente.setId(Integer.parseInt(c.getString(0)));
                 cliente.setNome(c.getString(1));
-                cliente.setTelefone(c.getString(2));
+                cliente.setUid(c.getString(2));
+                cliente.setDataUpdate(c.getString(3));
 
                 listClientes.add(cliente);
 
@@ -440,12 +450,13 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return listClientes;
     }
 
-    public List<Cliente> listClientesOrdered () {
+    public List<Cliente> listClientesOrdered (String uid) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         List<Cliente> listClientes = new ArrayList<>();
 
         String QUERY = "SELECT * FROM " + CLIENTE_TABLE +
+                " WHERE " + CLIENTE_UID + " LIKE '%" + uid + "%'" +
                 " ORDER BY " + CLIENTE_NOME;
         Cursor c = db.rawQuery(QUERY, null);
 
@@ -454,7 +465,8 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
                 Cliente cliente = new Cliente();
                 cliente.setId(Integer.parseInt(c.getString(0)));
                 cliente.setNome(c.getString(1));
-                cliente.setTelefone(c.getString(2));
+                cliente.setUid(c.getString(2));
+                cliente.setDataUpdate(c.getString(3));
 
                 listClientes.add(cliente);
 
@@ -465,13 +477,47 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return listClientes;
     }
 
-    public List<Cliente> listClientesByNome (String _nome) {
+    public List<Cliente> listClientesByNome (String _nome, String uid) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        List<Cliente> listClientes = new ArrayList<>();
+            List<Cliente> listClientes = new ArrayList<>();
 
-        String QUERY = "SELECT * FROM " + CLIENTE_TABLE +
-                " WHERE " + CLIENTE_NOME + " LIKE '%" + _nome + "%'" +
+            String QUERY = "SELECT * FROM " + CLIENTE_TABLE +
+                    " WHERE " + CLIENTE_NOME + " LIKE '%" + _nome + "%'" +
+                    " AND " + CLIENTE_UID + " LIKE '%" + uid + "%'" +
+                    " ORDER BY " + CLIENTE_NOME;
+
+            Cursor c = db.rawQuery(QUERY, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    Cliente cliente = new Cliente();
+                    cliente.setId(Integer.parseInt(c.getString(0)));
+                    cliente.setNome(c.getString(1));
+                    cliente.setUid(c.getString(2));
+                    cliente.setDataUpdate(c.getString(3));
+
+                    listClientes.add(cliente);
+
+                } while (c.moveToNext());
+
+                db.close();
+                return listClientes;
+            } else {
+                db.close();
+                return null;
+        }
+    }
+
+    public List<ClienteTelefone> listClientesAdapterOrdered (String uid) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<ClienteTelefone> listClienteTelefone = new ArrayList<>();
+
+        String QUERY = "SELECT C." + CLIENTE_ID + ", T." + TELEFONE_ID +
+                " FROM " + CLIENTE_TABLE + " C " +
+                " JOIN " + TELEFONE_TABLE + " T ON C." + CLIENTE_ID + " == T." + TELEFONE_CLIENTE +
+                " WHERE C." + CLIENTE_UID + " LIKE '%" + uid + "%'" +
                 " ORDER BY " + CLIENTE_NOME;
 
         Cursor c = db.rawQuery(QUERY, null);
@@ -479,16 +525,19 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         if (c.moveToFirst()) {
             do {
                 Cliente cliente = new Cliente();
-                cliente.setId(Integer.parseInt(c.getString(0)));
-                cliente.setNome(c.getString(1));
-                cliente.setTelefone(c.getString(2));
+                Telefone telefone = new Telefone();
 
-                listClientes.add(cliente);
+                cliente = selectCliente(c.getInt(0));
+                telefone = selectTelefone(c.getInt(1));
+
+                ClienteTelefone ct = new ClienteTelefone(cliente, telefone);
+
+                listClienteTelefone.add(ct);
 
             } while (c.moveToNext());
 
             db.close();
-            return listClientes;
+            return listClienteTelefone;
         } else {
             db.close();
             return null;
@@ -3216,20 +3265,22 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
         if (cursor != null) {
             cursor.moveToFirst();
+
+            Usuario usuario = new Usuario(
+                    cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getString(3),
+                    cursor.getString(4)
+            );
+
+            db.close();
+            return usuario;
+
         } else {
             return null;
         }
 
-        Usuario usuario = new Usuario(
-                cursor.getInt(0),
-                cursor.getString(1),
-                cursor.getString(2),
-                cursor.getString(3),
-                cursor.getString(4)
-        );
-
-        db.close();
-        return usuario;
     }
 
     public void updateUsuario (@NonNull Usuario usuario) {
@@ -3244,6 +3295,20 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.update(USER_TABLE, values, USER_ID + " = ?",
                 new String[] { String.valueOf(usuario.getId()) });
         db.close();
+    }
+
+    int selectCountUsuarios () {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        int count = 0;
+
+        String QUERY = "SELECT COUNT(*) FROM " + USER_TABLE;
+        Cursor c = db.rawQuery(QUERY, null);
+
+        if (c.moveToFirst())
+            count =  c.getInt(0);
+
+        return count;
     }
 
     // Preenchimento estados e cidades //////////////////////////////////////////////////////////

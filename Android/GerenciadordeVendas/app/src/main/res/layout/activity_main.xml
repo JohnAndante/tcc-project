@@ -261,36 +261,46 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/Teste"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal"
-        app:layout_constraintTop_toBottomOf="@id/llGrid02">
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btCliente"
+        style="@style/Button_big_transparent"
+        android:text="Adicionar Cliente"
+        app:layout_constraintTop_toBottomOf="@id/llGrid02"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btCliente"
-            style="@style/Button_big_blue"
-            android:text="Clientes"/>
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btProduto"
+        style="@style/Button_big_transparent"
+        android:text="Adicionar Produto"
+        app:layout_constraintTop_toBottomOf="@id/btCliente"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btProduto"
-            style="@style/Button_big_blue"
-            android:text="Produtos"/>
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btVendas"
+        style="@style/Button_big_transparent"
+        android:text="Adicionar Venda"
+        app:layout_constraintTop_toBottomOf="@id/btProduto"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btVendas"
-            style="@style/Button_big_blue"
-            android:text="Vendas"/>
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btPgtos"
+        style="@style/Button_big_transparent"
+        android:text="Logout"
+        app:layout_constraintTop_toBottomOf="@id/btVendas"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btPgtos"
-            style="@style/Button_big_blue"
-            android:text="Logout"/>
-
-
-    </LinearLayout>
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btSairApp"
+        style="@style/Button_big_transparent"
+        android:text="Sair do Aplicativo"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <LinearLayout
         android:id="@+id/linearFabMain"
@@ -300,6 +310,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:gravity="center_horizontal"
+        android:visibility="gone"
         >
 
 

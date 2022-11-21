@@ -15,6 +15,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ViewVenda extends AppCompatActivity {
 
@@ -48,8 +49,10 @@ public class ViewVenda extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_venda);
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         Cliente cliente = new Cliente();
+        Telefone telefone = new Telefone();
         Pgto pgto = new Pgto();
         arrayListProdVenda = new ArrayList<ProdVenda>();
 
@@ -65,6 +68,7 @@ public class ViewVenda extends AppCompatActivity {
 
             venda = db.selectVenda(idVenda);
             cliente = venda.getCliente();
+            telefone = db.selectTelefoneFirst(cliente);
             pgto = venda.getPgto();
             List<ProdVenda> prodsVenda = db.listProdVendaByVenda(venda);
 
@@ -79,7 +83,7 @@ public class ViewVenda extends AppCompatActivity {
             textHoraVenda.setText(DateCustomText.getCustomTime(dataVenda));
 
             textNomeCliente.setText(cliente.getNome());
-            textTelefoneCliente.setText(cliente.getTelefone());
+            textTelefoneCliente.setText(telefone.getNum());
 
             textValorVenda.setText(MaskEditUtil.doubleToMoneyValue(venda.getValor()));
 
@@ -119,7 +123,7 @@ public class ViewVenda extends AppCompatActivity {
         textDataVenda       = (TextView) findViewById(R.id.textDataVenda);
         textHoraVenda       = (TextView) findViewById(R.id.textHoraVenda);
         textValorVenda      = (TextView) findViewById(R.id.tvValorVenda);
-        textFormaPgto       = (TextView) findViewById(R.id.textFormaPgto);
+        textFormaPgto       = (TextView) findViewById(R.id.textLabelFormaPgto);
         textPgtoVenda       = (TextView) findViewById(R.id.tvFormaPgtoDesc);
         textQtdParcelas     = (TextView) findViewById(R.id.tvQtdParcela);
         textValorJuros      = (TextView) findViewById(R.id.tvValorJurosAplicados);

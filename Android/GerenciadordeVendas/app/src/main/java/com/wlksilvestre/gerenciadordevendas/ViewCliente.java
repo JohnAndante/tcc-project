@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.Objects;
+
 public class ViewCliente extends AppCompatActivity {
 
     private Button Editar;
@@ -33,12 +35,14 @@ public class ViewCliente extends AppCompatActivity {
     private boolean cliente_alterado;
 
     private Cliente cliente;
+    private Telefone telefone;
 
 
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_cliente);
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         initTexts();
         initButtons();
@@ -51,9 +55,10 @@ public class ViewCliente extends AppCompatActivity {
         if (intent.hasExtra("ID")) {
             id_cliente = intent.getIntExtra("ID", 0);
             cliente = db.selectCliente(id_cliente);
+            telefone = db.selectTelefoneFirst(cliente);
 
             textNome.setText(cliente.getNome());
-            textTelefone.setText(cliente.getTelefone());
+            textTelefone.setText(telefone.getNum());
 
             Endereco e = db.selectEnderecoByCliente(cliente);
 
@@ -81,9 +86,10 @@ public class ViewCliente extends AppCompatActivity {
             cliente_alterado = true;
 
             cliente = db.selectCliente(id_cliente);
+            telefone = db.selectTelefoneFirst(cliente);
 
             textNome.setText(cliente.getNome());
-            textTelefone.setText(cliente.getTelefone());
+            textTelefone.setText(telefone.getNum());
 
             Endereco e = db.selectEnderecoByCliente(cliente);
 

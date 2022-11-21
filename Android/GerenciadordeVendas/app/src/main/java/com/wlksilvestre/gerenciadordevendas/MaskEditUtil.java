@@ -88,6 +88,10 @@ public abstract class MaskEditUtil {
     }
 
     public static Double moneyToDouble (final String money) {
+        String cleanString = money.replaceAll("[R$,.]", "");
+        StringBuilder str = new StringBuilder(cleanString);
+        str.insert((cleanString.length() - 2), ".");
+
         String formatted = money.replaceAll("[.]", "")
                                 .replaceAll("[,]", ".")
                                 .replaceAll("[ ]", "");

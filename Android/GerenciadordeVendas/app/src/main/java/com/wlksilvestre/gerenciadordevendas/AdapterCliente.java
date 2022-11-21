@@ -15,11 +15,11 @@ import java.util.ArrayList;
 
 public class AdapterCliente extends ArrayAdapter {
     private Context context;
-    private ArrayList<Cliente> data;
+    private ArrayList<ClienteTelefone> data;
 
     BancoDadosCliente db = new BancoDadosCliente(null); // alterado
 
-    public AdapterCliente(Context context, int layoutId, ArrayList<Cliente> list) {
+    public AdapterCliente(Context context, int layoutId, ArrayList<ClienteTelefone> list) {
         super(context, layoutId, list);
         this.context = context;
         this.data = list;
@@ -35,8 +35,8 @@ public class AdapterCliente extends ArrayAdapter {
         TextView tvNome = (TextView) view.findViewById(R.id.tvNomeCliente);
         TextView tvTelefone = (TextView) view.findViewById(R.id.tvTelefoneCliente);
 
-        tvNome.setText(data.get(position).getNome());
-        tvTelefone.setText(data.get(position).getTelefone());
+        tvNome.setText(data.get(position).getCliente().getNome());
+        tvTelefone.setText(data.get(position).getTelefone().getNum());
 
         return view;
     }

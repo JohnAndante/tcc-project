@@ -88,8 +88,7 @@
         android:focusable="false"
         app:layout_constraintTop_toBottomOf="@id/llSenhaLogin"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="gone"/>
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btCriarContaLogin"

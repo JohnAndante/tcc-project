@@ -32,6 +32,7 @@ import com.google.android.material.chip.ChipGroup;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class AddProduto extends AppCompatActivity {
 
@@ -99,6 +100,7 @@ public class AddProduto extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_produto);
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         llButtons = (LinearLayout) findViewById(R.id.llBotoesProduto);
 

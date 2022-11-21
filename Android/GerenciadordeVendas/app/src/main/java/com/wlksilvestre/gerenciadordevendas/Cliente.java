@@ -4,21 +4,23 @@ public class Cliente {
 
     private int     id;
     private String  nome;
-    private String  telefone;
+    private String  uid;
+    private String  dataUpdate;
 
     public Cliente (){
-
     }
 
-    public Cliente (int _id, String _nome, String _telefone){
+    public Cliente (int _id, String _nome, String _uid, String _dataUpdate){
         this.id         = _id;
         this.nome       = _nome;
-        this.telefone   = _telefone;
+        this.uid        = _uid;
+        this.dataUpdate = _dataUpdate;
     }
 
-    public Cliente (String _nome, String _telefone) {
+    public Cliente (String _nome, String _uid, String _dataUpdate) {
         this.nome       = _nome;
-        this.telefone   = _telefone;
+        this.uid        = _uid;
+        this.dataUpdate = _dataUpdate;
     }
 
     public Cliente (String _nome) {
@@ -41,12 +43,20 @@ public class Cliente {
         this.nome = nome;
     }
 
-    public String getTelefone() {
-        return telefone;
+    public String getUid() {
+        return uid;
     }
 
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getDataUpdate() {
+        return dataUpdate;
+    }
+
+    public void setDataUpdate(String dataUpdate) {
+        this.dataUpdate = dataUpdate;
     }
 }
 

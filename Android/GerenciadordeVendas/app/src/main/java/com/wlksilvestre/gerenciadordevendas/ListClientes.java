@@ -16,19 +16,25 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ListClientes extends AppCompatActivity {
 
     private Button btClienteVoltar;
     private Button btClienteAdicionar;
     private ImageButton imgbtIconeNovoCliente;
-    private LinearLayout llAdicionarCliente;
+    private ConstraintLayout clAdicionarCliente;
     private ListView listViewClientes;
     private AdapterCliente adapter;
     private ArrayList<Cliente> listaDinamicaClientes;
+    private ArrayList<ClienteTelefone> listaDinamicaClienteTelefone;
     private ArrayList<String> arrayList;
 
     BancoDadosCliente db = new BancoDadosCliente(this);
@@ -40,9 +46,37 @@ public class ListClientes extends AppCompatActivity {
 
     private int viewCounter = 0;
 
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
+    private Usuario usuario;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+    }
+
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_clients_zero);
+        Objects.requireNonNull(getSupportActionBar()).hide();
+
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+
+        if (currentUser != null) {
+            Log.e("INFO USER", currentUser.getEmail());
+            try {
+                usuario = db.selectUsuarioByUID(currentUser.getUid());
+                Log.d("INFO UID USUARIO", usuario.getUid());
+            } catch (Exception e) {
+                Log.e("INFO ERROR GET USER", e.getMessage());
+            }
+        }
+
 
         initButtonsHub();
         listClientes();
@@ -55,8 +89,8 @@ public class ListClientes extends AppCompatActivity {
             }
         });
 
-        llAdicionarCliente = (LinearLayout) findViewById(R.id.llAdicionarCliente);
-        llAdicionarCliente.setOnClickListener(new View.OnClickListener() {
+        clAdicionarCliente = (ConstraintLayout) findViewById(R.id.clAdicionarCliente);
+        clAdicionarCliente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 addNewCliente();
@@ -73,15 +107,17 @@ public class ListClientes extends AppCompatActivity {
         if ((requestCode == NOVO_CLIENTE) && (resultCode == RESULT_OK)) {
 
             Cliente clienteMax = new Cliente();
+            Telefone telefoneMax = new Telefone();
 
             try {
-                clienteMax = db.selectMaxCliente();
+                clienteMax = db.selectMaxCliente(usuario.getUid());
+                telefoneMax = db.selectTelefoneFirst(clienteMax);
             } catch (Exception e) {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
             db.close();
-            listaDinamicaClientes.add(clienteMax);
+            listaDinamicaClienteTelefone.add(new ClienteTelefone(clienteMax, telefoneMax));
             adapter.notifyDataSetChanged();
 
         } else
@@ -99,10 +135,10 @@ public class ListClientes extends AppCompatActivity {
         btClienteVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(ListClientes.this, MainActivity.class));
+                setResult(RESULT_CANCELED);
+                finish();
             }
         });
-
 
     }
 
@@ -112,16 +148,16 @@ public class ListClientes extends AppCompatActivity {
     }
 
     private void listClientes(){
+        List <ClienteTelefone> clienteTelefoneList = db.listClientesAdapterOrdered(usuario.getUid());
+        listaDinamicaClienteTelefone = new ArrayList<>();
 
-        List<Cliente> clientes = db.listAllClientes();
-        listaDinamicaClientes = new ArrayList<Cliente>();
-
-        if (!clientes.isEmpty()) {
-            for (Cliente c : clientes)
-                listaDinamicaClientes.add(c);
+        if (clienteTelefoneList != null) {
+            for (ClienteTelefone ct : clienteTelefoneList)
+                listaDinamicaClienteTelefone.add(ct);
         }
 
-        adapter = new AdapterCliente(this, 0, listaDinamicaClientes);
+
+        adapter = new AdapterCliente(this, 0, listaDinamicaClienteTelefone);
 
         listViewClientes = (ListView) findViewById(R.id.listVClientes);
         listViewClientes.setDescendantFocusability(FOCUS_BLOCK_DESCENDANTS);
@@ -131,8 +167,8 @@ public class ListClientes extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 try {
-                    Cliente c = (Cliente) listViewClientes.getItemAtPosition(i);
-                    openClienteData(c);
+                    ClienteTelefone ct = (ClienteTelefone) listViewClientes.getItemAtPosition(i);
+                    openClienteData(ct);
                 } catch (Exception e) {
                     Log.e("ERROR", e.getMessage().toString());
                 }
@@ -141,12 +177,12 @@ public class ListClientes extends AppCompatActivity {
 
     }
 
-    private void openClienteData(@NonNull Cliente c) {
+    private void openClienteData(@NonNull ClienteTelefone ct) {
 
         Intent intent = new Intent(ListClientes.this, ViewCliente.class);
         Bundle bundle = new Bundle();
 
-        bundle.putInt("ID", c.getId());
+        bundle.putInt("ID", ct.getCliente().getId());
         intent.putExtras(bundle);
 
         startActivityForResult(intent, CONSULTAR_CLIENTE);

@@ -1,5 +1,7 @@
 package com.wlksilvestre.gerenciadordevendas;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,12 +16,18 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 import java.util.Objects;
@@ -35,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button btProduto;
     private Button btVendas;
     private Button btPgtos;
+    private Button btSairApp;
     private TextView textTitulo;
     private TextView textDialog;
     private TextView textQtdClientes;
@@ -59,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
+    private FirebaseFirestore fireDB;
+    private DocumentReference docUsuarios;
     private Usuario usuario;
 
     SharedPreferences prefs = null;
@@ -69,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+        fireDB = FirebaseFirestore.getInstance();
     }
 
     @Override
@@ -79,15 +91,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+        fireDB = FirebaseFirestore.getInstance();
+
+        usuario = new Usuario();
 
         if (currentUser != null) {
-            Log.e("INFO USER", currentUser.getEmail());
-            try {
-                usuario = db.selectUsuarioByUID(currentUser.getUid());
-            } catch (Exception e) {
-                Log.e("INFO ERROR GET USER", e.getMessage());
-            }
+            usuario = db.selectUsuarioByUID(currentUser.getUid());
+        } else {
+            mAuth.getInstance().signOut();
+            Intent intent = new Intent(MainActivity.this, StartScreen.class);
+            startActivity(intent);
+            finish();
         }
+
 
         initFabMenu();
         initDialogCfg();
@@ -96,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initLayouts();
         initButtonsOnClick();
         initLayoutsOnClick();
+        initCustomUI();
 
         loadingDialog.show();
         try {
@@ -174,16 +191,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         loadingDialog.dismiss();
 
-        loadingDialog.show();
-        try {
-            textDialog.setText("Verificando dados do usuário");
-            initCustomUI();
-        } catch (Exception e) {
-            Log.e("INFO ONCREATE - usuário", e.getMessage());
-            loadingDialog.dismiss();
-        }
-        loadingDialog.dismiss();
-
     }
 
     private void initCustomUI () {
@@ -235,6 +242,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btProduto = findViewById(R.id.btProduto);
         btVendas = findViewById(R.id.btVendas);
         btPgtos = findViewById(R.id.btPgtos);
+        btSairApp = findViewById(R.id.btSairApp);
     }
 
     private void initButtonsOnClick () {
@@ -267,6 +275,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent intent = new Intent(MainActivity.this, StartScreen.class);
                 startActivity(intent);
                 finish();
+            }
+        });
+
+        btSairApp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                System.exit(0);
             }
         });
 

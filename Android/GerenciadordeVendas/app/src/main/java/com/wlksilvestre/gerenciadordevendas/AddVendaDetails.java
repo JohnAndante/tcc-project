@@ -32,6 +32,7 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class AddVendaDetails extends AppCompatActivity {
 
@@ -80,6 +81,7 @@ public class AddVendaDetails extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_venda_02);
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         Cliente cliente = new Cliente();
         Telefone telefone = new Telefone();
@@ -111,7 +113,7 @@ public class AddVendaDetails extends AppCompatActivity {
             tvDataVenda.setText(DateCustomText.getExtenseDate(venda.getData()));
             tvHoraVenda.setText(DateCustomText.getCustomTime(venda.getData()));
             tvNomeCliente.setText(cliente.getNome());
-            tvTelefoneCliente.setText(cliente.getTelefone());
+            tvTelefoneCliente.setText(telefone.getNum());
             tvValorTotalVenda.setText(MaskEditUtil.doubleToMoneyValue(venda.getValor()));
 
             clValorJuros.setVisibility(View.GONE);

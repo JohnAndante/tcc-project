@@ -24,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -244,7 +245,7 @@ public class UserRegister extends AppCompatActivity {
         values.put("telefone", usuario.getTelefone());
         values.put("uid", usuario.getUid());
 
-        DocumentReference dr = fireDB.collection("Usuarios").document(String.valueOf(usuario.getId()));
+        DocumentReference dr = fireDB.collection("usuarios").document(String.valueOf(usuario.getUid()));
         dr.set(values)
                 .addOnSuccessListener(unused -> Log.d("INFO FIREDB SUCCESS", "Sucesso ao salvar dados"))
                 .addOnFailureListener(e -> Log.d("INFO FIREDB FAILURE", "Erro ao salvar dados \n" + e));

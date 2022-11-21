@@ -88,6 +88,8 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginLeft">20dp</item>
         <item name="android:layout_marginTop">10dp</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
         <item name="android:textColor">@color/light_gray_03</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">16sp</item>
@@ -102,6 +104,16 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="Text_card_tag">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
+
     </style>
 
     <style name="LL_editText_default">
@@ -125,6 +137,22 @@
         <item name="android:orientation">horizontal</item>
     </style>
 
+    <style name="LL_parent_card" >
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">20dp</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:gravity">center_horizontal|center</item>
+        <item name="android:background">@drawable/cardbg_roundcorners_lightgray</item>
+    </style>
+
+    <style name="LL_card">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">2dp</item>
+        <item name="android:background">@drawable/cardbg_roundcorners_lightgray</item>
+    </style>
+
     <style name="EditText_default">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -136,6 +164,80 @@
         <item name="android:layout_marginLeft">5dp</item>
         <item name="android:layout_marginRight">5dp</item>
         <item name="android:drawableRight">@drawable/ic_baseline_edit_24_white</item>
+    </style>
+
+    <style name="Text_default">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">45dp</item>
+        <item name="android:backgroundTint">@color/light_gray_01</item>
+        <item name="android:textColor">@color/light_gray_03</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColorHint">@color/light_gray_03</item>
+        <item name="android:gravity">center|left</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginRight">5dp</item>
+    </style>
+
+    <style name="Text_inner_default">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:backgroundTint">@color/light_gray_01</item>
+        <item name="android:textColor">@color/light_gray_03</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColorHint">@color/light_gray_03</item>
+        <item name="android:gravity">center|left</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginRight">5dp</item>
+    </style>
+
+    <style name="ImgButton_add">
+        <item name="android:layout_height">38dp</item>
+        <item name="android:layout_width">38dp</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginRight">5dp</item>
+        <item name="android:background">@drawable/iconbg_roundcorners_lightgray_01_stroke</item>
+        <item name="android:src">@drawable/ic_baseline_add_24_white</item>
+    </style>
+
+    <style name="ImgButton_arrow_right">
+        <item name="android:layout_height">38dp</item>
+        <item name="android:layout_width">38dp</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginRight">5dp</item>
+        <item name="android:background">@null</item>
+        <item name="android:src">@drawable/ic_baseline_arrow_forward_ios_24_white</item>
+    </style>
+
+    <style name="LV_default">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">20dp</item>
+        <item name="android:divider">@null</item>
+        <item name="android:dividerHeight">0dp</item>
+    </style>
+
+    <style name="Chip_selected">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:backgroundTint">@color/light_blue_01</item>
+    </style>
+
+    <style name="Chip_unselected">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:backgroundTint">@color/light_gray_02</item>
+    </style>
+
+    <style name="Chip_button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:backgroundTint">@color/light_blue_01</item>
+        <item name="android:clickable">false</item>
+        <item name="android:checkable">false</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
 </resources>
