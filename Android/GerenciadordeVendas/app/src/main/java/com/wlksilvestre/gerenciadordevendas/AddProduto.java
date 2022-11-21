@@ -96,6 +96,7 @@ public class AddProduto extends AppCompatActivity {
     private Dialog dialogSubcat;
     private ListView listViewSubcats;
 
+    @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,7 +140,6 @@ public class AddProduto extends AppCompatActivity {
             textMarca.setText(m.getDescricao());
             textLinha.setText(l.getDescricao());
             textCategoria.setText(c.getDescricao());
-            textCifra.setTextColor(R.color.white); // Corrigir quando possível
 
             linhaSelecionada = l;
             marcaSelecionada = m;
@@ -373,7 +373,7 @@ public class AddProduto extends AppCompatActivity {
             }
         });
 
-        editTextValor.addTextChangedListener(new MoneyTextWatcher(editTextValor));
+        //editTextValor.addTextChangedListener(new MoneyTextWatcher(editTextValor));
 
     }
 

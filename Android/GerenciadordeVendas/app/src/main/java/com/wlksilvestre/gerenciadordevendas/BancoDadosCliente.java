@@ -2585,12 +2585,14 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
 
-        if (_venda.getId() >= 0) {
+       /* if (_venda.getId() >= 0) {
             Log.e("INFO ADD VENDA", "MAIOR OU IGUAL A ZERO [[[ " + String.valueOf(_venda.getId()) + " ]]]");
             values.put(VENDA_ID, _venda.getId());
         } else {
             Log.e("INFO ADD VENDA", "NÃO ENTROU NO IF");
         }
+
+        */
 
         values.put(VENDA_DATA, _venda.getData());
         values.put(VENDA_VALOR, _venda.getValor());

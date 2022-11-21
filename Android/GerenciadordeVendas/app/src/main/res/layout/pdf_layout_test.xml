@@ -12,13 +12,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:text="Nome do Vendedor"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Walker Silvestre"
+        android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:textColor="@color/white"
-        android:fontFamily="sans-serif-condensed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textEnderecoVendedor"

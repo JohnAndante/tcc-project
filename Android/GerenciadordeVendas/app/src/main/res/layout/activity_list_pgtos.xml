@@ -8,11 +8,28 @@
     tools:context=".ListPgtos">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clPaiAdicionarPgto"
+        android:id="@+id/clBuscarPagamento"
         style="@style/LL_parent_card"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" >
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <EditText
+            android:id="@+id/editBuscarPgto"
+            style="@style/EditText_default"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:drawableRight="@drawable/ic_baseline_search_24_whit"
+            android:hint="Buscar Pagamento" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clPaiAdicionarPgto"
+        style="@style/LL_parent_card"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/clBuscarPagamento">
 
         <ImageButton
             android:id="@+id/imgbtIconeNovoPgto"
@@ -24,16 +41,16 @@
             android:id="@+id/tvNovoPgto"
             style="@style/Text_card_tag"
             android:text="Adicionar Pagamento"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imgbtIconeNovoPgto"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/imgbtDadosPgto"
             style="@style/ImgButton_arrow_right"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -15,6 +15,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -38,6 +41,9 @@ public class ListVendas extends AppCompatActivity {
     public static final int CONSULTAR_VENDA = 4200;
     public static final int RESULT_ALT_VENDA = 4300;
 
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
+    private Usuario usuario;
 
     protected void onCreate (Bundle savedBundleState) {
         super.onCreate(savedBundleState);
@@ -46,6 +52,19 @@ public class ListVendas extends AppCompatActivity {
 
         initButtonsHub();
         listVendas();
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+
+        if (currentUser != null) {
+            Log.e("INFO USER", currentUser.getEmail());
+            try {
+                usuario = db.selectUsuarioByUID(currentUser.getUid());
+                Log.d("INFO UID USUARIO", usuario.getUid());
+            } catch (Exception e) {
+                Log.e("INFO ERROR GET USER", e.getMessage());
+            }
+        }
+
 
         imgbtNovaVenda = findViewById(R.id.imgbtIconeNovaVenda);
         imgbtNovaVenda.setOnClickListener(new View.OnClickListener() {
@@ -65,6 +84,49 @@ public class ListVendas extends AppCompatActivity {
 
         //addDefaultData();
         //adjustView();
+
+            db.addVenda(new Venda(
+                    DateCustomText.getActualDateTime(),
+                    248.00,
+                    db.selectMaxCliente(usuario.getUid()),
+                    null
+            ));
+
+            db.addProdVenda(new ProdVenda(
+                    db.selectMaxVenda(),
+                    db.selectProduto(3),
+                    2,
+                    99.00
+            ));
+
+            db.addProdVenda(new ProdVenda(
+                    db.selectMaxVenda(),
+                    db.selectProduto(2),
+                    2,
+                    50.00
+            ));
+
+            db.addVenda(new Venda(
+                    DateCustomText.getActualDateTime(),
+                    new Double(149.00),
+                    db.selectMaxCliente(usuario.getUid()),
+                    null
+            ));
+
+            db.addProdVenda(new ProdVenda(
+                    db.selectMaxVenda(),
+                    db.selectProduto(3),
+                    1,
+                    99.00
+            ));
+
+            db.addProdVenda(new ProdVenda(
+                    db.selectMaxVenda(),
+                    db.selectProduto(2),
+                    2,
+                    50.00
+            ));
+
     }
 
     @Override

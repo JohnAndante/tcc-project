@@ -8,9 +8,26 @@
     tools:context=".ListVendas">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clPaiAdicionarVenda"
+        android:id="@+id/clBuscarVenda"
         style="@style/LL_parent_card"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <EditText
+            android:id="@+id/editBuscarPgto"
+            style="@style/EditText_default"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:drawableRight="@drawable/ic_baseline_search_24_whit"
+            android:hint="Buscar Venda" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clPaiAdicionarVenda"
+        style="@style/LL_parent_card"
+        app:layout_constraintTop_toBottomOf="@+id/clBuscarVenda"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 

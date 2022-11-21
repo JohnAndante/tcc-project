@@ -8,9 +8,26 @@
     tools:context=".ListProdutos">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clPaiAdicionarProduto"
+        android:id="@+id/clBuscarProduto"
         style="@style/LL_parent_card"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <EditText
+            android:id="@+id/editBuscarPgto"
+            style="@style/EditText_default"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:drawableRight="@drawable/ic_baseline_search_24_whit"
+            android:hint="Buscar Produto" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clPaiAdicionarProduto"
+        style="@style/LL_parent_card"
+        app:layout_constraintTop_toBottomOf="@+id/clBuscarProduto"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 

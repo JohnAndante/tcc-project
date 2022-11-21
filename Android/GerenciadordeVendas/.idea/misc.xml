@@ -40,9 +40,9 @@
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/activity_add_cliente.xml" value="0.18" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/activity_add_produto.xml" value="0.1" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/activity_add_venda_01.xml" value="0.25" />
-        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/activity_add_venda_02.xml" value="0.1" />
-        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/activity_list_clients_zero.xml" value="0.22" />
-        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/activity_list_pgtos.xml" value="0.1" />
+        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/activity_add_venda_02.xml" value="0.5314116777531411" />
+        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/activity_list_clients_zero.xml" value="0.25" />
+        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/activity_list_pgtos.xml" value="0.33" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/activity_list_produtos.xml" value="0.264945652173913" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/activity_list_vendas.xml" value="0.264945652173913" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/activity_main.xml" value="0.5133470225872689" />
@@ -64,6 +64,7 @@
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/card_teste.xml" value="0.37447916666666664" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/card_venda.xml" value="0.33" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/icongb_roundcorners_yellow_01.xml" value="0.3723958333333333" />
+        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/pdf_layout_test.xml" value="0.67" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/spinner_estado.xml" value="0.18211752786220872" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/spinner_loading_user_reg.xml" value="0.33" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/spinner_password_reset.xml" value="0.25" />

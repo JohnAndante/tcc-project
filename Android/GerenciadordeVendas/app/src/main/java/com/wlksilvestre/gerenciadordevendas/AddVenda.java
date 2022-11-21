@@ -97,6 +97,9 @@ public class AddVenda extends AppCompatActivity {
         setContentView(R.layout.activity_add_venda_01);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+
         usuario = new Usuario();
         usuario = db.selectUsuarioByUID(currentUser.getUid());
 
@@ -113,7 +116,7 @@ public class AddVenda extends AppCompatActivity {
         produtoDropdown();
 
         editQtdProdutoVenda.setText(String.valueOf(0));
-        editValorProdutoVenda.addTextChangedListener(new MoneyTextWatcher(editValorProdutoVenda));
+        //editValorProdutoVenda.addTextChangedListener(new MoneyTextWatcher(editValorProdutoVenda));
 
         listaDinamicaProdVenda = new ArrayList<ProdVenda>();
         adapterProdutoVenda2 = new AdapterProdutoVenda2(this, 0, listaDinamicaProdVenda);
@@ -122,6 +125,8 @@ public class AddVenda extends AppCompatActivity {
         lvProdutosAdicionados.setAdapter(adapterProdutoVenda2);
 
         justifyListViewHeightBasedOnChildren(lvProdutosAdicionados);
+
+
     }
 
     private void clienteDropdown () {
@@ -177,10 +182,10 @@ public class AddVenda extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         try {
-                            Cliente c = (Cliente) listViewClientes.getItemAtPosition(i);
+                            ClienteTelefone ct = (ClienteTelefone) listViewClientes.getItemAtPosition(i);
+                            Cliente c = ct.getCliente();
                             tvClienteVenda.setText(c.getNome());
-                            if (clienteSelecionado != c)
-                                clienteSelecionado = c;
+                            clienteSelecionado = c;
                             dialogCliente.dismiss();
                             criaVenda();
                         } catch (Exception e) {
