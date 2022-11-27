@@ -44,6 +44,7 @@ public class UserRegister extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private Dialog loadingDialog;
     private Usuario usuario;
+    FirebaseUser currentUser;
 
     BancoDadosCliente db = new BancoDadosCliente(this);
 

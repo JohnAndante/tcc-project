@@ -186,7 +186,7 @@
                 style="@style/Text_Medium_white"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="0dp"
-                android:text="Clientes"
+                android:text="Vendas"
                 app:layout_constraintTop_toBottomOf="@id/imgIconVendas"
                 app:layout_constraintStart_toStartOf="parent" />
 
@@ -214,7 +214,8 @@
             android:layout_margin="10dp"
             android:padding="15dp"
             android:clickable="true"
-            android:background="@drawable/cardbg_roundcorners_lightgray">
+            android:background="@drawable/cardbg_roundcorners_lightgray"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/imgIconPagamentos"

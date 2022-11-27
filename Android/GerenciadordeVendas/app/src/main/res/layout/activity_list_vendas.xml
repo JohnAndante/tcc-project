@@ -58,10 +58,12 @@
         android:id="@+id/listVVendas"
         style="@style/LV_default"
         app:layout_constraintTop_toBottomOf="@+id/clPaiAdicionarVenda"
+        app:layout_constraintBottom_toTopOf="@+id/LL_bottom_buttons_venda"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <LinearLayout
+        android:id="@+id/LL_bottom_buttons_venda"
         style="@style/LL_bottom_buttons"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -69,7 +71,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btVendaVoltar"
-            style="@style/Button_bottom_blue"
+            style="@style/Button_bottom_gray"
             android:text="Voltar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -117,7 +117,8 @@ public class ListProdutos extends AppCompatActivity {
         btProdutoVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(ListProdutos.this, MainActivity.class));
+                setResult(RESULT_CANCELED);
+                finish();
             }
         });
     }
@@ -133,8 +134,7 @@ public class ListProdutos extends AppCompatActivity {
         listaDinamicaProdutos = new ArrayList<Produto>();
 
         if (!produtos.isEmpty()) {
-            for (Produto p : produtos)
-                listaDinamicaProdutos.add(p);
+            listaDinamicaProdutos.addAll(produtos);
         } else {
             Toast.makeText(getApplicationContext(), "Não há produtos cadastrados", Toast.LENGTH_SHORT).show();
         }

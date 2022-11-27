@@ -152,7 +152,8 @@ public class ListVendas extends AppCompatActivity {
         btVendaVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(ListVendas.this, MainActivity.class));
+                setResult(RESULT_CANCELED);
+                finish();
             }
         });
     }

@@ -229,6 +229,7 @@ public class UserLogin extends AppCompatActivity {
 
     private void recoverUserData () {
         usuario = new Usuario();
+        currentUser = mAuth.getCurrentUser();
 
         if (db.selectCountUsuarios() > 0) {
             usuario = db.selectUsuarioByUID(currentUser.getUid());

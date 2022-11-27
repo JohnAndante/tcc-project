@@ -59,10 +59,12 @@
         android:id="@+id/listVClientes"
         style="@style/LV_default"
         app:layout_constraintTop_toBottomOf="@+id/clAdicionarCliente"
+        app:layout_constraintBottom_toTopOf="@+id/LL_bottom_buttons_cliente"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <LinearLayout
+        android:id="@+id/LL_bottom_buttons_cliente"
         style="@style/LL_bottom_buttons"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
