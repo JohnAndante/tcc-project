@@ -10,26 +10,26 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clBuscarCliente"
         style="@style/LL_parent_card"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <EditText
             android:id="@+id/editBuscarCliente"
             style="@style/EditText_default"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             android:drawableRight="@drawable/ic_baseline_search_24_whit"
-            android:hint="Buscar Cliente" />
+            android:hint="Buscar Cliente"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clAdicionarCliente"
         style="@style/LL_parent_card"
-        app:layout_constraintTop_toBottomOf="@+id/clBuscarCliente"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/clBuscarCliente">
 
         <ImageButton
             android:id="@+id/imgbtIconeNovoCliente"
@@ -41,16 +41,16 @@
             android:id="@+id/tvNovoCliente"
             style="@style/Text_card_tag"
             android:text="Adicionar Cliente"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imgbtIconeNovoCliente"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/imgbtDadosCliente"
             style="@style/ImgButton_arrow_right"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -58,27 +58,26 @@
     <ListView
         android:id="@+id/listVClientes"
         style="@style/LV_default"
-        app:layout_constraintTop_toBottomOf="@+id/clAdicionarCliente"
         app:layout_constraintBottom_toTopOf="@+id/LL_bottom_buttons_cliente"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/clAdicionarCliente" />
 
     <LinearLayout
         android:id="@+id/LL_bottom_buttons_cliente"
         style="@style/LL_bottom_buttons"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btClienteVoltar"
             style="@style/Button_bottom_gray"
-            android:text="Voltar"
+            android:text="@string/voltar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
     </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

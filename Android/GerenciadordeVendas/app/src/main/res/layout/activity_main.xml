@@ -30,8 +30,8 @@
         android:id="@+id/llGrid01"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@id/textCategoriasMain"
         app:layout_constraintStart_toStartOf="parent" >
@@ -41,7 +41,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_margin="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="5dp"
             android:padding="15dp"
             android:clickable="true"
             android:background="@drawable/cardbg_roundcorners_lightgray">
@@ -80,11 +81,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="2dp"
+                android:layout_marginBottom="2dp"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:text="0"
                 android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/textClientes"
                 app:layout_constraintEnd_toEndOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -94,7 +96,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_margin="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="5dp"
             android:padding="15dp"
             android:clickable="true"
             android:background="@drawable/cardbg_roundcorners_lightgray">
@@ -133,11 +136,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="2dp"
+                android:layout_marginBottom="2dp"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:text="0"
                 android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/textProdutos"
                 app:layout_constraintEnd_toEndOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -147,8 +151,8 @@
         android:id="@+id/llGrid02"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@id/llGrid01"
         app:layout_constraintStart_toStartOf="parent" >
@@ -158,7 +162,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_margin="10dp"
+            android:layout_marginTop="10dp"
             android:padding="15dp"
             android:clickable="true"
             android:background="@drawable/cardbg_roundcorners_lightgray">
@@ -197,11 +201,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="2dp"
+                android:layout_marginBottom="2dp"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:text="0"
                 android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/textVendas"
                 app:layout_constraintEnd_toEndOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -266,6 +271,7 @@
         android:id="@+id/btCliente"
         style="@style/Button_big_transparent"
         android:text="Adicionar Cliente"
+        android:layout_marginTop="20dp"
         app:layout_constraintTop_toBottomOf="@id/llGrid02"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

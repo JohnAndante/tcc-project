@@ -34,7 +34,6 @@
         <ImageButton
             android:id="@+id/imgbtIconeNovoProduto"
             style="@style/ImgButton_add"
-            android:layout_marginRight="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -59,10 +58,10 @@
     <ListView
         android:id="@+id/listVProdutos"
         style="@style/LV_default"
-        app:layout_constraintTop_toBottomOf="@id/clPaiAdicionarProduto"
         app:layout_constraintBottom_toTopOf="@+id/LL_bottom_buttons_produtos"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/clPaiAdicionarProduto" />
 
     <LinearLayout
         android:id="@+id/LL_bottom_buttons_produtos"
@@ -74,7 +73,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btProdutoVoltar"
             style="@style/Button_bottom_gray"
-            android:text="Voltar"
+            android:text="@string/voltar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

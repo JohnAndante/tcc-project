@@ -11,23 +11,24 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/llCardVenda"
         style="@style/LL_card"
-        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
         android:padding="7dp"
         android:clickable="false">
 
         <TextView
             android:id="@+id/tvVendaNomeCliente"
             style="@style/Text_inner_default"
+            android:layout_marginStart="10dp"
             android:clickable="false"
             android:text="Nome do Cliente"
             android:textColor="@color/white"
-            android:textSize="18dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvVendaQtdProdutos"
             style="@style/Text_inner_default"
+            android:layout_marginStart="10dp"
             android:clickable="false"
             android:text="nº de Produtos"
             android:textSize="14dp"
@@ -51,7 +52,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:clickable="false"/>
+            android:clickable="false" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
