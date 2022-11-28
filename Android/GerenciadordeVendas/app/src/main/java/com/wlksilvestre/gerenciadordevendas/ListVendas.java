@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@SuppressWarnings("deprecation")
 public class ListVendas extends AppCompatActivity {
 
     private Button btVendaVoltar;
@@ -65,22 +66,11 @@ public class ListVendas extends AppCompatActivity {
             }
         }
 
-
         imgbtNovaVenda = findViewById(R.id.imgbtIconeNovaVenda);
-        imgbtNovaVenda.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addNewPgto();
-            }
-        });
+        imgbtNovaVenda.setOnClickListener(view -> addNewPgto());
 
         clAdicionarVenda = findViewById(R.id.clPaiAdicionarVenda);
-        clAdicionarVenda.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addNovaVenda();
-            }
-        });
+        clAdicionarVenda.setOnClickListener(view -> addNovaVenda());
 
         //addDefaultData();
         //adjustView();
@@ -108,7 +98,7 @@ public class ListVendas extends AppCompatActivity {
 
             db.addVenda(new Venda(
                     DateCustomText.getActualDateTime(),
-                    new Double(149.00),
+                    149.00,
                     db.selectMaxCliente(usuario.getUid()),
                     null
             ));
@@ -171,13 +161,12 @@ public class ListVendas extends AppCompatActivity {
     private void listVendas () {
         // Tentativa 1
         List<Venda> vendas = db.listAllVendas();
-        listaDinamicaVendas = new ArrayList<Venda>();
+        listaDinamicaVendas = new ArrayList<>();
 
         if (!vendas.isEmpty()) {
-            for (Venda v : vendas)
-                listaDinamicaVendas.add(v);
+            listaDinamicaVendas.addAll(vendas);
         } else {
-            Toast.makeText(getApplicationContext(), "Não há vendas registradas no app", Toast.LENGTH_LONG);
+            Toast.makeText(getApplicationContext(), "Não há vendas registradas no app", Toast.LENGTH_LONG).show();
         }
 
         adapter = new AdapterVenda(this, 0, listaDinamicaVendas);
@@ -186,23 +175,14 @@ public class ListVendas extends AppCompatActivity {
         listViewVendas.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
         listViewVendas.setAdapter(adapter);
 
-        listViewVendas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                try {
-                    Venda v = (Venda) listViewVendas.getItemAtPosition(i);
-                    openVendaData(v, i);
-                } catch (Exception e) {
-                    Log.e("ERROR", e.getMessage().toString());
-                }
+        listViewVendas.setOnItemClickListener((adapterView, view, i, l) -> {
+            try {
+                Venda v = (Venda) listViewVendas.getItemAtPosition(i);
+                openVendaData(v, i);
+            } catch (Exception e) {
+                Log.e("ERROR", e.getMessage());
             }
         });
-    }
-
-    private void listVendas2 () {
-
-        List<Venda> vendas = db.listAllVendas();
-
     }
 
     private void openVendaData (Venda v, int position) {
@@ -214,6 +194,7 @@ public class ListVendas extends AppCompatActivity {
         bundle.putInt("posicao", position);
         intent.putExtras(bundle);
 
+        //noinspection deprecation
         startActivityForResult(intent, CONSULTAR_VENDA);
     }
 
@@ -258,8 +239,8 @@ public class ListVendas extends AppCompatActivity {
         // Adiciona as formas de pagamento utilizadas em teste
         db.addFormaPgto(new FormaPgto("Dinheiro",           0,  0));
         db.addFormaPgto(new FormaPgto("Cartão de Crédito",  0,  12));
-        db.addFormaPgto(new FormaPgto("Cartão de Débito", 0, 0));
-        db.addFormaPgto(new FormaPgto("Pix", 0, 0));
+        db.addFormaPgto(new FormaPgto("Cartão de Débito",   0, 0));
+        db.addFormaPgto(new FormaPgto("Pix",                0, 0));
     }
 
     // Produtos
@@ -341,7 +322,6 @@ public class ListVendas extends AppCompatActivity {
     private boolean checkLinhas () {
         // Confere se a quantia de linhas criadas é a desejada para testes
         // No momento teremos 4 linhas
-        int correto = 4;
         List<Linha> linhas = db.listLinhas();
         Log.e("INFO SIZE LINHAS", String.valueOf(linhas.size()));
 

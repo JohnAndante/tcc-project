@@ -293,7 +293,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btPgtos"
+        android:id="@+id/btLogoff"
         style="@style/Button_big_transparent"
         android:text="Logout"
         app:layout_constraintTop_toBottomOf="@id/btVendas"

@@ -179,7 +179,6 @@
                 <LinearLayout
                     style="@style/LL_editText_default"
                     android:layout_margin="0dp"
-                    android:padding="5dp"
                     android:layout_gravity="center_horizontal|center"
                     android:background="@drawable/cardbg_roundcorners_lightgray"
                     android:orientation="vertical">
@@ -188,7 +187,7 @@
                         android:id="@+id/lvProdVendaAdicionados"
                         style="@style/LV_default"
                         android:layout_margin="0dp"
-                        android:background="@drawable/cardbg_roundcorners_lightgray" />
+                        android:background="@drawable/cardbg_roundcorners_lightgray"/>
 
                     <View
                         android:layout_width="match_parent"
@@ -213,49 +212,35 @@
 
                         <TextView
                             android:id="@+id/tvCifraValorTotalVenda"
-                            android:layout_width="20dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="14dp"
+                            style="@style/Text_inner_default"
+                            android:layout_marginLeft="62dp"
                             android:text="R$ "
                             android:textColor="@color/white"
-                            android:textSize="14dp"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toEndOf="@id/imgIgualNovaVenda"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:layout_editor_absoluteX="62dp" />
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"/>
 
                         <TextView
                             android:id="@+id/tvValorTotalVenda"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
+                            style="@style/Text_inner_default"
                             android:text="0,00"
                             android:textColor="@color/white"
-                            android:textSize="14dp"
-                            android:textStyle="bold"
                             app:layout_constraintStart_toEndOf="@+id/tvCifraValorTotalVenda"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:id="@+id/tvQtdTotalVenda"
-                            android:layout_width="25dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
+                            style="@style/Text_inner_default"
+                            android:layout_marginStart="235dp"
                             android:text="0"
-                            android:textAlignment="textEnd"
                             android:textColor="@color/white"
-                            android:textSize="14dp"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toEndOf="@id/tvValorTotalVenda"
+                            app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:id="@+id/tvProdutosNovaVenda"
-                            android:layout_width="80dp"
-                            android:layout_height="wrap_content"
+                            style="@style/Text_inner_default"
                             android:text=" Itens"
                             android:textColor="@color/white"
-                            android:textSize="14dp"
-                            android:textStyle="bold"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toEndOf="@id/tvQtdTotalVenda" />
 

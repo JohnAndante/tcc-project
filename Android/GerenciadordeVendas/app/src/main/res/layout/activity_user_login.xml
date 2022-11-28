@@ -18,9 +18,8 @@
         android:id="@+id/textTituloLogin"
         style="@style/Text_BigTitulo"
         android:layout_marginTop="20dp"
-        android:maxWidth="155sp"
         android:maxLines="2"
-        android:text="Vamos  Começar."
+        android:text="Vamos \nComeçar."
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

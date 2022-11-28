@@ -11,18 +11,16 @@
             android:id="@+id/textTituloRegister"
             style="@style/Text_BigTitulo"
             android:layout_marginTop="20dp"
-            android:maxWidth="180dp"
             android:maxLines="2"
-            android:text="Criando sua Conta."
+            android:text="Criando \nsua Conta."
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textDescLogin"
             style="@style/Text_Default_light_gray"
-            android:maxWidth="220dp"
             android:layout_marginTop="4dp"
-            android:text="Precisamos de alguns dados para prosseguirmos com o registro de sua nova conta."
+            android:text="Precisamos de alguns \ndados para prosseguirmos \ncom o registro de sua nova conta."
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textTituloRegister" />
 

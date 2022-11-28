@@ -62,43 +62,34 @@
 
                     <TextView
                         android:id="@+id/tvNomeClienteNovaVenda"
-                        android:layout_width="250dp"
-                        android:layout_height="wrap_content"
+                        style="@style/Text_inner_default"
                         android:layout_marginTop="8dp"
+                        android:layout_marginStart="20dp"
                         android:text="Nome do Cliente"
                         android:textColor="@color/white"
-                        android:textSize="15dp"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.466"
                         app:layout_constraintStart_toEndOf="@+id/imageView"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/tvTelefoneClienteNovaVenda"
-                        android:layout_width="250dp"
-                        android:layout_height="wrap_content"
+                        style="@style/Text_inner_default"
+                        android:layout_marginStart="20dp"
                         android:text="(44) 9 8877-6655"
-                        android:textColor="@color/white"
                         android:textSize="14dp"
                         android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.466"
                         app:layout_constraintStart_toEndOf="@+id/imageView"
-                        app:layout_constraintTop_toBottomOf="@+id/tvNomeClienteNovaVenda"
-                        app:layout_constraintVertical_bias="0.0" />
+                        app:layout_constraintTop_toBottomOf="@+id/tvNomeClienteNovaVenda" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <ListView
                     android:id="@+id/lvProdutosNovaVenda"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:paddingTop="2dp"
                     android:background="@drawable/iconbg_roundcorners_blue_stroke">
-
 
                 </ListView>
 
@@ -108,42 +99,33 @@
 
                     <TextView
                         android:id="@+id/textValorTotalNovaVenda"
-                        android:layout_width="190dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="7dp"
-                        android:layout_marginTop="8dp"
+                        style="@style/Text_inner_default"
+                        android:layout_marginStart="10dp"
                         android:text="Valor Total"
                         android:textColor="@color/white"
-                        android:textSize="15dp"
-                        android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/textCifraValorTotalNovaVenda"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        style="@style/Text_inner_default"
+                        android:layout_marginStart="202dp"
                         android:text="R$ "
                         android:textColor="@color/white"
-                        android:textSize="15dp"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toEndOf="@+id/textValorTotalNovaVenda"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/tvValorTotalVenda"
-                        android:layout_width="wrap_content"
-                        android:maxWidth="150dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        style="@style/Text_inner_default"
+                        android:maxWidth="120dp"
                         android:text="0,00"
                         android:textColor="@color/white"
-                        android:textSize="15dp"
-                        android:textStyle="bold"
-                        android:textAlignment="textEnd"
                         app:layout_constraintStart_toEndOf="@id/textCifraValorTotalNovaVenda"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -154,88 +136,70 @@
 
                     <TextView
                         android:id="@+id/textJurosAplicados"
-                        android:layout_width="190dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="7dp"
-                        android:layout_marginTop="8dp"
+                        style="@style/Text_inner_default"
+                        android:layout_marginStart="10dp"
                         android:text="Juros Aplicados"
                         android:textColor="@color/white"
-                        android:textSize="15dp"
-                        android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/textCifraValorJurosAplicados"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        style="@style/Text_inner_default"
+                        android:layout_marginStart="202dp"
                         android:text="R$ "
                         android:textColor="@color/white"
-                        android:textSize="15dp"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toEndOf="@+id/textJurosAplicados"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" />
 
                     <TextView
                         android:id="@+id/tvValorJurosAplicados"
-                        android:layout_width="wrap_content"
-                        android:maxWidth="150dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        style="@style/Text_inner_default"
+                        android:maxWidth="120dp"
                         android:text="0,00"
                         android:textColor="@color/white"
-                        android:textSize="15dp"
-                        android:textStyle="bold"
-                        android:textAlignment="textEnd"
                         app:layout_constraintStart_toEndOf="@id/textCifraValorJurosAplicados"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/clValorComJuros"
-                android:layout_width="match_parent"
-                android:layout_height="36dp">
+                    android:id="@+id/clValorComJuros"
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp">
 
-                <TextView
-                    android:id="@+id/textValorVendaComJuros"
-                    android:layout_width="190dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="7dp"
-                    android:layout_marginTop="8dp"
-                    android:text="Valor com Juros"
-                    android:textColor="@color/white"
-                    android:textSize="15dp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    <TextView
+                        android:id="@+id/textValorVendaComJuros"
+                        style="@style/Text_inner_default"
+                        android:layout_marginStart="10dp"
+                        android:text="Valor com Juros"
+                        android:textColor="@color/white"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
 
-                <TextView
-                    android:id="@+id/textCifraValorComJuros"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="R$ "
-                    android:textColor="@color/white"
-                    android:textSize="15dp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toEndOf="@+id/textValorVendaComJuros"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    <TextView
+                        android:id="@+id/textCifraValorComJuros"
+                        style="@style/Text_inner_default"
+                        android:layout_marginStart="202dp"
+                        android:text="R$ "
+                        android:textColor="@color/white"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" />
 
-                <TextView
-                    android:id="@+id/tvValorTotalComJuros"
-                    android:layout_width="wrap_content"
-                    android:maxWidth="150dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="0,00"
-                    android:textColor="@color/white"
-                    android:textSize="15dp"
-                    android:textStyle="bold"
-                    android:textAlignment="textEnd"
-                    app:layout_constraintStart_toEndOf="@id/textCifraValorComJuros"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    <TextView
+                        android:id="@+id/tvValorTotalComJuros"
+                        style="@style/Text_inner_default"
+                        android:maxWidth="150dp"
+                        android:text="0,00"
+                        android:textColor="@color/white"
+                        app:layout_constraintStart_toEndOf="@id/textCifraValorComJuros"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -259,8 +223,6 @@
                     android:id="@+id/tvFormaPgtoOpcao"
                     style="@style/EditText_default"
                     android:layout_height="45dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
                     android:backgroundTint="@color/light_gray_01"
                     android:ems="10"
                     android:text="Selecione a Forma de Pagamento"
@@ -373,13 +335,13 @@
             android:id="@+id/btViewVoltar"
             style="@style/Button_bottom_gray"
             android:focusable="false"
-            android:text="Cancelar" />
+            android:text="Cancelar"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btViewSalvar"
             style="@style/Button_bottom_blue"
             android:focusable="false"
-            android:text="Salvar"  />
+            android:text="Salvar"/>
 
     </LinearLayout>
 

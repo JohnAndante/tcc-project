@@ -116,16 +116,13 @@ public class AddVenda extends AppCompatActivity {
         produtoDropdown();
 
         editQtdProdutoVenda.setText(String.valueOf(0));
-        //editValorProdutoVenda.addTextChangedListener(new MoneyTextWatcher(editValorProdutoVenda));
+        editValorProdutoVenda.addTextChangedListener(new MoneyTextWatcher(editValorProdutoVenda));
 
         listaDinamicaProdVenda = new ArrayList<ProdVenda>();
         adapterProdutoVenda2 = new AdapterProdutoVenda2(this, 0, listaDinamicaProdVenda);
 
         lvProdutosAdicionados.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
         lvProdutosAdicionados.setAdapter(adapterProdutoVenda2);
-
-        justifyListViewHeightBasedOnChildren(lvProdutosAdicionados);
-
 
     }
 
@@ -140,8 +137,7 @@ public class AddVenda extends AppCompatActivity {
                 listaDinamicaClienteTelefone = new ArrayList<>();
 
                 if (!clienteTelefoneList.isEmpty()) {
-                    for (ClienteTelefone ct : clienteTelefoneList)
-                        listaDinamicaClienteTelefone.add(ct);
+                    listaDinamicaClienteTelefone.addAll(clienteTelefoneList);
                 }
 
                 dialogCliente = new Dialog(AddVenda.this);
@@ -154,7 +150,6 @@ public class AddVenda extends AppCompatActivity {
 
                 dialogCliente.show();
 
-                TextView tvCliente = dialogCliente.findViewById(R.id.tvSpinnerCliente);
                 EditText editCliente = dialogCliente.findViewById(R.id.editTextSpinnerCliente);
 
                 listViewClientes = (ListView) dialogCliente.findViewById(R.id.lvSpinnerCliente);
@@ -189,7 +184,7 @@ public class AddVenda extends AppCompatActivity {
                             dialogCliente.dismiss();
                             criaVenda();
                         } catch (Exception e) {
-                            Log.e("ERROR", e.getMessage().toString());
+                            Log.e("ERROR", e.getMessage());
                         }
                     }
                 });
@@ -206,8 +201,7 @@ public class AddVenda extends AppCompatActivity {
                 listaDinamicaProdutos = new ArrayList<Produto>();
 
                 if (!produtos.isEmpty()) {
-                    for (Produto p : produtos)
-                        listaDinamicaProdutos.add(p);
+                    listaDinamicaProdutos.addAll(produtos);
                 }
 
                 dialogProduto = new Dialog(AddVenda.this);
@@ -217,6 +211,7 @@ public class AddVenda extends AppCompatActivity {
 
                 dialogProduto.getWindow().setLayout((int) (deviceWidth * 0.75), (int) (deviceHeight * 0.75));
                 dialogProduto.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialogProduto.setCanceledOnTouchOutside(true);
 
                 dialogProduto.show();
 
@@ -257,7 +252,7 @@ public class AddVenda extends AppCompatActivity {
                             editValorProdutoVenda.setText(MaskEditUtil.doubleToMoneyTest(produtoSelecionado.getValor()));
                             dialogProduto.dismiss();
                         } catch (Exception e) {
-                            Log.e("ERROR", e.getMessage().toString());
+                            Log.e("ERROR", e.getMessage());
                         }
                     }
                 });
@@ -273,8 +268,7 @@ public class AddVenda extends AppCompatActivity {
         listaDinamicaClienteTelefone = new ArrayList<>();
 
         if (!clienteTelefoneList.isEmpty()) {
-            for (ClienteTelefone ct : clienteTelefoneList)
-                listaDinamicaClienteTelefone.add(ct);
+            listaDinamicaClienteTelefone.addAll(clienteTelefoneList);
         }
 
 
@@ -356,7 +350,7 @@ public class AddVenda extends AppCompatActivity {
                     qtdProduto--;
                     editQtdProdutoVenda.setText(String.valueOf(qtdProduto));
                 } else {
-                    Toast.makeText(AddVenda.this, "Quantidade incorreta", Toast.LENGTH_SHORT);
+                    Toast.makeText(AddVenda.this, "Quantidade incorreta", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -369,7 +363,7 @@ public class AddVenda extends AppCompatActivity {
                     qtdProduto++;
                     editQtdProdutoVenda.setText(String.valueOf(qtdProduto));
                 } else {
-                    Toast.makeText(AddVenda.this, "Quantidade incorreta", Toast.LENGTH_SHORT);
+                    Toast.makeText(AddVenda.this, "Quantidade incorreta", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -416,17 +410,17 @@ public class AddVenda extends AppCompatActivity {
         if (clienteSelecionado == null || clienteSelecionado.getId() < 0) {
             ok = false;
             llClienteVenda.requestFocus();
-            Toast.makeText(AddVenda.this, "Insira um cliente para sua venda", Toast.LENGTH_LONG);
+            Toast.makeText(AddVenda.this, "Insira um cliente para sua venda", Toast.LENGTH_LONG).show();
         } else
         if (produtoSelecionado == null || produtoSelecionado.getId() < 0) {
             ok = false;
             llProdutoVenda.requestFocus();
-            Toast.makeText(AddVenda.this, "Insira um produto para adicionar á sua venda", Toast.LENGTH_LONG);
+            Toast.makeText(AddVenda.this, "Insira um produto para adicionar á sua venda", Toast.LENGTH_LONG).show();
         } else
         if (Integer.parseInt(editQtdProdutoVenda.getText().toString()) <= 0) {
             ok = false;
             editQtdProdutoVenda.requestFocus();
-            Toast.makeText(AddVenda.this, "Insira uma quantidade válida para o produto selecionado", Toast.LENGTH_LONG);
+            Toast.makeText(AddVenda.this, "Insira uma quantidade válida para o produto selecionado", Toast.LENGTH_LONG).show();
         }
         return ok;
     }

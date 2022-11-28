@@ -56,14 +56,14 @@
                     style="@style/Text_Default_light_gray"
                     android:layout_marginLeft="7dp"
                     android:layout_marginTop="0dp"
-                    android:gravity="center_vertical"
-                    android:text="R$ " />
+                    android:text="R$" />
 
                 <EditText
                     android:id="@+id/editValorProduto"
                     style="@style/EditText_default"
                     android:layout_marginLeft="0dp"
                     android:hint="0,00"
+                    android:maxEms="14"
                     android:inputType="numberDecimal" />
 
             </LinearLayout>

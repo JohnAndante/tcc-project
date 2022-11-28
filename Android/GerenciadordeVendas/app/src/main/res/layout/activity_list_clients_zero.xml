@@ -17,10 +17,10 @@
         <EditText
             android:id="@+id/editBuscarCliente"
             style="@style/EditText_default"
-            android:drawableRight="@drawable/ic_baseline_search_24_whit"
-            android:hint="Buscar Cliente"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:drawableRight="@drawable/ic_baseline_search_24_whit"
+            android:hint="Buscar Cliente" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -67,8 +67,8 @@
         android:id="@+id/LL_bottom_buttons_cliente"
         style="@style/LL_bottom_buttons"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" >
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btClienteVoltar"

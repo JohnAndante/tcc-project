@@ -25,11 +25,11 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clPaiAdicionarProduto"
+        android:id="@+id/clAdicionarProduto"
         style="@style/LL_parent_card"
-        app:layout_constraintTop_toBottomOf="@+id/clBuscarProduto"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/clBuscarProduto">
 
         <ImageButton
             android:id="@+id/imgbtIconeNovoProduto"
@@ -61,7 +61,7 @@
         app:layout_constraintBottom_toTopOf="@+id/LL_bottom_buttons_produtos"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/clPaiAdicionarProduto" />
+        app:layout_constraintTop_toBottomOf="@+id/clAdicionarProduto" />
 
     <LinearLayout
         android:id="@+id/LL_bottom_buttons_produtos"

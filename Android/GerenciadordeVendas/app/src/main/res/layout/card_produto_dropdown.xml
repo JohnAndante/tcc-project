@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:descendantFocusability="blocksDescendants">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/llCardProduto"
+        style="@style/LL_card"
+        android:layout_marginBottom="4dp"
+        android:background="@color/transparent">
+
+        <TextView
+            android:id="@+id/tvNomeProduto"
+            style="@style/Text_inner_default"
+            android:maxWidth="200dp"
+            android:textColor="@color/white"
+            android:layout_marginStart="0dp"
+            android:maxLines="2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Nome Produto" />
+
+        <TextView
+            android:id="@+id/tvValorProduto"
+            style="@style/Text_inner_default"
+            android:textSize="14dp"
+            android:layout_marginStart="0dp"
+            app:layout_constraintTop_toBottomOf="@id/tvNomeProduto"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="R$ 0,00"/>
+
+        <ImageButton
+            style="@style/ImgButton_arrow_right"
+            android:layout_marginEnd="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

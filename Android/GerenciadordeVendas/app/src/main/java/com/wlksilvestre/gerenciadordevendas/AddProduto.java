@@ -23,6 +23,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -157,6 +158,8 @@ public class AddProduto extends AppCompatActivity {
         // Colocar aqui os dropdowns de marca, linha e categoria
         marcaDropdown();
         categoriaDropdown();
+
+        editTextValor.addTextChangedListener(new MoneyTextWatcher(editTextValor));
     }
 
     private void initButtonsCfg () {
@@ -164,150 +167,144 @@ public class AddProduto extends AppCompatActivity {
         Cancelar    = findViewById(R.id.btViewVoltar);
     }
 
+    @SuppressLint("ResourceType")
     private void initButtonsOnClick () {
-        Salvar.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("ResourceType")
-            @Override
-            public void onClick(View view) {
-                Bundle bundle = new Bundle();
+        Salvar.setOnClickListener(view -> {
+            Bundle bundle = new Bundle();
 
-                // Se o produto já existe, e os campos estão corretamente preenchidos
-                if (id_produto > 0 && confereCampos()) {
-                    setContentView(R.layout.activity_add_produto);
+            // Se o produto já existe, e os campos estão corretamente preenchidos
+            if (id_produto > 0 && confereCampos()) {
+                setContentView(R.layout.activity_add_produto);
 
-                    // estudar como será possível trabalhar com as subcategorias
-                    // analisar o que fazer quando trocar a categoria de um produto tendo
-                    // subcategorias e prodsubcats cadastradas ao mesmo.
+                // estudar como será possível trabalhar com as subcategorias
+                // analisar o que fazer quando trocar a categoria de um produto tendo
+                // subcategorias e prodsubcats cadastradas ao mesmo.
 
-                    String desc = editTextDescricao.getText().toString();
+                String desc = editTextDescricao.getText().toString();
 
-                    Double valor = MaskEditUtil.moneyToDouble(editTextValor.getText().toString());
+                Double valor = MaskEditUtil.moneyToDouble(editTextValor.getText().toString());
 
-                    bundle.putInt("ID", id_produto);
-                    if (hasPosicao == true)
-                        bundle.putInt("posicao", posicao);
-                    Produto p = db.selectProduto(id_produto);
-                    Linha l = db.selectLinha(p.getLinha().getId());
-                    Marca m = db.selectMarca(l.getMarca().getId());
-                    ProdSubcat psc = db.selectFirstProdSubcatByProd(p);
-                    Subcat sc = db.selectSubcat(psc.getSubcat().getId());
-                    Categoria c = db.selectCategoria(sc.getCategoria().getId());
+                bundle.putInt("ID", id_produto);
+                if (hasPosicao == true)
+                    bundle.putInt("posicao", posicao);
+                Produto p = db.selectProduto(id_produto);
+                Linha l = db.selectLinha(p.getLinha().getId());
+                Marca m = db.selectMarca(l.getMarca().getId());
+                ProdSubcat psc = db.selectFirstProdSubcatByProd(p);
+                Subcat sc = db.selectSubcat(psc.getSubcat().getId());
+                Categoria c = db.selectCategoria(sc.getCategoria().getId());
 
-                    p.setDescricao(desc);
-                    p.setValor(valor);
+                p.setDescricao(desc);
+                p.setValor(valor);
 
-                    m = marcaSelecionada;
-                    l = linhaSelecionada;
+                m = marcaSelecionada;
+                l = linhaSelecionada;
 
-                    p.setLinha(l);
+                p.setLinha(l);
 
-                    db.updateProduto(p);
+                db.updateProduto(p);
 
-                    c = categoriaSelecionada;
+                c = categoriaSelecionada;
 
-                    // Aqui segue o algoritmo pra trabalhar com as subcategorias existentes
-                    // Primero geramos a lista do prodsubcat atual
-                    List<ProdSubcat> prodSubcatsOld = db.listProdSubcatsByProduto(p);
-                    ArrayList<ProdSubcat> prodSubcatsNew = new ArrayList<ProdSubcat>();
+                // Aqui segue o algoritmo pra trabalhar com as subcategorias existentes
+                // Primero geramos a lista do prodsubcat atual
+                List<ProdSubcat> prodSubcatsOld = db.listProdSubcatsByProduto(p);
+                ArrayList<ProdSubcat> prodSubcatsNew = new ArrayList<ProdSubcat>();
 
-                    // agora iremos recuperar os subcats do chipgroup, verificar se a
-                    // subcategoria existe, (adicionando ao banco de dados se nn existe )
-                    // e criar uma lista delas
-                    // por enquanto as listas serão em prodsubcat, pra facilitar no final
-                    for (int i = 0; i < chipGroupSubcat.getChildCount(); i++) {
-                        Chip chip = (Chip) chipGroupSubcat.getChildAt(i);
-                        if (chip.isChecked()) {
-                            if (chip.getId() < 0) {
-                                Subcat scNew = new Subcat(chip.getText().toString(), categoriaSelecionada);
-                                db.addSubcat(scNew);
-                                scNew = db.selectMaxSubcat();
-                            } else {
-                                Subcat scNew = new Subcat(chip.getId(), chip.getText().toString(), categoriaSelecionada);
-                                prodSubcatsNew.add(new ProdSubcat(p, scNew));
-                            }
-                        }
-                    }
-
-                    // -- lista das subcategorias selecionadas criadas
-                    // identificando as subcat repetidas nas listas, e deletando das duas listas
-                    // já as que foram removidas pelo cliente, serão removidas da lista antigas, e
-                    // deletadas do banco de dados
-                    for (ProdSubcat pscOld : prodSubcatsOld) {
-                        if (prodSubcatsNew.contains(pscOld)) {
-                            prodSubcatsOld.remove(pscOld);
-                            prodSubcatsNew.remove(pscOld);
+                // agora iremos recuperar os subcats do chipgroup, verificar se a
+                // subcategoria existe, (adicionando ao banco de dados se nn existe )
+                // e criar uma lista delas
+                // por enquanto as listas serão em prodsubcat, pra facilitar no final
+                for (int i = 0; i < chipGroupSubcat.getChildCount(); i++) {
+                    Chip chip = (Chip) chipGroupSubcat.getChildAt(i);
+                    if (chip.isChecked()) {
+                        if (chip.getId() < 0) {
+                            Subcat scNew = new Subcat(chip.getText().toString(), categoriaSelecionada);
+                            db.addSubcat(scNew);
+                            scNew = db.selectMaxSubcat();
                         } else {
-                            prodSubcatsOld.remove(pscOld);
-                            db.deleteProdSubcat(pscOld);
+                            Subcat scNew = new Subcat(chip.getId(), chip.getText().toString(), categoriaSelecionada);
+                            prodSubcatsNew.add(new ProdSubcat(p, scNew));
                         }
                     }
-
-                    // O que sobrou na lista nova são apenas subcategorias novas, então para
-                    // cada subcategoria na lista de novos, adicionaremos ela ao banco
-                    for (ProdSubcat pscNew : prodSubcatsNew) {
-                        db.addProdSubcat(pscNew);
-                    }
-
-                    db.updateProduto(p);
-
-                    setResult(RESULT_OK);
-                    finish();
-
-                } else
-                if (confereCampos()) {
-                    // processo para gravar as informações na classe variável e
-                    // gravar essas informações no banco de dados
-
-                    // estudar como será possível trabalhar com as subcategorias
-
-                    setContentView(R.layout.activity_add_produto);
-                    String desc = editTextDescricao.getText().toString();
-
-                    Double valor = MaskEditUtil.moneyToDouble(editTextValor.getText().toString());
-
-                    Linha l = linhaSelecionada;
-                    Marca m = db.selectMarca(l.getMarca().getId());
-
-                    Produto p = new Produto(desc, valor, l);
-                    db.addProduto(p);
-
-                    p = db.selectMaxProduto();
-
-                    Categoria c = categoriaSelecionada;
-                    ArrayList<ProdSubcat> prodSubcats = new ArrayList<ProdSubcat>();
-                    for (int i = 0; i < chipGroupSubcat.getChildCount(); i++) {
-                        Chip chip = (Chip) chipGroupSubcat.getChildAt(i);
-                        if (chip.isChecked()) {
-                            if (chip.getId() < 0) {
-                                Subcat sc = new Subcat(chip.getText().toString(), categoriaSelecionada);
-                                db.addSubcat(sc);
-                                sc = db.selectMaxSubcat();
-                                prodSubcats.add(new ProdSubcat(p, sc));
-                            } else {
-                                Subcat sc = db.selectSubcat(chip.getId());
-                                prodSubcats.add(new ProdSubcat(p, sc));
-                            }
-                        }
-                    }
-
-                    for (ProdSubcat psc: prodSubcats) {
-                        db.addProdSubcat(psc);
-                        Log.e("INFO PRODSUBCAT SENDO GRAVADO", psc.getProduto().getDescricao() + " - " + psc.getSubcat().getDescricao());
-                    }
-
-                    setResult(RESULT_OK);
-                    finish();
-
                 }
+
+                // -- lista das subcategorias selecionadas criadas
+                // identificando as subcat repetidas nas listas, e deletando das duas listas
+                // já as que foram removidas pelo cliente, serão removidas da lista antigas, e
+                // deletadas do banco de dados
+                for (ProdSubcat pscOld : prodSubcatsOld) {
+                    if (prodSubcatsNew.contains(pscOld)) {
+                        prodSubcatsOld.remove(pscOld);
+                        prodSubcatsNew.remove(pscOld);
+                    } else {
+                        prodSubcatsOld.remove(pscOld);
+                        db.deleteProdSubcat(pscOld);
+                    }
+                }
+
+                // O que sobrou na lista nova são apenas subcategorias novas, então para
+                // cada subcategoria na lista de novos, adicionaremos ela ao banco
+                for (ProdSubcat pscNew : prodSubcatsNew) {
+                    db.addProdSubcat(pscNew);
+                }
+
+                db.updateProduto(p);
+
+                setResult(RESULT_OK);
+                finish();
+
+            } else
+            if (confereCampos()) {
+                // processo para gravar as informações na classe variável e
+                // gravar essas informações no banco de dados
+
+                // estudar como será possível trabalhar com as subcategorias
+
+                setContentView(R.layout.activity_add_produto);
+                String desc = editTextDescricao.getText().toString();
+
+                Double valor = MaskEditUtil.moneyToDouble(editTextValor.getText().toString());
+
+                Linha l = linhaSelecionada;
+                Marca m = db.selectMarca(l.getMarca().getId());
+
+                Produto p = new Produto(desc, valor, l);
+                db.addProduto(p);
+
+                p = db.selectMaxProduto();
+
+                Categoria c = categoriaSelecionada;
+                ArrayList<ProdSubcat> prodSubcats = new ArrayList<ProdSubcat>();
+                for (int i = 0; i < chipGroupSubcat.getChildCount(); i++) {
+                    Chip chip = (Chip) chipGroupSubcat.getChildAt(i);
+                    if (chip.isChecked()) {
+                        if (chip.getId() < 0) {
+                            Subcat sc = new Subcat(chip.getText().toString(), categoriaSelecionada);
+                            db.addSubcat(sc);
+                            sc = db.selectMaxSubcat();
+                            prodSubcats.add(new ProdSubcat(p, sc));
+                        } else {
+                            Subcat sc = db.selectSubcat(chip.getId());
+                            prodSubcats.add(new ProdSubcat(p, sc));
+                        }
+                    }
+                }
+
+                for (ProdSubcat psc: prodSubcats) {
+                    db.addProdSubcat(psc);
+                    Log.e("INFO PRODSUBCAT SENDO GRAVADO", psc.getProduto().getDescricao() + " - " + psc.getSubcat().getDescricao());
+                }
+
+                setResult(RESULT_OK);
+                finish();
+
             }
         });
 
-        Cancelar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setResult(RESULT_CANCELED);
-                finish();
-            }
+        Cancelar.setOnClickListener(view -> {
+            setResult(RESULT_CANCELED);
+            finish();
         });
     }
 
@@ -363,17 +360,12 @@ public class AddProduto extends AppCompatActivity {
 
     private void initEditOnFocus () {
 
-        editTextValor.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if (i == EditorInfo.IME_ACTION_DONE) {
-                    textMarca.performClick();
-                }
-                return false;
+        editTextValor.setOnEditorActionListener((textView, i, keyEvent) -> {
+            if (i == EditorInfo.IME_ACTION_DONE) {
+                textMarca.performClick();
             }
+            return false;
         });
-
-        //editTextValor.addTextChangedListener(new MoneyTextWatcher(editTextValor));
 
     }
 
@@ -383,71 +375,65 @@ public class AddProduto extends AppCompatActivity {
 
     private void marcaDropdown () {
 
-        textMarca.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                marcas = db.listMarcasOrdered();
-                listaDinamicaMarca = new ArrayList<Marca>();
+        textMarca.setOnClickListener(view -> {
+            marcas = db.listMarcasOrdered();
+            listaDinamicaMarca = new ArrayList<Marca>();
 
-                if (!marcas.isEmpty()) {
-                    for (Marca m : marcas)
-                        listaDinamicaMarca.add(m);
+            if (!marcas.isEmpty()) {
+                listaDinamicaMarca.addAll(marcas);
+            }
+
+            dialogMarca = new Dialog(AddProduto.this);
+            dialogMarca.setContentView(R.layout.spinner_marca);
+
+            adapterMarca = new AdapterMarca(dialogMarca.getContext(), 0, listaDinamicaMarca);
+
+            dialogMarca.getWindow().setLayout((int) (deviceWidth * 0.75), (int) (deviceHeight * 0.75));
+            dialogMarca.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialogMarca.setCanceledOnTouchOutside(true);
+
+            dialogMarca.show();
+
+            TextView tvMarca = dialogMarca.findViewById(R.id.tvSpinnerMarca);
+            EditText editMarca = dialogMarca.findViewById(R.id.editTextSpinnerMarca);
+
+            listViewMarcas = (ListView) dialogMarca.findViewById(R.id.lvSpinnerMarca);
+            listViewMarcas.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+            listViewMarcas.setAdapter(adapterMarca);
+
+            editMarca.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
                 }
 
-                dialogMarca = new Dialog(AddProduto.this);
-                dialogMarca.setContentView(R.layout.spinner_marca);
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    atualizaListaMarcas(charSequence);
+                }
 
-                adapterMarca = new AdapterMarca(dialogMarca.getContext(), 0, listaDinamicaMarca);
+                @Override
+                public void afterTextChanged(Editable editable) {
 
-                dialogMarca.getWindow().setLayout((int) (deviceWidth * 0.75), (int) (deviceHeight * 0.75));
-                dialogMarca.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                }
+            });
 
-                dialogMarca.show();
-
-                TextView tvMarca = dialogMarca.findViewById(R.id.tvSpinnerMarca);
-                EditText editMarca = dialogMarca.findViewById(R.id.editTextSpinnerMarca);
-
-                listViewMarcas = (ListView) dialogMarca.findViewById(R.id.lvSpinnerMarca);
-                listViewMarcas.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-                listViewMarcas.setAdapter(adapterMarca);
-
-                editMarca.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+            listViewMarcas.setOnItemClickListener((adapterView, view1, i, l) -> {
+                try {
+                    Marca m = (Marca) listViewMarcas.getItemAtPosition(i);
+                    textMarca.setText(m.getDescricao());
+                    if (marcaSelecionada != m) {
+                        marcaSelecionada = m;
+                        linhaSelecionada = null;
                     }
 
-                    @Override
-                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                        atualizaListaMarcas(charSequence);
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable editable) {
-
-                    }
-                });
-
-                listViewMarcas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        try {
-                            Marca m = (Marca) listViewMarcas.getItemAtPosition(i);
-                            textMarca.setText(m.getDescricao());
-                            if (marcaSelecionada != m) {
-                                marcaSelecionada = m;
-                                linhaSelecionada = null;
-                            }
-
-                            dialogMarca.dismiss();
-                            linhaDropdown();
-                            textLinha.performClick();
-                        } catch (Exception e) {
-                            Log.e("ERROR", e.getMessage().toString());
-                        }
-                    }
-                });
-            }
+                    dialogMarca.dismiss();
+                    linhaDropdown();
+                    textLinha.performClick();
+                } catch (Exception e) {
+                    Log.e("ERROR", e.getMessage());
+                }
+            });
         });
     }
 
@@ -460,8 +446,7 @@ public class AddProduto extends AppCompatActivity {
                 listaDinamicaLinha = new ArrayList<Linha>();
 
                 if (!linhas.isEmpty()) {
-                    for (Linha l : linhas)
-                        listaDinamicaLinha.add(l);
+                    listaDinamicaLinha.addAll(linhas);
                 }
 
                 dialogLinha = new Dialog(AddProduto.this);
@@ -471,6 +456,7 @@ public class AddProduto extends AppCompatActivity {
 
                 dialogLinha.getWindow().setLayout((int) (deviceWidth * 0.75), (int) (deviceHeight * 0.75));
                 dialogLinha.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialogLinha.setCanceledOnTouchOutside(true);
 
                 dialogLinha.show();
 
@@ -498,21 +484,18 @@ public class AddProduto extends AppCompatActivity {
                     }
                 });
 
-                listViewLinhas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long lo) {
-                        try {
-                            Linha l = (Linha) listViewLinhas.getItemAtPosition(i);
-                            textLinha.setText(l.getDescricao());
-                            if (linhaSelecionada != l) {
-                                linhaSelecionada = l;
-                            }
-
-                            dialogLinha.dismiss();
-                            textCategoria.performClick();
-                        } catch (Exception e) {
-                            Log.e("ERROR", e.getMessage().toString());
+                listViewLinhas.setOnItemClickListener((adapterView, view1, i, lo) -> {
+                    try {
+                        Linha l = (Linha) listViewLinhas.getItemAtPosition(i);
+                        textLinha.setText(l.getDescricao());
+                        if (linhaSelecionada != l) {
+                            linhaSelecionada = l;
                         }
+
+                        dialogLinha.dismiss();
+                        textCategoria.performClick();
+                    } catch (Exception e) {
+                        Log.e("ERROR", e.getMessage().toString());
                     }
                 });
             }
@@ -521,70 +504,64 @@ public class AddProduto extends AppCompatActivity {
 
     private void categoriaDropdown () {
 
-        textCategoria.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                categorias = db.listCategoriasOrdered();
-                listaDinamicaCategoria = new ArrayList<Categoria>();
+        textCategoria.setOnClickListener(view -> {
+            categorias = db.listCategoriasOrdered();
+            listaDinamicaCategoria = new ArrayList<Categoria>();
 
-                if (!categorias.isEmpty()) {
-                    for (Categoria c : categorias)
-                        listaDinamicaCategoria.add(c);
+            if (!categorias.isEmpty()) {
+                listaDinamicaCategoria.addAll(categorias);
+            }
+
+            dialogCategoria = new Dialog(AddProduto.this);
+            dialogCategoria.setContentView(R.layout.spinner_categoria);
+
+            adapterCategoria = new AdapterCategoria(dialogCategoria.getContext(), 0, listaDinamicaCategoria);
+
+            dialogCategoria.getWindow().setLayout((int) (deviceWidth * 0.75), (int) (deviceHeight * 0.75));
+            dialogCategoria.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialogCategoria.setCanceledOnTouchOutside(true);
+
+            dialogCategoria.show();
+
+            TextView tvCategoria = dialogCategoria.findViewById(R.id.tvSpinnerCategoria);
+            EditText editCategoria = dialogCategoria.findViewById(R.id.editTextSpinnerCategoria);
+
+            listViewCategorias = (ListView) dialogCategoria.findViewById(R.id.lvSpinnerCategoria);
+            listViewCategorias.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+            listViewCategorias.setAdapter(adapterCategoria);
+
+            editCategoria.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
                 }
 
-                dialogCategoria = new Dialog(AddProduto.this);
-                dialogCategoria.setContentView(R.layout.spinner_categoria);
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    atualizaListaCategorias(charSequence);
+                }
 
-                adapterCategoria = new AdapterCategoria(dialogCategoria.getContext(), 0, listaDinamicaCategoria);
+                @Override
+                public void afterTextChanged(Editable editable) {
 
-                dialogCategoria.getWindow().setLayout((int) (deviceWidth * 0.75), (int) (deviceHeight * 0.75));
-                dialogCategoria.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                }
+            });
 
-                dialogCategoria.show();
-
-                TextView tvCategoria = dialogCategoria.findViewById(R.id.tvSpinnerCategoria);
-                EditText editCategoria = dialogCategoria.findViewById(R.id.editTextSpinnerCategoria);
-
-                listViewCategorias = (ListView) dialogCategoria.findViewById(R.id.lvSpinnerCategoria);
-                listViewCategorias.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-                listViewCategorias.setAdapter(adapterCategoria);
-
-                editCategoria.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+            listViewCategorias.setOnItemClickListener((adapterView, view1, i, l) -> {
+                try {
+                    Categoria c = (Categoria) listViewCategorias.getItemAtPosition(i);
+                    textCategoria.setText(c.getDescricao());
+                    if (categoriaSelecionada != c) {
+                        categoriaSelecionada = c;
+                        testeInsereSubcats();
+                        chipGroupSubcat.removeAllViews();
                     }
 
-                    @Override
-                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                        atualizaListaCategorias(charSequence);
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable editable) {
-
-                    }
-                });
-
-                listViewCategorias.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        try {
-                            Categoria c = (Categoria) listViewCategorias.getItemAtPosition(i);
-                            textCategoria.setText(c.getDescricao());
-                            if (categoriaSelecionada != c) {
-                                categoriaSelecionada = c;
-                                testeInsereSubcats();
-                                chipGroupSubcat.removeAllViews();
-                            }
-
-                            dialogCategoria.dismiss();
-                        } catch (Exception e) {
-                            Log.e("ERROR", e.getMessage().toString());
-                        }
-                    }
-                });
-            }
+                    dialogCategoria.dismiss();
+                } catch (Exception e) {
+                    Log.e("ERROR", e.getMessage().toString());
+                }
+            });
         });
 
     }
@@ -594,8 +571,7 @@ public class AddProduto extends AppCompatActivity {
         listaDinamicaMarca = new ArrayList<Marca>();
 
         if (marcas != null && !marcas.isEmpty()) {
-            for (Marca m : marcas)
-                listaDinamicaMarca.add(m);
+            listaDinamicaMarca.addAll(marcas);
         }
 
         adapterMarca = new AdapterMarca(dialogMarca.getContext(), 0, listaDinamicaMarca);
@@ -608,8 +584,7 @@ public class AddProduto extends AppCompatActivity {
         listaDinamicaLinha = new ArrayList<Linha>();
 
         if (linhas != null && !marcas.isEmpty()) {
-            for (Linha l : linhas)
-                listaDinamicaLinha.add(l);
+            listaDinamicaLinha.addAll(linhas);
         }
 
         adapterLinha = new AdapterLinha(dialogLinha.getContext(), 0, listaDinamicaLinha);
@@ -622,8 +597,7 @@ public class AddProduto extends AppCompatActivity {
         listaDinamicaCategoria = new ArrayList<Categoria>();
 
         if (categorias != null && !categorias.isEmpty()) {
-            for (Categoria c : categorias)
-                listaDinamicaCategoria.add(c);
+            listaDinamicaCategoria.addAll(categorias);
         }
 
         adapterCategoria = new AdapterCategoria(dialogCategoria.getContext(), 0, listaDinamicaCategoria);
@@ -637,8 +611,7 @@ public class AddProduto extends AppCompatActivity {
 
 
         if (subcats != null && !subcats.isEmpty()) {
-            for (Subcat s : subcats)
-                listaDinamicaSubcat.add(s);
+            listaDinamicaSubcat.addAll(subcats);
         }
 
         adapterSubcat = new AdapterSubcat(dialogSubcat.getContext(), 0, listaDinamicaSubcat);
@@ -657,8 +630,7 @@ public class AddProduto extends AppCompatActivity {
                 listaDinamicaSubcat = new ArrayList<Subcat>();
 
                 if (!subcats.isEmpty()) {
-                    for (Subcat s : subcats)
-                        listaDinamicaSubcat.add(s);
+                    listaDinamicaSubcat.addAll(subcats);
                 }
 
                 dialogSubcat = new Dialog(AddProduto.this);
@@ -668,6 +640,7 @@ public class AddProduto extends AppCompatActivity {
 
                 dialogSubcat.getWindow().setLayout((int) (deviceWidth * 0.75), (int) (deviceHeight * 0.75));
                 dialogSubcat.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialogSubcat.setCanceledOnTouchOutside(true);
 
                 dialogSubcat.show();
 
@@ -695,19 +668,16 @@ public class AddProduto extends AppCompatActivity {
                     }
                 });
 
-                listViewSubcats.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        try {
-                            Subcat s = (Subcat) listViewSubcats.getItemAtPosition(i);
-                            addChipSubcat(s.getDescricao(), s.getId());
-                        } catch (Exception e) {
-                            Toast.makeText(getApplicationContext(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
-                            Log.e("ERROR", e.getMessage().toString());
-                        }
-
-                        dialogSubcat.dismiss();
+                listViewSubcats.setOnItemClickListener((adapterView, view1, i, l) -> {
+                    try {
+                        Subcat s = (Subcat) listViewSubcats.getItemAtPosition(i);
+                        addChipSubcat(s.getDescricao(), s.getId());
+                    } catch (Exception e) {
+                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.e("ERROR", e.getMessage());
                     }
+
+                    dialogSubcat.dismiss();
                 });
             }
         });
@@ -726,15 +696,11 @@ public class AddProduto extends AppCompatActivity {
 
         setChipCheckedStyle(chip);
 
-        chip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setChipCheckedStyle(chip);
-            }
-        });
+        chip.setOnClickListener(view -> setChipCheckedStyle(chip));
     }
 
-    private void setChipCheckedStyle(Chip chip) {
+    @SuppressLint("ResourceAsColor")
+    private void setChipCheckedStyle(@NonNull Chip chip) {
         if (chip.isChecked()) {
             chip.setChipBackgroundColorResource(R.color.light_gray_01);
             chip.setChipStrokeColorResource(R.color.purple_500);

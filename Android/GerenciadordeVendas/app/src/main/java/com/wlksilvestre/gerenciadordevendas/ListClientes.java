@@ -44,8 +44,6 @@ public class ListClientes extends AppCompatActivity {
     public static final int CONSULTAR_CLIENTE = 103;
     public static final int RESULT_ALT_CLIENTE = 202;
 
-    private int viewCounter = 0;
-
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
     private Usuario usuario;
@@ -152,8 +150,7 @@ public class ListClientes extends AppCompatActivity {
         listaDinamicaClienteTelefone = new ArrayList<>();
 
         if (clienteTelefoneList != null) {
-            for (ClienteTelefone ct : clienteTelefoneList)
-                listaDinamicaClienteTelefone.add(ct);
+            listaDinamicaClienteTelefone.addAll(clienteTelefoneList);
         }
 
 
