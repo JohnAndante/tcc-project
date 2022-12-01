@@ -302,6 +302,7 @@ public class AddVenda extends AppCompatActivity {
                     addProdutoToSelecionados(produtoSelecionado,
                             Integer.parseInt(editQtdProdutoVenda.getText().toString()),
                             MaskEditUtil.moneyToDoubleTest(editValorProdutoVenda.getText().toString()));
+
                 }
             }
         });
@@ -375,6 +376,14 @@ public class AddVenda extends AppCompatActivity {
 
     private void criaVenda () {
         vendaRascunho = new Venda();
+        int idMaxVenda = -1;
+        try {
+            idMaxVenda = db.selectMaxVenda().getId();
+        } catch (Exception e) {
+            Log.e("INFO ERRO MAX VENDA", e.getMessage());
+        }
+        if (idMaxVenda >= 0)
+            vendaRascunho.setId(idMaxVenda + 1);
         vendaRascunho.setData(DateCustomText.getActualDateTime());
         vendaRascunho.setCliente(clienteSelecionado);
         Log.e("CLIENTE SELECIONADO - variavel", clienteSelecionado.getNome());

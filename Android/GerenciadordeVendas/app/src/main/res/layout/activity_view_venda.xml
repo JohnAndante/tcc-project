@@ -16,205 +16,158 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/textDataVenda"
-                style="@style/Text_Medium_white"
-                android:text="Segunda, 31 de Fevereiro"
-                android:layout_marginTop="20dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clDadosVenda"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="20dp"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/textHoraVenda"
-                style="@style/Text_Medium_white"
-                android:text="12h40"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="20dp"
-                android:textDirection="rtl"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"  />
+                <TextView
+                    android:id="@+id/textDataVenda"
+                    style="@style/Text_Medium_white"
+                    android:text="Segunda, 31 de Fevereiro"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <LinearLayout
-                android:id="@+id/llInfoVenda"
-                style="@style/LL_editText_default"
-                android:background="@drawable/cardbg_roundcorners_lightgray"
-                android:orientation="vertical"
-                android:layout_marginTop="10dp"
-                android:padding="2dp"
-                app:layout_constraintTop_toBottomOf="@id/textDataVenda"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                <TextView
+                    android:id="@+id/textHoraVenda"
+                    style="@style/Text_Medium_white"
+                    android:text="12h40"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
+                    android:textDirection="rtl"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"  />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:id="@+id/imageView"
-                        style="@style/ImgButton_add"
-                        android:layout_marginStart="7dp"
-                        android:layout_marginTop="7dp"
-                        android:background="@drawable/iconbg_roundcorners_lightblue_01"
-                        android:src="@drawable/ic_baseline_person_outline_24_white"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"  />
-
-                    <TextView
-                        android:id="@+id/tvNomeClienteVenda"
-                        android:layout_width="250dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Nome do Cliente"
-                        android:textColor="@color/white"
-                        android:textSize="15dp"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.466"
-                        app:layout_constraintStart_toEndOf="@+id/imageView"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tvTelefoneClienteVenda"
-                        android:layout_width="250dp"
-                        android:layout_height="wrap_content"
-                        android:text="(44) 9 8877-6655"
-                        android:textColor="@color/white"
-                        android:textSize="14dp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.466"
-                        app:layout_constraintStart_toEndOf="@+id/imageView"
-                        app:layout_constraintTop_toBottomOf="@+id/tvNomeClienteVenda"
-                        app:layout_constraintVertical_bias="0.0" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <ListView
-                    android:id="@+id/lvProdutosVenda"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                <LinearLayout
+                    android:id="@+id/llInfoVenda"
+                    style="@style/LL_editText_default"
+                    android:background="@drawable/cardbg_roundcorners_lightgray"
+                    android:orientation="vertical"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/iconbg_roundcorners_blue_stroke">
-
-                </ListView>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/clValorTotal"
-                    android:layout_width="match_parent"
-                    android:layout_height="34dp">
-
-                    <TextView
-                        android:id="@+id/textValorTotalVenda"
-                        android:layout_width="170dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:text="Valor da Venda"
-                        android:textColor="@color/white"
-                        android:textSize="15dp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/textCifraValorTotalVenda"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="R$ "
-                        android:textColor="@color/white"
-                        android:textSize="15dp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/textValorTotalVenda"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tvValorVenda"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:maxWidth="150dp"
-                        android:text="0,00"
-                        android:textAlignment="textEnd"
-                        android:textColor="@color/white"
-                        android:textSize="15dp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/textCifraValorTotalVenda"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/clFormaPgto"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp">
-
-                    <TextView
-                        android:id="@+id/textLabelFormaPgto"
-                        android:layout_width="170dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="8dp"
-                        android:text="Forma de Pagamento"
-                        android:textColor="@color/white"
-                        android:textSize="15dp"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tvFormaPgtoDesc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Cartão de Crédito"
-                        android:textColor="@color/white"
-                        android:textSize="15dp"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toEndOf="@id/textLabelFormaPgto"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tvQtdParcela"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text="1"
-                        android:textColor="@color/white"
-                        android:textSize="15dp"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toEndOf="@+id/textLabelFormaPgto"
-                        app:layout_constraintTop_toBottomOf="@+id/tvFormaPgtoDesc" />
-
-                    <TextView
-                        android:id="@+id/textDe"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text=" x"
-                        android:textColor="@color/white"
-                        android:textSize="15dp"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toEndOf="@+id/tvQtdParcela"
-                        app:layout_constraintTop_toBottomOf="@id/tvFormaPgtoDesc" />
+                    android:padding="2dp"
+                    app:layout_constraintTop_toBottomOf="@id/textDataVenda"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/clJurosAplicados"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/tvQtdParcela">
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/imageView"
+                            style="@style/ImgButton_add"
+                            android:layout_marginStart="7dp"
+                            android:layout_marginTop="7dp"
+                            android:background="@drawable/iconbg_roundcorners_lightblue_01"
+                            android:src="@drawable/ic_baseline_person_outline_24_white"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"  />
 
                         <TextView
-                            android:id="@+id/textJurosAplicados"
+                            android:id="@+id/tvNomeClienteVenda"
+                            android:layout_width="250dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Nome do Cliente"
+                            android:textColor="@color/white"
+                            android:textSize="15dp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.466"
+                            app:layout_constraintStart_toEndOf="@+id/imageView"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tvTelefoneClienteVenda"
+                            android:layout_width="250dp"
+                            android:layout_height="wrap_content"
+                            android:text="(44) 9 8877-6655"
+                            android:textColor="@color/white"
+                            android:textSize="14dp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.466"
+                            app:layout_constraintStart_toEndOf="@+id/imageView"
+                            app:layout_constraintTop_toBottomOf="@+id/tvNomeClienteVenda"
+                            app:layout_constraintVertical_bias="0.0" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <ListView
+                        android:id="@+id/lvProdutosVenda"
+                        style="@style/LV_default_02"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:paddingTop="2dp"
+                        android:background="@drawable/iconbg_roundcorners_blue_stroke">
+
+                    </ListView>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/clValorTotal"
+                        android:layout_width="match_parent"
+                        android:layout_height="34dp">
+
+                        <TextView
+                            android:id="@+id/textValorTotalVenda"
+                            android:layout_width="170dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:text="Valor da Venda"
+                            android:textColor="@color/white"
+                            android:textSize="15dp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textCifraValorTotalVenda"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="R$ "
+                            android:textColor="@color/white"
+                            android:textSize="15dp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/textValorTotalVenda"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tvValorVenda"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxWidth="150dp"
+                            android:text="0,00"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/white"
+                            android:textSize="15dp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/textCifraValorTotalVenda"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/clFormaPgto"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp">
+
+                        <TextView
+                            android:id="@+id/textLabelFormaPgto"
                             android:layout_width="170dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:layout_marginTop="8dp"
-                            android:text="Juros Aplicados"
+                            android:text="Forma de Pagamento"
                             android:textColor="@color/white"
                             android:textSize="15dp"
                             android:textStyle="bold"
@@ -222,91 +175,148 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
-                            android:id="@+id/textCifraValorJurosAplicados"
+                            android:id="@+id/tvFormaPgtoDesc"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="R$ "
+                            android:text="Cartão de Crédito"
                             android:textColor="@color/white"
                             android:textSize="15dp"
                             android:textStyle="bold"
-                            app:layout_constraintStart_toEndOf="@+id/textJurosAplicados"
+                            app:layout_constraintStart_toEndOf="@id/textLabelFormaPgto"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
-                            android:id="@+id/tvValorJurosAplicados"
+                            android:id="@+id/tvQtdParcela"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:maxWidth="150dp"
-                            android:text="0,00"
-                            android:textAlignment="textEnd"
+                            android:layout_marginTop="6dp"
+                            android:text="1"
                             android:textColor="@color/white"
                             android:textSize="15dp"
                             android:textStyle="bold"
-                            app:layout_constraintStart_toEndOf="@id/textCifraValorJurosAplicados"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintStart_toEndOf="@+id/textLabelFormaPgto"
+                            app:layout_constraintTop_toBottomOf="@+id/tvFormaPgtoDesc" />
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                        <TextView
+                            android:id="@+id/textDe"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text=" x"
+                            android:textColor="@color/white"
+                            android:textSize="15dp"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toEndOf="@+id/tvQtdParcela"
+                            app:layout_constraintTop_toBottomOf="@id/tvFormaPgtoDesc" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/clValorComJuros"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/clJurosAplicados">
-
-                        <View
-                            android:id="@+id/divider"
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/clJurosAplicados"
                             android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginTop="4dp"
-                            android:background="?android:attr/listDivider"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/textValorVendaComJuros"
-                            android:layout_width="170dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="8dp"
-                            android:text="Valor Total"
-                            android:textColor="@color/white"
-                            android:textSize="15dp"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"/>
+                            app:layout_constraintTop_toBottomOf="@id/tvQtdParcela">
 
-                        <TextView
-                            android:id="@+id/textCifraValorComJuros"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="R$ "
-                            android:textColor="@color/white"
-                            android:textSize="15dp"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toEndOf="@+id/textValorVendaComJuros"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            <TextView
+                                android:id="@+id/textJurosAplicados"
+                                android:layout_width="170dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="8dp"
+                                android:text="Juros Aplicados"
+                                android:textColor="@color/white"
+                                android:textSize="15dp"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-                        <TextView
-                            android:id="@+id/tvValorTotalComJuros"
-                            android:layout_width="wrap_content"
+                            <TextView
+                                android:id="@+id/textCifraValorJurosAplicados"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="R$ "
+                                android:textColor="@color/white"
+                                android:textSize="15dp"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toEndOf="@+id/textJurosAplicados"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tvValorJurosAplicados"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:maxWidth="150dp"
+                                android:text="0,00"
+                                android:textAlignment="textEnd"
+                                android:textColor="@color/white"
+                                android:textSize="15dp"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toEndOf="@id/textCifraValorJurosAplicados"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/clValorComJuros"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:maxWidth="150dp"
-                            android:text="0,00"
-                            android:textAlignment="textEnd"
-                            android:textColor="@color/white"
-                            android:textSize="15dp"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toEndOf="@id/textCifraValorComJuros"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toBottomOf="@id/clJurosAplicados">
+
+                            <View
+                                android:id="@+id/divider"
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp"
+                                android:layout_marginTop="4dp"
+                                android:background="?android:attr/listDivider"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/textValorVendaComJuros"
+                                android:layout_width="170dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="8dp"
+                                android:text="Valor Total"
+                                android:textColor="@color/white"
+                                android:textSize="15dp"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"/>
+
+                            <TextView
+                                android:id="@+id/textCifraValorComJuros"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="R$ "
+                                android:textColor="@color/white"
+                                android:textSize="15dp"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toEndOf="@+id/textValorVendaComJuros"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tvValorTotalComJuros"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:maxWidth="150dp"
+                                android:text="0,00"
+                                android:textAlignment="textEnd"
+                                android:textColor="@color/white"
+                                android:textSize="15dp"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toEndOf="@id/textCifraValorComJuros"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btAdicionarPgtoVenda"
@@ -315,7 +325,7 @@
                 android:layout_marginTop="25dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/llInfoVenda"/>
+                app:layout_constraintTop_toBottomOf="@id/clDadosVenda"/>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btExportarComprovante"

@@ -38,7 +38,6 @@
             <LinearLayout
                 android:id="@+id/llInfoNovaVenda"
                 style="@style/LL_editText_default"
-                android:background="@drawable/cardbg_roundcorners_lightgray"
                 android:orientation="vertical"
                 android:layout_marginTop="10dp"
                 android:padding="2dp"
@@ -84,13 +83,12 @@
 
                 <ListView
                     android:id="@+id/lvProdutosNovaVenda"
-                    android:layout_width="match_parent"
+                    style="@style/LV_default_02"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:paddingTop="2dp"
                     android:background="@drawable/iconbg_roundcorners_blue_stroke">
-
                 </ListView>
 
                 <androidx.constraintlayout.widget.ConstraintLayout

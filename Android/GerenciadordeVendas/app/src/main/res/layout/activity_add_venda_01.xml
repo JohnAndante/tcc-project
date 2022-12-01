@@ -179,8 +179,6 @@
                 <LinearLayout
                     style="@style/LL_editText_default"
                     android:layout_margin="0dp"
-                    android:layout_gravity="center_horizontal|center"
-                    android:background="@drawable/cardbg_roundcorners_lightgray"
                     android:orientation="vertical">
 
                     <ListView

@@ -106,10 +106,6 @@ public class AddVendaDetails extends AppCompatActivity {
 
             List<ProdVenda> prodVendaList = db.listProdVendaByVenda(venda);
 
-            if (!prodVendaList.isEmpty()) {
-                arrayListProdVenda.addAll(prodVendaList);
-            }
-
             tvDataVenda.setText(DateCustomText.getExtenseDate(venda.getData()));
             tvHoraVenda.setText(DateCustomText.getCustomTime(venda.getData()));
             tvNomeCliente.setText(cliente.getNome());
@@ -125,6 +121,16 @@ public class AddVendaDetails extends AppCompatActivity {
 
             adapterProdutoVenda = new AdapterProdutoVenda(this, 0, arrayListProdVenda);
             lvProdutosVenda.setAdapter(adapterProdutoVenda);
+
+            if (!prodVendaList.isEmpty()) {
+                for (ProdVenda pv : prodVendaList) {
+                    arrayListProdVenda.add(pv);
+                    justifyListViewHeightBasedOnChildren(lvProdutosVenda);
+                }
+                arrayListProdVenda.addAll(prodVendaList);
+            }
+
+            //justifyListViewHeightBasedOnChildren(lvProdutosVenda);
 
             initButtonsOnClick();
             initImageViewsOnClick();
@@ -176,8 +182,6 @@ public class AddVendaDetails extends AppCompatActivity {
                     }
 
                     editJuros.removeTextChangedListener(this);
-
-
 
                     String a = "";
                     String b = "";
@@ -357,11 +361,13 @@ public class AddVendaDetails extends AppCompatActivity {
         if (pctJuros > 0) {
             pgto.setValor(valorComJuros);
             pgto.setJuros(pctJuros);
+            pgto.setParcelas(Integer.parseInt(editParcelas.getText().toString()));
         } else {
             pgto.setValor(venda.getValor());
+            pgto.setParcelas(1);
         }
         pgto.setData(DateCustomText.getActualDateTime());
-        pgto.setParcelas(Integer.parseInt(editParcelas.getText().toString()));
+
 
         db.addPgto(pgto);
         pgto = db.selectMaxPgto();
@@ -508,14 +514,33 @@ public class AddVendaDetails extends AppCompatActivity {
             valorComJuros = venda.getValor();
             double valorTotal = 0.00;
             double valorParcela = valorComJuros / qtdParcelas;
+
             for (int i = 0; i < qtdParcelas; i++) {
                 double y = (valorParcela * (pctJuros / 100));
                 valorParcela = valorParcela + y;
                 valorTotal = valorTotal + valorParcela;
             }
-            valorComJuros = MaskEditUtil.moneyToDoubleTest(MaskEditUtil.doubleToMoneyValue(valorTotal));
+            valorComJuros = valorTotal;
             tvValorJuros.setText(MaskEditUtil.doubleToMoneyValue(valorComJuros - venda.getValor()));
         }
+
         tvValorTotalJuros.setText(MaskEditUtil.doubleToMoneyValue(valorComJuros));
+    }
+
+    public static void justifyListViewHeightBasedOnChildren (ListView listView) {
+
+        ListAdapter listadp = listView.getAdapter();
+        if (listadp != null) {
+            int totalHeight = 0;
+            for (int i = 0; i < listadp.getCount(); i++) {
+                View listItem = listadp.getView(i, null, listView);
+                listItem.measure(0, 0);
+                totalHeight += listItem.getMeasuredHeight();
+            }
+            ViewGroup.LayoutParams params = listView.getLayoutParams();
+            params.height = totalHeight + (listView.getDividerHeight() * (listadp.getCount() - 1) + 2);
+            listView.setLayoutParams(params);
+            listView.requestLayout();
+        }
     }
 }
