@@ -45,7 +45,7 @@
                     android:id="@+id/editNomeCliente"
                     style="@style/EditText_default"
                     android:hint="Nome do Cliente"
-                    android:inputType="textPersonName"
+                    android:inputType="textPersonName|textCapWords"
                     android:nextFocusForward="@id/editTelefoneCliente" />
 
             </LinearLayout>

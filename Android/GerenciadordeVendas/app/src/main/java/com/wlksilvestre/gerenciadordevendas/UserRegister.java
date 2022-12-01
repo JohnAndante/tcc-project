@@ -24,7 +24,6 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -112,7 +111,13 @@ public class UserRegister extends AppCompatActivity {
         finish();
     }
 
-    private void intentMainActivity () {
+    private void intentSyncData() {
+        Intent intent = new Intent(UserRegister.this, SyncData.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void intentMainActivity() {
         Intent intent = new Intent(UserRegister.this, MainActivity.class);
         startActivity(intent);
         finish();

@@ -18,6 +18,7 @@ public class MoneyTextWatcher implements TextWatcher {
     public MoneyTextWatcher(EditText editText) {
         editTextWeakReference = new WeakReference<EditText>(editText);
     }
+
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         String value = charSequence.toString();

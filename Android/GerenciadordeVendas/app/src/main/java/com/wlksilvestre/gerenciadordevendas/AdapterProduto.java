@@ -32,7 +32,7 @@ public class AdapterProduto extends ArrayAdapter {
     @Override
     public View getView (int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.card_produto_dropdown, null);
+        View view = inflater.inflate(R.layout.card_produto, null);
 
         TextView tvNomeProduto = view.findViewById(R.id.tvNomeProduto);
         TextView tvValorProduto = view.findViewById(R.id.tvValorProduto);

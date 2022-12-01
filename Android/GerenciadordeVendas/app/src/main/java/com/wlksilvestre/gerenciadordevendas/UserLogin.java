@@ -127,8 +127,8 @@ public class UserLogin extends AppCompatActivity {
         finish();
     }
 
-    private void intentMainActivity () {
-        Intent intent = new Intent(UserLogin.this, MainActivity.class);
+    private void intentSyncData () {
+        Intent intent = new Intent(UserLogin.this, SyncData.class);
         startActivity(intent);
         finish();
     }
@@ -177,15 +177,18 @@ public class UserLogin extends AppCompatActivity {
                             msg = "Erro interno. Serviço temporariamente indisponível";
                         }
                         if (Objects.equals(e.getMessage(), "The email address is already in use by another account.")) {
-                            msg = "O e-mail inserido já está sendo utilizado por outra conta";
+                            //msg = "O e-mail inserido já está sendo utilizado por outra conta";
+                            msg = "Email e/ou senha incorretos. Verifique os dados e tente novamente.";
                             editEmailLogin.requestFocus();
                         }
                         if (Objects.equals(e.getMessage(), "There is no user record corresponding to this identifier. The user may have been deleted.")) {
-                            msg = "E-mail não cadastrado";
+                            //msg = "E-mail não cadastrado";
+                            msg = "Email e/ou senha incorretos. Verifique os dados e tente novamente.";
                             editEmailLogin.requestFocus();
                         }
                         if (Objects.equals(e.getMessage(), "The password is invalid or the user does not have a password.")) {
-                            msg = "Senha incorreta";
+                            //msg = "Senha incorreta";
+                            msg = "Email e/ou senha incorretos. Verifique os dados e tente novamente.";
                             editSenhaLogin.requestFocus();
                         }
                         loadingDialog.dismiss();
@@ -230,15 +233,19 @@ public class UserLogin extends AppCompatActivity {
     private void recoverUserData () {
         usuario = new Usuario();
         currentUser = mAuth.getCurrentUser();
+        fireDB = FirebaseFirestore.getInstance();
 
         if (db.selectCountUsuarios() > 0) {
             usuario = db.selectUsuarioByUID(currentUser.getUid());
             Log.e("INFO recoverUserData", "usuario recuperado do banco de dados - " + usuario.getNome());
 
-
-            new Handler().postDelayed(this::intentMainActivity, 500);
+            Intent intent = new Intent(UserLogin.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+            //loadingDialog.dismiss();
 
         } else {
+
             DocumentReference docUsuarios = fireDB.collection("usuarios").document(currentUser.getUid());
             docUsuarios.get()
                     .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -246,10 +253,23 @@ public class UserLogin extends AppCompatActivity {
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             if (task.isSuccessful()) {
                                 DocumentSnapshot document = task.getResult();
-                                if (document.exists())
+                                if (document.exists()) {
                                     Log.e("INFO recoverUserData", "DocumentSnapshot data: " + document.getData());
 
-                                else
+                                    usuario.setId(Integer.parseInt(document.get("id").toString()));
+                                    usuario.setNome(document.get("nome").toString());
+                                    usuario.setEmail(document.get("email").toString());
+                                    usuario.setTelefone(document.get("telefone").toString());
+                                    usuario.setUid(document.get("uid").toString());
+
+                                    db.addUsuario(usuario);
+
+                                    Intent intent = new Intent(UserLogin.this, MainActivity.class);
+                                    startActivity(intent);
+
+                                    loadingDialog.dismiss();
+                                    finish();
+                                } else
                                     Log.e("INFO recoverUserData", "No such document");
                             } else {
                                 Log.e("INFO recoverUserData", "get failed with ", task.getException());

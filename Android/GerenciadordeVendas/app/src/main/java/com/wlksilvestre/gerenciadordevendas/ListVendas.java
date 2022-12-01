@@ -2,11 +2,14 @@ package com.wlksilvestre.gerenciadordevendas;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -27,6 +30,7 @@ public class ListVendas extends AppCompatActivity {
 
     private Button btVendaVoltar;
     private Button btVendaAdicionar;
+    private EditText editBuscaVenda;
     private ImageButton imgbtNovaVenda;
     private ConstraintLayout clAdicionarVenda;
     private ListView listViewVendas;
@@ -41,6 +45,7 @@ public class ListVendas extends AppCompatActivity {
     public static final int ALTERAR_VENDA = 4100;
     public static final int CONSULTAR_VENDA = 4200;
     public static final int RESULT_ALT_VENDA = 4300;
+    private boolean isBuscaOpen = false;
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
@@ -52,6 +57,7 @@ public class ListVendas extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
 
         initButtonsHub();
+        initEditTexts();
         listVendas();
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
@@ -75,6 +81,7 @@ public class ListVendas extends AppCompatActivity {
         //addDefaultData();
         //adjustView();
 
+        /*
             db.addVenda(new Venda(
                     DateCustomText.getActualDateTime(),
                     248.00,
@@ -116,7 +123,7 @@ public class ListVendas extends AppCompatActivity {
                     2,
                     50.00
             ));
-
+        */
     }
 
     @Override
@@ -148,6 +155,27 @@ public class ListVendas extends AppCompatActivity {
         });
     }
 
+    private void initEditTexts () {
+        editBuscaVenda = findViewById(R.id.editBuscarVenda);
+
+        editBuscaVenda.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                atualizaListaVendas(charSequence);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+    }
+
     private void addNovaVenda () {
         Intent intent = new Intent(getApplicationContext(), AddVenda.class);
         startActivityForResult(intent, NOVA_VENDA);
@@ -166,7 +194,7 @@ public class ListVendas extends AppCompatActivity {
         if (!vendas.isEmpty()) {
             listaDinamicaVendas.addAll(vendas);
         } else {
-            Toast.makeText(getApplicationContext(), "Não há vendas registradas no app", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Não há vendas registradas no app.", Toast.LENGTH_SHORT).show();
         }
 
         adapter = new AdapterVenda(this, 0, listaDinamicaVendas);
@@ -183,6 +211,35 @@ public class ListVendas extends AppCompatActivity {
                 Log.e("ERROR", e.getMessage());
             }
         });
+    }
+
+    private void atualizaListaVendas (CharSequence _desc) {
+        List<Venda> vendas = db.listAllVendas();
+        vendas = db.listVendasOnSearch(_desc);
+        listaDinamicaVendas = new ArrayList<>();
+
+        if (!vendas.isEmpty()) {
+            listaDinamicaVendas.addAll(vendas);
+        } else {
+            Toast.makeText(getApplicationContext(), "Não há dados compatíveis para sua busca.", Toast.LENGTH_SHORT).show();
+        }
+
+        adapter = new AdapterVenda(this, 0, listaDinamicaVendas);
+
+        listViewVendas = findViewById(R.id.listVVendas);
+        listViewVendas.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+        listViewVendas.setAdapter(adapter);
+
+        listViewVendas.setOnItemClickListener((adapterView, view, i, l) -> {
+            try {
+                Venda v = (Venda) listViewVendas.getItemAtPosition(i);
+                openVendaData(v, i);
+            } catch (Exception e) {
+                Log.e("ERROR", e.getMessage());
+            }
+        });
+
+        adapter.notifyDataSetChanged();
     }
 
     private void openVendaData (Venda v, int position) {

@@ -112,8 +112,6 @@ public class ViewVenda extends AppCompatActivity {
             listProdutos = findViewById(R.id.lvProdutosVenda);
             listProdutos.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
             listProdutos.setAdapter(adapterProdutoVenda);
-
-            justifyListViewHeightBasedOnChildren(listProdutos);
         }
     }
 
@@ -168,23 +166,6 @@ public class ViewVenda extends AppCompatActivity {
                 startPgtoActivity();
             }
         });
-    }
-
-    private void justifyListViewHeightBasedOnChildren (ListView listView) {
-
-        ListAdapter listadp = listView.getAdapter();
-        if (listadp != null) {
-            int totalHeight = 0;
-            for (int i = 0; i < listadp.getCount(); i++) {
-                View listItem = listadp.getView(i, null, listView);
-                listItem.measure(0, 0);
-                totalHeight += listItem.getMeasuredHeight();
-            }
-            ViewGroup.LayoutParams params = listView.getLayoutParams();
-            params.height = totalHeight + (listView.getDividerHeight() * (listadp.getCount() - 1) + 2);
-            listView.setLayoutParams(params);
-            listView.requestLayout();
-        }
     }
 
     private void startPgtoActivity () {

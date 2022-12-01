@@ -20,6 +20,7 @@
             style="@style/ImgButton_add"
             android:layout_width="35dp"
             android:layout_height="35dp"
+            android:layout_marginTop="5dp"
             android:background="@drawable/iconbg_roundcorners_lightblue_01"
             android:src="@drawable/ic_baseline_shopping_bag_24_white"
             app:layout_constraintTop_toTopOf="parent"

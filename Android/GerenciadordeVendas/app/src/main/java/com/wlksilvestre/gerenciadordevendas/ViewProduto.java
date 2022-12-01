@@ -2,6 +2,7 @@ package com.wlksilvestre.gerenciadordevendas;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -186,11 +187,19 @@ public class ViewProduto extends AppCompatActivity {
     private void addChipSubcat (String text) {
         Chip chip = new Chip(this);
         chip.setText(text);
+        chip.setCheckable(false);
+
+        chip.setChipBackgroundColorResource(R.color.light_gray_01);
+        chip.setChipStrokeColorResource(R.color.purple_500);
+        chip.setTextAppearanceResource(R.style.ChipText_SelectedStyle);
+        chip.setChipStrokeWidth(5);
+
         //chip.setChipStrokeColor();
         //chip.setChipWidth();
-        chip.setBackgroundColor(R.color.light_blue_01);
-        chip.setTextColor(R.color.light_gray_02);
-        chip.setChipIconResource(R.drawable.ic_baseline_keyboard_arrow_down_24_white);
+        //chip.setChipBackgroundColor(ColorStateList.valueOf(R.color.light_gray_02));
+        //chip.setChipIconTint(ColorStateList.valueOf(R.color.light_blue_01));
+        //chip.setBackgroundColor(R.color.light_blue_01);
+        //chip.setTextColor(R.color.light_gray_02);
 
         chipGroupSubcats.addView(chip);
     }

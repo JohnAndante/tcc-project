@@ -544,6 +544,42 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         }
     }
 
+    public List<ClienteTelefone> listClientesAdapterByNomeOrdered (String uid, CharSequence _nome) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<ClienteTelefone> listClienteTelefone = new ArrayList<>();
+
+        String QUERY = "SELECT C." + CLIENTE_ID + ", T." + TELEFONE_ID +
+                " FROM " + CLIENTE_TABLE + " C " +
+                " JOIN " + TELEFONE_TABLE + " T ON C." + CLIENTE_ID + " == T." + TELEFONE_CLIENTE +
+                " WHERE C." + CLIENTE_UID + " LIKE '%" + uid + "%'" +
+                " AND C." + CLIENTE_NOME + " LIKE '%" + _nome + "%'" +
+                " ORDER BY " + CLIENTE_NOME;
+
+        Cursor c = db.rawQuery(QUERY, null);
+
+        if (c.moveToFirst()) {
+            do {
+                Cliente cliente = new Cliente();
+                Telefone telefone = new Telefone();
+
+                cliente = selectCliente(c.getInt(0));
+                telefone = selectTelefone(c.getInt(1));
+
+                ClienteTelefone ct = new ClienteTelefone(cliente, telefone);
+
+                listClienteTelefone.add(ct);
+
+            } while (c.moveToNext());
+
+            db.close();
+            return listClienteTelefone;
+        } else {
+            db.close();
+            return null;
+        }
+    }
+
     public int selectCountClientes () {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -556,6 +592,12 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
             count =  c.getInt(0);
 
         return count;
+    }
+
+    public void deleteClientes () {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String QUERY = "DELETE FROM " + CLIENTE_TABLE;
     }
 
     // CRUD ENDEREÇO ////////////////////////////////////////////////////////////////////////////
@@ -2829,6 +2871,45 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return count;
     }
 
+    public List<Venda> listVendasOnSearch(CharSequence _text) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Venda> vendas = new ArrayList<>();
+
+        String QUERY = "SELECT * " +
+                " FROM " + VENDA_TABLE + " V " +
+                " JOIN " + CLIENTE_TABLE + " C " +
+                    " ON V." + VENDA_CLIENTE + " == C." + CLIENTE_ID +
+                " WHERE C." + CLIENTE_NOME + " LIKE '%" + _text + "%'" +
+                " ORDER BY V." + VENDA_DATA;
+
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Cliente c = selectCliente(cursor.getInt(3));
+                Pgto p = new Pgto();
+                if (cursor.getInt(4) > 0)
+                    p = selectPgto(cursor.getInt(4));
+                else
+                    p = null;
+                Venda venda = new Venda(
+                        cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getDouble(2),
+                        c,
+                        p
+                );
+
+                vendas.add(venda);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+
+        return vendas;
+    }
+
     // CRUD PRODUTO X VENDA /////////////////////////////////////////////////////////////////////
 
     public void addProdVenda (@NonNull ProdVenda _prodVenda) {
@@ -3168,12 +3249,10 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         values.put(USER_UID, _usuario.getUid());
 
         db.insert(USER_TABLE, null, values);
-
-
         db.close();
     }
 
-    public void deleteUsuario (Usuario usuario, int id) {
+    public void deleteUsuario (@Nullable Usuario usuario, @Nullable Integer id) {
         if (usuario != null) {
             SQLiteDatabase db = this.getWritableDatabase();
 
@@ -3299,6 +3378,36 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.close();
     }
 
+    public List<Usuario> listUsuarios () {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Usuario> usuarios = new ArrayList<>();
+
+        String QUERY = "SELECT * FROM " + USER_TABLE;
+
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Usuario usuario = new Usuario(
+                        cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        cursor.getString(4)
+                );
+
+                usuarios.add(usuario);
+            } while (cursor.moveToNext());
+        } else {
+            return null;
+        }
+
+        db.close();
+
+        return usuarios;
+    }
+
     int selectCountUsuarios () {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -3311,6 +3420,14 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
             count =  c.getInt(0);
 
         return count;
+    }
+
+    public void clearUsuarios () {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery(" DELETE FROM " + USER_TABLE, null);
+
+        db.close();
     }
 
     // Preenchimento estados e cidades //////////////////////////////////////////////////////////
@@ -3347,6 +3464,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
             Log.e("ERROR DB CIDADE", e.getMessage());
         }
     }
+
 
 }
 

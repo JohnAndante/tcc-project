@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         loadingDialog.show();
         try {
             textDialog.setText("Verificando dados - Formas de Pagamento");
-            if (!checkFormaPgtos())
+            if (checkFormaPgtos())
                 addDefaultFormaPgtos();
         } catch (Exception e) {
             Log.e("INFO ONCREATE - Formas de Pagamento", e.getMessage());

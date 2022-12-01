@@ -64,7 +64,7 @@ public class AddVenda extends AppCompatActivity {
 
     private List<Produto> produtos;
     private ArrayList<Produto> listaDinamicaProdutos;
-    private AdapterProduto adapterProduto;
+    private AdapterProdutoDropdown adapterProdutoDropdown;
     private Dialog dialogProduto;
     private ListView listViewProdutos;
 
@@ -179,6 +179,7 @@ public class AddVenda extends AppCompatActivity {
                         try {
                             ClienteTelefone ct = (ClienteTelefone) listViewClientes.getItemAtPosition(i);
                             Cliente c = ct.getCliente();
+                            Log.e("CLIENTE SELECIONADO - Lista", c.getNome());
                             tvClienteVenda.setText(c.getNome());
                             clienteSelecionado = c;
                             dialogCliente.dismiss();
@@ -207,7 +208,7 @@ public class AddVenda extends AppCompatActivity {
                 dialogProduto = new Dialog(AddVenda.this);
                 dialogProduto.setContentView(R.layout.spinner_produto);
 
-                adapterProduto = new AdapterProduto(dialogProduto.getContext(), 0, listaDinamicaProdutos);
+                adapterProdutoDropdown = new AdapterProdutoDropdown(dialogProduto.getContext(), 0, listaDinamicaProdutos);
 
                 dialogProduto.getWindow().setLayout((int) (deviceWidth * 0.75), (int) (deviceHeight * 0.75));
                 dialogProduto.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -220,7 +221,7 @@ public class AddVenda extends AppCompatActivity {
 
                 listViewProdutos = (ListView) dialogProduto.findViewById(R.id.lvSpinnerProduto);
                 listViewProdutos.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-                listViewProdutos.setAdapter(adapterProduto);
+                listViewProdutos.setAdapter(adapterProdutoDropdown);
 
                 editProduto.addTextChangedListener(new TextWatcher() {
                     @Override
@@ -264,13 +265,12 @@ public class AddVenda extends AppCompatActivity {
         //clientes = db.listClientesOrdered(usuario.getUid());
         //listaDinamicaClientes = new ArrayList<Cliente>();
 
-        clienteTelefoneList = db.listClientesAdapterOrdered(usuario.getUid());
+        clienteTelefoneList = db.listClientesAdapterByNomeOrdered(usuario.getUid(), _nome);
         listaDinamicaClienteTelefone = new ArrayList<>();
 
-        if (!clienteTelefoneList.isEmpty()) {
+        if (clienteTelefoneList != null && !clienteTelefoneList.isEmpty()) {
             listaDinamicaClienteTelefone.addAll(clienteTelefoneList);
         }
-
 
         adapterCliente = new AdapterCliente(dialogCliente.getContext(), 0, listaDinamicaClienteTelefone);
         listViewClientes.setAdapter(adapterCliente);
@@ -285,9 +285,9 @@ public class AddVenda extends AppCompatActivity {
             listaDinamicaProdutos.addAll(produtos);
         }
 
-        adapterProduto = new AdapterProduto(dialogProduto.getContext(), 0, listaDinamicaProdutos);
-        listViewProdutos.setAdapter(adapterProduto);
-        adapterProduto.notifyDataSetChanged();
+        adapterProdutoDropdown = new AdapterProdutoDropdown(dialogProduto.getContext(), 0, listaDinamicaProdutos);
+        listViewProdutos.setAdapter(adapterProdutoDropdown);
+        adapterProdutoDropdown.notifyDataSetChanged();
     }
 
     private void initButtons () {
@@ -313,7 +313,7 @@ public class AddVenda extends AppCompatActivity {
                     saveVendaAndProdVenda();
                     startNextAddVendaActivity();
                 } else {
-                    Log.e("INFO BT AVANÇAR", "/// não entrou no if " + String.valueOf(clienteSelecionado) + " " + String.valueOf(vendaRascunho) + " " + String.valueOf(listaDinamicaProdVenda));
+                    Log.e("INFO BT AVANÇAR", "/// não entrou no if " + clienteSelecionado.getNome() + " " + String.valueOf(vendaRascunho) + " " + String.valueOf(listaDinamicaProdVenda));
                 }
             }
         });
@@ -375,9 +375,10 @@ public class AddVenda extends AppCompatActivity {
 
     private void criaVenda () {
         vendaRascunho = new Venda();
-        vendaRascunho.setId(db.selectMaxVenda().getId() + 1);
         vendaRascunho.setData(DateCustomText.getActualDateTime());
         vendaRascunho.setCliente(clienteSelecionado);
+        Log.e("CLIENTE SELECIONADO - variavel", clienteSelecionado.getNome());
+        Log.e("CLIENTE SELECIONADO - Venda", vendaRascunho.getCliente().getNome());
 
     }
 

@@ -59,8 +59,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
     }
 
     private void writePdfFile(String fileName) {

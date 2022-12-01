@@ -68,8 +68,6 @@ public class StartScreen extends AppCompatActivity {
         setContentView(R.layout.activity_start_screen);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
-
-
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         fireDB = FirebaseFirestore.getInstance();
@@ -77,7 +75,6 @@ public class StartScreen extends AppCompatActivity {
         initButtons();
         initButtonsOnClick();
         initDialogCfg();
-
 
     }
 
@@ -123,10 +120,20 @@ public class StartScreen extends AppCompatActivity {
     private void recoverUserData () {
         usuario = new Usuario();
 
-        if (db.selectCountUsuarios() > 0) {
-            usuario = db.selectUsuarioByUID(currentUser.getUid());
-            Log.e("INFO recoverUserData", "usuario recuperado do banco de dados - " + usuario.getNome());
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+        fireDB = FirebaseFirestore.getInstance();
 
+        if (db.selectCountUsuarios() > 0) {
+
+            try {
+                usuario = db.selectUsuarioByUID(currentUser.getUid());
+                Log.e("INFO DB", usuario.getEmail());
+            } catch (Exception e) {
+                Log.e("INFO ERROR", e.getMessage());
+            }
+
+            Log.e("INFO recoverUserData", "usuario recuperado do banco de dados - " + usuario.getNome());
 
             Intent intent = new Intent(StartScreen.this, MainActivity.class);
             startActivity(intent);
@@ -134,7 +141,7 @@ public class StartScreen extends AppCompatActivity {
             loadingDialog.dismiss();
 
         } else {
-            DocumentReference docUsuarios = fireDB.collection("Usuarios").document(currentUser.getUid());
+            DocumentReference docUsuarios = fireDB.collection("usuarios").document(currentUser.getUid());
             docUsuarios.get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -151,7 +158,6 @@ public class StartScreen extends AppCompatActivity {
                                 usuario.setUid      (document.get("uid").toString());
 
                                 db.addUsuario(usuario);
-
 
                                 Intent intent = new Intent(StartScreen.this, MainActivity.class);
                                 startActivity(intent);

@@ -126,8 +126,6 @@ public class AddVendaDetails extends AppCompatActivity {
             adapterProdutoVenda = new AdapterProdutoVenda(this, 0, arrayListProdVenda);
             lvProdutosVenda.setAdapter(adapterProdutoVenda);
 
-            justifyListViewHeightBasedOnChildren(lvProdutosVenda);
-
             initButtonsOnClick();
             initImageViewsOnClick();
             dropdownFormaPgto();
@@ -151,10 +149,9 @@ public class AddVendaDetails extends AppCompatActivity {
             });
 
             editJuros.addTextChangedListener(new TextWatcher() {
-
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                    String value = charSequence.toString();
                 }
 
                 @Override
@@ -164,26 +161,100 @@ public class AddVendaDetails extends AppCompatActivity {
 
                 @Override
                 public void afterTextChanged(Editable editable) {
+                    String formatted = "";
 
                     if (editJuros == null) return;
-                    String s = editJuros.getText().toString();
-                    Log.e("INFO STRING 1", s);
+
+                    String s = editable.toString();
+
                     if (s.isEmpty()) return;
+
+                    if (s.length() >= 13) {
+                        formatted =  s.substring(0, s.length() - 1);
+                        editJuros.setText(formatted);
+                        return;
+                    }
 
                     editJuros.removeTextChangedListener(this);
 
-                    String cleanString = s.replaceAll("[R$,.]", "");
-                    BigDecimal parsed = new BigDecimal(cleanString).setScale(2, BigDecimal.ROUND_FLOOR).divide(new BigDecimal(100), BigDecimal.ROUND_FLOOR);
-                    String formatted = NumberFormat.getCurrencyInstance().format(parsed);
-                    formatted = formatted.replaceAll("[$]", "")
-                                .replaceAll("[R]", "")
-                                .replaceAll("[,]", "a")
-                                .replaceAll("[.]", ",")
-                                .replaceAll("[a]", ".");
+
+
+                    String a = "";
+                    String b = "";
+                    String c = "";
+                    String d = "";
+
+                    Log.e("INFO NUMBER 1 // ", s);
+
+                    String cleanString = s.replaceAll("[^0-9]+", "")
+                            //.replace("[/^0+/]", "");
+                            .replaceFirst("^0+(?!$)", "");
+                    Log.e("INFO NUMBER 2 // ", cleanString);
+
+                    if (cleanString.replaceAll("[0]", "").equals(""))
+                        Log.e("INFO", "True");
+
+                    if (cleanString.length() > 1) {
+                        a = cleanString.substring(cleanString.length()-2);
+                        Log.e("INFO String a1 // ", a);
+                    } else
+                    if (cleanString.length() > 0) {
+                        a = cleanString.substring(0, cleanString.length());
+                        a = "0" + a;
+                        Log.e("INFO String a2 // ", a);
+                    }
+
+                    if (cleanString.length() > 2 && cleanString.length() >= 5) {
+                        b = cleanString.substring(cleanString.length()-5, cleanString.length()-2);
+                        Log.e("INFO String b1 // ", b);
+                    } else
+                    if (cleanString.length() > 2) {
+                        b = cleanString.substring(0, cleanString.length()-2);
+                        Log.e("INFO String b2 // ", b);
+                    }
+
+                    if (cleanString.length() > 5 && cleanString.length() >= 8) {
+                        c = cleanString.substring(cleanString.length()-8, cleanString.length()-5);
+                        Log.e("INFO String c1 // ", c);
+                    } else
+                    if (cleanString.length() > 5) {
+                        c = cleanString.substring(0, cleanString.length()-5);
+                        Log.e("INFO String c2 // ", c);
+                    }
+
+                    if (cleanString.length() > 8 && cleanString.length() >= 11) {
+                        d = cleanString.substring(cleanString.length()-11, cleanString.length()-8);
+                        Log.e("INFO String d1 // ", d);
+                    } else
+                    if (cleanString.length() > 8) {
+                        d = cleanString.substring(0, cleanString.length()-8);
+                        Log.e("INFO String d2 // ", d);
+                    }
+
+
+                    String y = "0," + a;
+
+                    if (!b.equals("")) {
+                        y = b + "," + a;
+
+                        if (!c.equals("")) {
+                            y = c + "." + b + "," + a;
+
+                            if (!d.equals("")) {
+                                y = d + "." + c + "." + b + "," + a;
+                            }
+                        }
+                    }
+
+                    formatted = y;
+
+                    Log.e("Final Desejado //", "12.450,21");
+                    Log.e("Final Obtido // ", y);
+
                     editJuros.setText(formatted);
                     editJuros.setSelection(formatted.length());
-                    editJuros.addTextChangedListener(this);
 
+                    editJuros.addTextChangedListener(this);
                     changeTotalJuros();
                 }
             });
@@ -267,22 +338,6 @@ public class AddVendaDetails extends AppCompatActivity {
         imgMoreParcela = findViewById(R.id.imgMoreQtdParcela);
     }
 
-    private void justifyListViewHeightBasedOnChildren (ListView listView) {
-        ListAdapter listadp = listView.getAdapter();
-        if (listadp != null) {
-            int totalHeight = 0;
-            for (int i = 0; i < listadp.getCount(); i++) {
-                View listItem = listadp.getView(i, null, listView);
-                listItem.measure(0, 0);
-                totalHeight += listItem.getMeasuredHeight();
-            }
-            ViewGroup.LayoutParams params = listView.getLayoutParams();
-            params.height = totalHeight + (listView.getDividerHeight() * (listadp.getCount() - 1) + 2);
-            listView.setLayoutParams(params);
-            listView.requestLayout();
-        }
-    }
-
     private void initButtonsOnClick () {
         btVoltar.setOnClickListener(view -> {
             setResult(RESULT_CANCELED);
@@ -298,7 +353,7 @@ public class AddVendaDetails extends AppCompatActivity {
         Pgto pgto = new Pgto ();
         pgto.setCliente(venda.getCliente());
         pgto.setFormaPgto(formaPgtoSelecionado);
-        pctJuros = Double.parseDouble(editJuros.getText().toString());
+        pctJuros = MaskEditUtil.moneyToDoubleTest(editJuros.getText().toString());
         if (pctJuros > 0) {
             pgto.setValor(valorComJuros);
             pgto.setJuros(pctJuros);
@@ -440,7 +495,7 @@ public class AddVendaDetails extends AppCompatActivity {
 
         if (editJuros.getText().toString() != null) {
             try {
-                pctJuros = Double.parseDouble(editJuros.getText().toString());
+                pctJuros = MaskEditUtil.moneyToDoubleTest(editJuros.getText().toString());
             } catch (Exception e) {
                 Log.e("INFO ERROR", e.getMessage());
             }
@@ -458,7 +513,7 @@ public class AddVendaDetails extends AppCompatActivity {
                 valorParcela = valorParcela + y;
                 valorTotal = valorTotal + valorParcela;
             }
-            valorComJuros = MaskEditUtil.moneyToDouble(MaskEditUtil.doubleToMoneyValue(valorTotal));
+            valorComJuros = MaskEditUtil.moneyToDoubleTest(MaskEditUtil.doubleToMoneyValue(valorTotal));
             tvValorJuros.setText(MaskEditUtil.doubleToMoneyValue(valorComJuros - venda.getValor()));
         }
         tvValorTotalJuros.setText(MaskEditUtil.doubleToMoneyValue(valorComJuros));
