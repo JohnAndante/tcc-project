@@ -1,13 +1,19 @@
 package com.wlksilvestre.gerenciadordevendas;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -24,7 +30,9 @@ public class ListProdutos extends AppCompatActivity {
 
     private Button btProdutoVoltar;
     private Button btProdutoAdicionar;
+    private EditText editBuscaProduto;
     private ImageButton imgbtNovoProduto;
+    private ImageView imgSearch;
     private ConstraintLayout clAdicionarProduto;
     private ListView listViewProdutos;
     private AdapterProduto adapter;
@@ -37,6 +45,7 @@ public class ListProdutos extends AppCompatActivity {
     public static final int ALTERAR_PRODUTO = 102;
     public static final int CONSULTAR_PRODUTO = 103;
     public static final int RESULT_ALT_PRODUTO = 202;
+    private boolean isBuscaOpen = false;
 
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +54,8 @@ public class ListProdutos extends AppCompatActivity {
 
         //addDefaultData();
         initButtonsHub();
+        initEditTexts();
+        initImgs();
 
         listProdutos();
 
@@ -106,6 +117,80 @@ public class ListProdutos extends AppCompatActivity {
         });
     }
 
+    private void initEditTexts () {
+        editBuscaProduto = findViewById(R.id.editBuscarProduto);
+
+        editBuscaProduto.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                atualizaListaProdutos(charSequence);
+                if (!isBuscaOpen) {
+                    isBuscaOpen = true;
+                    imgSearch.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_cancel_24));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+    }
+
+    private void initImgs () {
+        imgSearch = findViewById(R.id.imgSearchProdutos);
+
+        imgSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!isBuscaOpen)
+                    editBuscaProduto.requestFocus();
+                else {
+                    imgSearch.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_search_24_whit));
+                    editBuscaProduto.setText("");
+                    closeSoftKeyboard();
+                    editBuscaProduto.clearFocus();
+                }
+            }
+        });
+    }
+
+    private void atualizaListaProdutos(CharSequence _desc) {
+        List<Produto> produtos = db.listProdutosOnSearch(_desc);
+        listaDinamicaProdutos = new ArrayList<>();
+
+        if (!produtos.isEmpty()) {
+            listaDinamicaProdutos.addAll(produtos);
+        } else {
+            Toast.makeText(getApplicationContext(), "Não há dados compatíveis para sua busca.", Toast.LENGTH_SHORT).show();
+        }
+
+        adapter = new AdapterProduto(this, 0, listaDinamicaProdutos);
+
+        listViewProdutos = (ListView) findViewById(R.id.listVProdutos);
+        listViewProdutos.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+        listViewProdutos.setAdapter(adapter);
+
+        listViewProdutos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                try {
+                    Produto p = (Produto) listViewProdutos.getItemAtPosition(i);
+                    openProdutoData(p, i);
+                } catch (Exception e) {
+                    Log.e("ERROR", e.getMessage());
+                }
+            }
+        });
+
+        adapter.notifyDataSetChanged();
+    }
+
     private void addNewProduto () {
         Intent intent = new Intent(getApplication(), AddProduto.class);
         startActivityForResult(intent, NOVO_PRODUTO);
@@ -151,6 +236,14 @@ public class ListProdutos extends AppCompatActivity {
         intent.putExtras(bundle);
 
         startActivityForResult(intent, CONSULTAR_PRODUTO);
+    }
+
+    private void closeSoftKeyboard () {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }
 

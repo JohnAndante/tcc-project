@@ -1,5 +1,6 @@
 package com.wlksilvestre.gerenciadordevendas;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -7,10 +8,12 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -32,6 +35,7 @@ public class ListVendas extends AppCompatActivity {
     private Button btVendaAdicionar;
     private EditText editBuscaVenda;
     private ImageButton imgbtNovaVenda;
+    private ImageView imgSearch;
     private ConstraintLayout clAdicionarVenda;
     private ListView listViewVendas;
     private AdapterVenda adapter;
@@ -58,6 +62,7 @@ public class ListVendas extends AppCompatActivity {
 
         initButtonsHub();
         initEditTexts();
+        initImgs();
         listVendas();
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
@@ -167,11 +172,33 @@ public class ListVendas extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 atualizaListaVendas(charSequence);
+                if (!isBuscaOpen) {
+                    isBuscaOpen = true;
+                    imgSearch.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_cancel_24));
+                }
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
 
+            }
+        });
+    }
+
+    private void initImgs () {
+        imgSearch = findViewById(R.id.imgSearchVendas);
+
+        imgSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!isBuscaOpen)
+                    editBuscaVenda.requestFocus();
+                else {
+                    imgSearch.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_search_24_whit));
+                    editBuscaVenda.setText("");
+                    closeSoftKeyboard();
+                    editBuscaVenda.clearFocus();
+                }
             }
         });
     }
@@ -255,7 +282,16 @@ public class ListVendas extends AppCompatActivity {
         startActivityForResult(intent, CONSULTAR_VENDA);
     }
 
+    private void closeSoftKeyboard () {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
     // Funções de teste
+    /*
 
     private void addDefaultData () {
         if (!checkFormaPgtos())
@@ -506,5 +542,6 @@ public class ListVendas extends AppCompatActivity {
 
         db.addProdVenda(new ProdVenda(db.selectVenda(2), db.selectProduto(3), 2, 69.9));
     }
+     */
 
 }

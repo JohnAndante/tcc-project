@@ -16,11 +16,19 @@
 
         <EditText
             android:id="@+id/editBuscarCliente"
-            style="@style/EditText_default"
+            style="@style/EditText_02"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:drawableRight="@drawable/ic_baseline_search_24_whit"
             android:hint="Buscar Cliente" />
+
+        <ImageView
+            android:id="@+id/imgSearchClientes"
+            style="@style/ImgButton_arrow_right"
+            android:padding="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:src="@drawable/ic_baseline_search_24_whit" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -2302,6 +2302,47 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         return count;
     }
 
+    public List<Produto> listProdutosOnSearch (CharSequence _text) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Produto> produtos = new ArrayList<>();
+
+        String QUERY =  " SELECT DISTINCT P." + PRODUTO_ID + ", " +
+                            " P."   + PRODUTO_DESC + ", " +
+                            " P."   + PRODUTO_VALOR + ", " +
+                            " P."   + PRODUTO_LINHA +
+                        " FROM " + PRODUTO_TABLE + " P " +
+                        " JOIN " + PROD_SUBCAT_TABLE + " PS " +
+                            " ON PS." + PRODUTO_ID + " == P." + PRODUTO_ID +
+                        " JOIN " + SUBCAT_TABLE + " S " +
+                            " ON S." + SUBCAT_ID + " == PS." + SUBCAT_ID +
+                        " JOIN " + CATEGORIA_TABLE + " C " +
+                            " ON C." + CATEGORIA_ID + " == S." + CATEGORIA_ID +
+                        " WHERE P." + PRODUTO_DESC + " LIKE '%" + _text + "%'" +
+                            " OR C." + CATEGORIA_DESC + " LIKE '%" + _text + "%'" +
+                            " OR S." + SUBCAT_DESC + " LIKE '%" + _text + "%'" +
+                        " ORDER BY P." + PRODUTO_DESC;
+
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Produto produto = new Produto();
+
+                produto.setId(cursor.getInt(0));
+                produto.setDescricao(cursor.getString(1));
+                produto.setValor(cursor.getDouble(2));
+                produto.setLinha(selectLinha(cursor.getInt(3)));
+
+                produtos.add(produto);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+
+        return produtos;
+    }
+
     // CRUD PROD_SUBCAT /////////////////////////////////////////////////////////////////////////
 
     public void addProdSubcat (@NonNull ProdSubcat prodSubcat) {
