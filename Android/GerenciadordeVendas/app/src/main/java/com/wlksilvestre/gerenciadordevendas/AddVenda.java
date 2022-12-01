@@ -265,7 +265,7 @@ public class AddVenda extends AppCompatActivity {
         //clientes = db.listClientesOrdered(usuario.getUid());
         //listaDinamicaClientes = new ArrayList<Cliente>();
 
-        clienteTelefoneList = db.listClientesAdapterByNomeOrdered(usuario.getUid(), _nome);
+        clienteTelefoneList = db.listClientesAdapterByNomeOrdered(_nome, usuario.getUid());
         listaDinamicaClienteTelefone = new ArrayList<>();
 
         if (clienteTelefoneList != null && !clienteTelefoneList.isEmpty()) {

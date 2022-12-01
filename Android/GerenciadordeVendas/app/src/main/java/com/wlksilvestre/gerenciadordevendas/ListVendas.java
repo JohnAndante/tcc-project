@@ -39,7 +39,7 @@ public class ListVendas extends AppCompatActivity {
     private ConstraintLayout clAdicionarVenda;
     private ListView listViewVendas;
     private AdapterVenda adapter;
-    private ArrayList<Venda> listaDinamicaVendas;
+    private ArrayList<VendaQtd> listaDinamicaVendas;
     private ArrayList<List> listaDinamicaVendas2;
     private ArrayList<String> arraylist;
 
@@ -215,11 +215,11 @@ public class ListVendas extends AppCompatActivity {
 
     private void listVendas () {
         // Tentativa 1
-        List<Venda> vendas = db.listAllVendas();
+        List<VendaQtd> vendaQtds = db.listVendasQtdOrderedByDate();
         listaDinamicaVendas = new ArrayList<>();
 
-        if (!vendas.isEmpty()) {
-            listaDinamicaVendas.addAll(vendas);
+        if (!vendaQtds.isEmpty()) {
+            listaDinamicaVendas.addAll(vendaQtds);
         } else {
             Toast.makeText(getApplicationContext(), "Não há vendas registradas no app.", Toast.LENGTH_SHORT).show();
         }
@@ -241,12 +241,11 @@ public class ListVendas extends AppCompatActivity {
     }
 
     private void atualizaListaVendas (CharSequence _desc) {
-        List<Venda> vendas = db.listAllVendas();
-        vendas = db.listVendasOnSearch(_desc);
+        List<VendaQtd> vendasQtds = db.listVendasQtdOnSearch(_desc);
         listaDinamicaVendas = new ArrayList<>();
 
-        if (!vendas.isEmpty()) {
-            listaDinamicaVendas.addAll(vendas);
+        if (!vendasQtds.isEmpty()) {
+            listaDinamicaVendas.addAll(vendasQtds);
         } else {
             Toast.makeText(getApplicationContext(), "Não há dados compatíveis para sua busca.", Toast.LENGTH_SHORT).show();
         }

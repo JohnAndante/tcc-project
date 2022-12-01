@@ -544,7 +544,7 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         }
     }
 
-    public List<ClienteTelefone> listClientesAdapterByNomeOrdered (String uid, CharSequence _nome) {
+    public List<ClienteTelefone> listClientesAdapterByNomeOrdered (CharSequence _nome, String uid) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         List<ClienteTelefone> listClienteTelefone = new ArrayList<>();
@@ -552,8 +552,8 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         String QUERY = "SELECT C." + CLIENTE_ID + ", T." + TELEFONE_ID +
                 " FROM " + CLIENTE_TABLE + " C " +
                 " JOIN " + TELEFONE_TABLE + " T ON C." + CLIENTE_ID + " == T." + TELEFONE_CLIENTE +
-                " WHERE C." + CLIENTE_UID + " LIKE '%" + uid + "%'" +
-                " AND C." + CLIENTE_NOME + " LIKE '%" + _nome + "%'" +
+                " WHERE C." + CLIENTE_NOME + " LIKE '%" + _nome + "%'" +
+                " AND C." + CLIENTE_UID + " LIKE '%" + uid + "%'" +
                 " ORDER BY " + CLIENTE_NOME;
 
         Cursor c = db.rawQuery(QUERY, null);
@@ -2949,6 +2949,103 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.close();
 
         return vendas;
+    }
+
+    public List<VendaQtd> listVendasQtdOrderedByDate () {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<VendaQtd> vendaQtds = new ArrayList<>();
+
+        String QUERY =
+                " SELECT V." + VENDA_ID + ", V." + VENDA_DATA + ", V." + VENDA_VALOR +
+                        ", V." + VENDA_CLIENTE + ", V." + VENDA_PGTO +
+                        ", SUM( PV." + PROD_VENDA_QTD + ")" +
+                " FROM " + VENDA_TABLE + " V " +
+                " INNER JOIN " + PROD_VENDA_TABLE + " PV " +
+                        " ON PV." + PROD_VENDA_VENDA + " == V." + VENDA_ID +
+                " GROUP BY V." + VENDA_ID + ", V." + VENDA_DATA + ", V." + VENDA_VALOR +
+                        ", V." + VENDA_CLIENTE + ", V." + VENDA_PGTO;
+
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Cliente c = selectCliente(cursor.getInt(3));
+                Pgto p = new Pgto();
+
+                if (cursor.getInt(4) > 0)
+                    p = selectPgto(cursor.getInt(4));
+                else
+                    p = null;
+
+                Venda venda = new Venda(
+                        cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getDouble(2),
+                        c,
+                        p
+                );
+
+                int qtd = cursor.getInt(5);
+                VendaQtd vq = new VendaQtd(venda, qtd);
+
+                vendaQtds.add(vq);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+
+        return vendaQtds;
+    }
+
+    public List<VendaQtd> listVendasQtdOnSearch(CharSequence _text) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<VendaQtd> vendaQtds = new ArrayList<>();
+
+        String QUERY =
+                " SELECT V." + VENDA_ID + ", V." + VENDA_DATA + ", V." + VENDA_VALOR +
+                        ", V." + VENDA_CLIENTE + ", V." + VENDA_PGTO +
+                        ", SUM( PV." + PROD_VENDA_QTD + ")" +
+                        " FROM " + VENDA_TABLE + " V " +
+                        " JOIN " + PROD_VENDA_TABLE + " PV " +
+                        " ON PV." + PROD_VENDA_VENDA + " == V." + VENDA_ID +
+                        " JOIN " + CLIENTE_TABLE + " C " +
+                        " ON C." + CLIENTE_ID + " == V." + VENDA_CLIENTE +
+                        " WHERE C." + CLIENTE_NOME + " LIKE '%" + _text + "%' " +
+                        " GROUP BY V." + VENDA_ID + ", V." + VENDA_DATA + ", V." + VENDA_VALOR +
+                        ", V." + VENDA_CLIENTE + ", V." + VENDA_PGTO;
+
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Cliente c = selectCliente(cursor.getInt(3));
+                Pgto p = new Pgto();
+
+                if (cursor.getInt(4) > 0)
+                    p = selectPgto(cursor.getInt(4));
+                else
+                    p = null;
+
+                Venda venda = new Venda(
+                        cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getDouble(2),
+                        c,
+                        p
+                );
+
+                int qtd = cursor.getInt(5);
+                VendaQtd vq = new VendaQtd(venda, qtd);
+
+                vendaQtds.add(vq);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+
+        return vendaQtds;
     }
 
     // CRUD PRODUTO X VENDA /////////////////////////////////////////////////////////////////////

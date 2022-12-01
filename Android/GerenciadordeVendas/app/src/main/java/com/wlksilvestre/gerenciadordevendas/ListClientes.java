@@ -193,12 +193,44 @@ public class ListClientes extends AppCompatActivity {
         });
     }
 
-    private void atualizaListaClientes(CharSequence _desc) {
-        List<Cliente> clientes = db.listClientesByNome(_desc.toString(), usuario.getUid());
-        listaDinamicaClientes = new ArrayList<>();
+    private void addNewCliente() {
+        Intent intent = new Intent(getApplication(), AddCliente.class);
+        startActivityForResult(intent, NOVO_CLIENTE);
+    }
 
-        if (clientes != null && !clientes.isEmpty()) {
-            listaDinamicaClientes.addAll(clientes);
+    private void listClientes(){
+        List <ClienteTelefone> clienteTelefoneList = db.listClientesAdapterOrdered(usuario.getUid());
+        listaDinamicaClienteTelefone = new ArrayList<>();
+
+        if (clienteTelefoneList != null && !clienteTelefoneList.isEmpty()) {
+            listaDinamicaClienteTelefone.addAll(clienteTelefoneList);
+        } else {
+            Toast.makeText(getApplicationContext(), "Não há clientes cadastrados no app.", Toast.LENGTH_SHORT).show();
+        }
+
+        adapter = new AdapterCliente(this, 0, listaDinamicaClienteTelefone);
+
+        listViewClientes = (ListView) findViewById(R.id.listVClientes);
+        listViewClientes.setDescendantFocusability(FOCUS_BLOCK_DESCENDANTS);
+        listViewClientes.setAdapter(adapter);
+
+        listViewClientes.setOnItemClickListener((adapterView, view, i, l) -> {
+            try {
+                ClienteTelefone ct = (ClienteTelefone) listViewClientes.getItemAtPosition(i);
+                openClienteData(ct);
+            } catch (Exception e) {
+                Log.e("ERROR", e.getMessage().toString());
+            }
+        });
+
+    }
+
+    private void atualizaListaClientes(CharSequence _desc) {
+        List<ClienteTelefone> clienteTelefoneList = db.listClientesAdapterByNomeOrdered(_desc.toString(), usuario.getUid());
+        listaDinamicaClienteTelefone = new ArrayList<>();
+
+        if (clienteTelefoneList != null && !clienteTelefoneList.isEmpty()) {
+            listaDinamicaClienteTelefone.addAll(clienteTelefoneList);
         } else {
             Toast.makeText(getApplicationContext(), "Não há dados compatíveis para sua busca.", Toast.LENGTH_SHORT).show();
         }
@@ -222,40 +254,6 @@ public class ListClientes extends AppCompatActivity {
         });
 
         adapter.notifyDataSetChanged();
-    }
-
-    private void addNewCliente() {
-        Intent intent = new Intent(getApplication(), AddCliente.class);
-        startActivityForResult(intent, NOVO_CLIENTE);
-    }
-
-    private void listClientes(){
-        List <ClienteTelefone> clienteTelefoneList = db.listClientesAdapterOrdered(usuario.getUid());
-        listaDinamicaClienteTelefone = new ArrayList<>();
-
-        if (clienteTelefoneList != null) {
-            listaDinamicaClienteTelefone.addAll(clienteTelefoneList);
-        }
-
-
-        adapter = new AdapterCliente(this, 0, listaDinamicaClienteTelefone);
-
-        listViewClientes = (ListView) findViewById(R.id.listVClientes);
-        listViewClientes.setDescendantFocusability(FOCUS_BLOCK_DESCENDANTS);
-        listViewClientes.setAdapter(adapter);
-
-        listViewClientes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                try {
-                    ClienteTelefone ct = (ClienteTelefone) listViewClientes.getItemAtPosition(i);
-                    openClienteData(ct);
-                } catch (Exception e) {
-                    Log.e("ERROR", e.getMessage().toString());
-                }
-            }
-        });
-
     }
 
     private void openClienteData(@NonNull ClienteTelefone ct) {
