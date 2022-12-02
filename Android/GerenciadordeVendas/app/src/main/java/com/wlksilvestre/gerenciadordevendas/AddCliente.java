@@ -268,7 +268,7 @@ public class AddCliente extends AppCompatActivity {
         });
     }
 
-    private boolean confereCampos(){
+    private boolean confereCampos () {
         String clienteNome      = editTextNome.getText().toString();
         String clienteTelefone  = editTextTelefone.getText().toString();
 
@@ -280,6 +280,10 @@ public class AddCliente extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Favor preencher Telefone!", Toast.LENGTH_SHORT).show();
             return false;
         } else
+        if (clienteTelefone.length() < 12 || clienteTelefone.length() > 13 ) {
+            Toast.makeText(getApplicationContext(), "Número de telefone inválido!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
             return true;
     }
 

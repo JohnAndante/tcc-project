@@ -69,6 +69,7 @@
                     android:id="@+id/editTelefoneCliente"
                     style="@style/EditText_default"
                     android:hint="(__) _____-____"
+                    android:maxLength="13"
                     android:inputType="number|phone"
                     android:nextFocusForward="@id/editRuaEndereco" />
 

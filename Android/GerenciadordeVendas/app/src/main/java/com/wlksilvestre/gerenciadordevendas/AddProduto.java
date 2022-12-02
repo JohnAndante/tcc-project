@@ -358,6 +358,10 @@ public class AddProduto extends AppCompatActivity {
             editTextValor.requestFocus();
             return false;
         } else
+        if (valorBruto == "0,00" || valorBruto == "0.00" || MaskEditUtil.moneyToDoubleTest(valorBruto) == 0.00 ){
+            Toast.makeText(getApplicationContext(), "Insira um valor para o produto", Toast.LENGTH_SHORT).show();
+            return false;
+        } else
         if (marcaSelecionada == null) {
             Toast.makeText(getApplicationContext(), "Selecione uma marca para o produto", Toast.LENGTH_SHORT).show();
             return false;
@@ -368,10 +372,10 @@ public class AddProduto extends AppCompatActivity {
         } else
         if (categoriaSelecionada == null) {
             Toast.makeText(getApplicationContext(), "Selecione uma categoria para o produto", Toast.LENGTH_SHORT).show();
+            return false;
         } else {
             return true;
         }
-        return false;
     }
 
     private void initEditTexts () {

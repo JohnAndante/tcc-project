@@ -433,6 +433,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         db.addCategoria(new Categoria("Vestuário",         null));
         db.addCategoria(new Categoria("Roupa Íntima",      null));
         db.addCategoria(new Categoria("Produção Própria",  null));
+        db.addCategoria(new Categoria("Outro",             null));
     }
 
     private void addDefaultSubcats () {
@@ -444,6 +445,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         db.addSubcat(new Subcat("Feminino",         db.selectCategoria(1)));
         db.addSubcat(new Subcat("Unissex",          db.selectCategoria(1)));
         db.addSubcat(new Subcat("Infantil",         db.selectCategoria(1)));
+        db.addSubcat(new Subcat("Outro",            db.selectCategoria(1)));
 
         //Maquiagem
         db.addSubcat(new Subcat("Batom",           db.selectCategoria(2)));
@@ -452,6 +454,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         db.addSubcat(new Subcat("Removedor",       db.selectCategoria(2)));
         db.addSubcat(new Subcat("Delineador",      db.selectCategoria(2)));
         db.addSubcat(new Subcat("Iluminador",      db.selectCategoria(2)));
+        db.addSubcat(new Subcat("Outro",           db.selectCategoria(2)));
 
         //Corpo e banho
         db.addSubcat(new Subcat("Sabonete",        db.selectCategoria(3)));
@@ -462,6 +465,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         db.addSubcat(new Subcat("Feminino",        db.selectCategoria(3)));
         db.addSubcat(new Subcat("Unissex",         db.selectCategoria(3)));
         db.addSubcat(new Subcat("Infantil",        db.selectCategoria(3)));
+        db.addSubcat(new Subcat("Outro",           db.selectCategoria(3)));
 
         //Higiene e Cuidado
         db.addSubcat(new Subcat("Creme",               db.selectCategoria(4)));
@@ -478,6 +482,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         db.addSubcat(new Subcat("Feminino",            db.selectCategoria(4)));
         db.addSubcat(new Subcat("Unissex",             db.selectCategoria(4)));
         db.addSubcat(new Subcat("Infantil",            db.selectCategoria(4)));
+        db.addSubcat(new Subcat("Outro",               db.selectCategoria(4)));
 
         //Cabelos
         db.addSubcat(new Subcat("Shampoo",             db.selectCategoria(5)));
@@ -493,6 +498,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         db.addSubcat(new Subcat("Feminino",            db.selectCategoria(5)));
         db.addSubcat(new Subcat("Unissex",             db.selectCategoria(5)));
         db.addSubcat(new Subcat("Infantil",            db.selectCategoria(5)));
+        db.addSubcat(new Subcat("Outro",               db.selectCategoria(5)));
 
         //Rosto
         db.addSubcat(new Subcat("Creme",               db.selectCategoria(6)));
@@ -507,6 +513,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         db.addSubcat(new Subcat("Feminino",            db.selectCategoria(6)));
         db.addSubcat(new Subcat("Unissex",             db.selectCategoria(6)));
         db.addSubcat(new Subcat("Infantil",            db.selectCategoria(6)));
+        db.addSubcat(new Subcat("Outro",               db.selectCategoria(6)));
 
         //Brinquedos
         db.addSubcat(new Subcat("Carro",               db.selectCategoria(7)));
@@ -518,6 +525,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         db.addSubcat(new Subcat("Masculino",           db.selectCategoria(7)));
         db.addSubcat(new Subcat("Feminino",            db.selectCategoria(7)));
         db.addSubcat(new Subcat("Unissex",             db.selectCategoria(7)));
+        db.addSubcat(new Subcat("Outro",               db.selectCategoria(7)));
 
         //Embalagens
         db.addSubcat(new Subcat("Sacola P",            db.selectCategoria(8)));
@@ -533,6 +541,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         db.addSubcat(new Subcat("Feminino",            db.selectCategoria(8)));
         db.addSubcat(new Subcat("Unissex",             db.selectCategoria(8)));
         db.addSubcat(new Subcat("Infantil",            db.selectCategoria(8)));
+        db.addSubcat(new Subcat("Outro",               db.selectCategoria(8)));
 
         //Vestuário
         db.addSubcat(new Subcat("Calça",               db.selectCategoria(9)));
@@ -551,6 +560,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         db.addSubcat(new Subcat("Feminino",            db.selectCategoria(9)));
         db.addSubcat(new Subcat("Unissex",             db.selectCategoria(9)));
         db.addSubcat(new Subcat("Infantil",            db.selectCategoria(9)));
+        db.addSubcat(new Subcat("Outro",               db.selectCategoria(9)));
 
         //Roupa Íntima
         db.addSubcat(new Subcat("Cueca",               db.selectCategoria(10)));
@@ -563,12 +573,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         db.addSubcat(new Subcat("Feminino",            db.selectCategoria(10)));
         db.addSubcat(new Subcat("Unissex",             db.selectCategoria(10)));
         db.addSubcat(new Subcat("Infantil",            db.selectCategoria(10)));
+        db.addSubcat(new Subcat("Outro",               db.selectCategoria(10)));
 
         //Produção Própria
         db.addSubcat(new Subcat("Masculino",           db.selectCategoria(11)));
         db.addSubcat(new Subcat("Feminino",            db.selectCategoria(11)));
         db.addSubcat(new Subcat("Unissex",             db.selectCategoria(11)));
         db.addSubcat(new Subcat("Infantil",            db.selectCategoria(11)));
+        db.addSubcat(new Subcat("Outro",               db.selectCategoria(11)));
 
     }
 
@@ -582,28 +594,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         db.addMarca(new Marca("Lolja"));
         db.addMarca(new Marca("GAP"));
         db.addMarca(new Marca("Cherry"));
+        db.addMarca(new Marca("Outro"));
     }
 
     private void addDefaultLinhas () {
         // Natura
-        db.addLinha(new Linha("Kaiak",     db.selectMarca(1)));
-        db.addLinha(new Linha("Essencial", db.selectMarca(1)));
-        db.addLinha(new Linha("Faces",     db.selectMarca(1)));
-        db.addLinha(new Linha("Homem",     db.selectMarca(1)));
-        db.addLinha(new Linha("Biografia", db.selectMarca(1)));
-        db.addLinha(new Linha("Ekos",      db.selectMarca(1)));
-        db.addLinha(new Linha("Kaiak",     db.selectMarca(1)));
-        db.addLinha(new Linha("Tododia",   db.selectMarca(1)));
-        db.addLinha(new Linha("Sou",       db.selectMarca(1)));
+        db.addLinha(new Linha("Kaiak",      db.selectMarca(1)));
+        db.addLinha(new Linha("Essencial",  db.selectMarca(1)));
+        db.addLinha(new Linha("Faces",      db.selectMarca(1)));
+        db.addLinha(new Linha("Homem",      db.selectMarca(1)));
+        db.addLinha(new Linha("Biografia",  db.selectMarca(1)));
+        db.addLinha(new Linha("Ekos",       db.selectMarca(1)));
+        db.addLinha(new Linha("Kaiak",      db.selectMarca(1)));
+        db.addLinha(new Linha("Tododia",    db.selectMarca(1)));
+        db.addLinha(new Linha("Sou",        db.selectMarca(1)));
+        db.addLinha(new Linha("Outro",      db.selectMarca(1)));
 
         // Boticário
-        db.addLinha(new Linha("Acordes",   db.selectMarca(2)));
-        db.addLinha(new Linha("Malbec",   db.selectMarca(2)));
+        db.addLinha(new Linha("Acordes",    db.selectMarca(2)));
+        db.addLinha(new Linha("Malbec",     db.selectMarca(2)));
         db.addLinha(new Linha("Capricho",   db.selectMarca(2)));
-        db.addLinha(new Linha("Egeo",   db.selectMarca(2)));
-        db.addLinha(new Linha("Lily",   db.selectMarca(2)));
-        db.addLinha(new Linha("Portinari",   db.selectMarca(2)));
-        db.addLinha(new Linha("Quasar",   db.selectMarca(2)));
+        db.addLinha(new Linha("Egeo",       db.selectMarca(2)));
+        db.addLinha(new Linha("Lily",       db.selectMarca(2)));
+        db.addLinha(new Linha("Portinari",  db.selectMarca(2)));
+        db.addLinha(new Linha("Quasar",     db.selectMarca(2)));
+        db.addLinha(new Linha("Outro",      db.selectMarca(2)));
     }
 
     private void addDefaultEstados () {
