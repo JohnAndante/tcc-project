@@ -1,5 +1,6 @@
 package com.wlksilvestre.gerenciadordevendas;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -35,7 +36,6 @@ public class AddVenda extends AppCompatActivity {
 
     private LinearLayout llClienteVenda;
     private LinearLayout llProdutoVenda;
-    private LinearLayout llProdutosAdicionados;
     private TextView tvClienteVenda;
     private TextView tvProdutoVenda;
     private TextView tvValorTotalProdutosVenda;
@@ -54,9 +54,7 @@ public class AddVenda extends AppCompatActivity {
 
     BancoDadosCliente db = new BancoDadosCliente(this);
 
-    private List<Cliente> clientes;
     private List<ClienteTelefone> clienteTelefoneList;
-    private ArrayList<Cliente> listaDinamicaClientes;
     private ArrayList<ClienteTelefone> listaDinamicaClienteTelefone;
     private AdapterCliente adapterCliente;
     private Dialog dialogCliente;
@@ -68,7 +66,6 @@ public class AddVenda extends AppCompatActivity {
     private Dialog dialogProduto;
     private ListView listViewProdutos;
 
-    private List<ProdVenda> prodVendaSelecionados;
     private ArrayList<ProdVenda> listaDinamicaProdVenda;
     private AdapterProdutoVenda2 adapterProdutoVenda2;
 
@@ -110,160 +107,136 @@ public class AddVenda extends AppCompatActivity {
         initImageViews();
         initListViews();
 
-        Intent intent = getIntent();
-
         clienteDropdown();
         produtoDropdown();
 
         editQtdProdutoVenda.setText(String.valueOf(0));
         editValorProdutoVenda.addTextChangedListener(new MoneyTextWatcher(editValorProdutoVenda));
 
-        listaDinamicaProdVenda = new ArrayList<ProdVenda>();
-        adapterProdutoVenda2 = new AdapterProdutoVenda2(this, 0, listaDinamicaProdVenda);
-
-        lvProdutosAdicionados.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-        lvProdutosAdicionados.setAdapter(adapterProdutoVenda2);
-
+        initLvProdVenda();
     }
 
     private void clienteDropdown () {
-        tvClienteVenda.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //clientes = db.listClientesOrdered(usuario.getUid());
-                //listaDinamicaClientes = new ArrayList<Cliente>();
+        tvClienteVenda.setOnClickListener(view -> {
 
-                clienteTelefoneList = db.listClientesAdapterOrdered(usuario.getUid());
-                listaDinamicaClienteTelefone = new ArrayList<>();
+            clienteTelefoneList = db.listClientesAdapterOrdered(usuario.getUid());
+            listaDinamicaClienteTelefone = new ArrayList<>();
 
-                if (!clienteTelefoneList.isEmpty()) {
-                    listaDinamicaClienteTelefone.addAll(clienteTelefoneList);
+            if (!clienteTelefoneList.isEmpty()) {
+                listaDinamicaClienteTelefone.addAll(clienteTelefoneList);
+            }
+
+            dialogCliente = new Dialog(AddVenda.this);
+            dialogCliente.setContentView(R.layout.spinner_cliente);
+
+            adapterCliente = new AdapterCliente(dialogCliente.getContext(), 0, listaDinamicaClienteTelefone);
+
+            dialogCliente.getWindow().setLayout((int) (deviceWidth * 0.75), (int) (deviceHeight * 0.75));
+            dialogCliente.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+            dialogCliente.show();
+
+            EditText editCliente = dialogCliente.findViewById(R.id.editTextSpinnerCliente);
+
+            listViewClientes = (ListView) dialogCliente.findViewById(R.id.lvSpinnerCliente);
+            listViewClientes.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+            listViewClientes.setAdapter(adapterCliente);
+
+            editCliente.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
                 }
 
-                dialogCliente = new Dialog(AddVenda.this);
-                dialogCliente.setContentView(R.layout.spinner_cliente);
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    atualizaListaClientes(charSequence);
+                }
 
-                adapterCliente = new AdapterCliente(dialogCliente.getContext(), 0, listaDinamicaClienteTelefone);
+                @Override
+                public void afterTextChanged(Editable editable) {
 
-                dialogCliente.getWindow().setLayout((int) (deviceWidth * 0.75), (int) (deviceHeight * 0.75));
-                dialogCliente.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                }
+            });
 
-                dialogCliente.show();
-
-                EditText editCliente = dialogCliente.findViewById(R.id.editTextSpinnerCliente);
-
-                listViewClientes = (ListView) dialogCliente.findViewById(R.id.lvSpinnerCliente);
-                listViewClientes.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-                listViewClientes.setAdapter(adapterCliente);
-
-                editCliente.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                        atualizaListaClientes(charSequence);
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable editable) {
-
-                    }
-                });
-
-                listViewClientes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        try {
-                            ClienteTelefone ct = (ClienteTelefone) listViewClientes.getItemAtPosition(i);
-                            Cliente c = ct.getCliente();
-                            Log.e("CLIENTE SELECIONADO - Lista", c.getNome());
-                            tvClienteVenda.setText(c.getNome());
-                            clienteSelecionado = c;
-                            dialogCliente.dismiss();
-                            criaVenda();
-                        } catch (Exception e) {
-                            Log.e("ERROR", e.getMessage());
-                        }
-                    }
-                });
-            }
+            listViewClientes.setOnItemClickListener((adapterView, view1, i, l) -> {
+                try {
+                    ClienteTelefone ct = (ClienteTelefone) listViewClientes.getItemAtPosition(i);
+                    Cliente c = ct.getCliente();
+                    Log.e("CLIENTE SELECIONADO - Lista", c.getNome());
+                    tvClienteVenda.setText(c.getNome());
+                    clienteSelecionado = c;
+                    dialogCliente.dismiss();
+                    criaVenda();
+                } catch (Exception e) {
+                    Log.e("ERROR", e.getMessage());
+                }
+            });
         });
     }
 
     private void produtoDropdown () {
 
-        tvProdutoVenda.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                produtos = db.listAllProdutosOrdered();
-                listaDinamicaProdutos = new ArrayList<Produto>();
+        tvProdutoVenda.setOnClickListener(view -> {
+            produtos = db.listAllProdutosOrdered();
+            listaDinamicaProdutos = new ArrayList<>();
 
-                if (!produtos.isEmpty()) {
-                    listaDinamicaProdutos.addAll(produtos);
+            if (!produtos.isEmpty()) {
+                listaDinamicaProdutos.addAll(produtos);
+            }
+
+            dialogProduto = new Dialog(AddVenda.this);
+            dialogProduto.setContentView(R.layout.spinner_produto);
+
+            adapterProdutoDropdown = new AdapterProdutoDropdown(dialogProduto.getContext(), 0, listaDinamicaProdutos);
+
+            dialogProduto.getWindow().setLayout((int) (deviceWidth * 0.75), (int) (deviceHeight * 0.75));
+            dialogProduto.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialogProduto.setCanceledOnTouchOutside(true);
+
+            dialogProduto.show();
+
+            EditText editProduto = dialogProduto.findViewById(R.id.editTextSpinnerProduto);
+
+            listViewProdutos = (ListView) dialogProduto.findViewById(R.id.lvSpinnerProduto);
+            listViewProdutos.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+            listViewProdutos.setAdapter(adapterProdutoDropdown);
+
+            editProduto.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
                 }
 
-                dialogProduto = new Dialog(AddVenda.this);
-                dialogProduto.setContentView(R.layout.spinner_produto);
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    atualizaListaProdutos(charSequence);
+                }
 
-                adapterProdutoDropdown = new AdapterProdutoDropdown(dialogProduto.getContext(), 0, listaDinamicaProdutos);
+                @Override
+                public void afterTextChanged(Editable editable) {
 
-                dialogProduto.getWindow().setLayout((int) (deviceWidth * 0.75), (int) (deviceHeight * 0.75));
-                dialogProduto.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialogProduto.setCanceledOnTouchOutside(true);
+                }
+            });
 
-                dialogProduto.show();
-
-                TextView tvProduto = dialogProduto.findViewById(R.id.tvSpinnerProduto);
-                EditText editProduto = dialogProduto.findViewById(R.id.editTextSpinnerProduto);
-
-                listViewProdutos = (ListView) dialogProduto.findViewById(R.id.lvSpinnerProduto);
-                listViewProdutos.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-                listViewProdutos.setAdapter(adapterProdutoDropdown);
-
-                editProduto.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+            listViewProdutos.setOnItemClickListener((adapterView, view1, i, l) -> {
+                try {
+                    Produto p = (Produto) listViewProdutos.getItemAtPosition(i);
+                    tvProdutoVenda.setText(p.getDescricao());
+                    if (produtoSelecionado != p) {
+                        produtoSelecionado = p;
                     }
-
-                    @Override
-                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                        atualizaListaProdutos(charSequence);
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable editable) {
-
-                    }
-                });
-
-                listViewProdutos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        try {
-                            Produto p = (Produto) listViewProdutos.getItemAtPosition(i);
-                            tvProdutoVenda.setText(p.getDescricao());
-                            if (produtoSelecionado != p) {
-                                produtoSelecionado = p;
-                            }
-                            editQtdProdutoVenda.setText("0");
-                            editValorProdutoVenda.setText(MaskEditUtil.doubleToMoneyTest(produtoSelecionado.getValor()));
-                            dialogProduto.dismiss();
-                        } catch (Exception e) {
-                            Log.e("ERROR", e.getMessage());
-                        }
-                    }
-                });
-            }
+                    editQtdProdutoVenda.setText("0");
+                    editValorProdutoVenda.setText(MaskEditUtil.doubleToMoneyTest(produtoSelecionado.getValor()));
+                    dialogProduto.dismiss();
+                } catch (Exception e) {
+                    Log.e("ERROR", e.getMessage());
+                }
+            });
         });
     }
 
     private void atualizaListaClientes (CharSequence _nome) {
-        //clientes = db.listClientesOrdered(usuario.getUid());
-        //listaDinamicaClientes = new ArrayList<Cliente>();
 
         clienteTelefoneList = db.listClientesAdapterByNomeOrdered(_nome, usuario.getUid());
         listaDinamicaClienteTelefone = new ArrayList<>();
@@ -279,7 +252,7 @@ public class AddVenda extends AppCompatActivity {
 
     private void atualizaListaProdutos (CharSequence _desc) {
         produtos = db.listAllProdutosByDesc(_desc.toString());
-        listaDinamicaProdutos = new ArrayList<Produto>();
+        listaDinamicaProdutos = new ArrayList<>();
 
         if (produtos != null && !produtos.isEmpty()) {
             listaDinamicaProdutos.addAll(produtos);
@@ -295,36 +268,28 @@ public class AddVenda extends AppCompatActivity {
         btAvancar = (Button) findViewById(R.id.btAvancarVenda);
         btCancelar = (Button) findViewById(R.id.btCancelarVenda);
 
-        btAdicionarProdutoVenda.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (checkFields()) {
-                    addProdutoToSelecionados(produtoSelecionado,
-                            Integer.parseInt(editQtdProdutoVenda.getText().toString()),
-                            MaskEditUtil.moneyToDoubleTest(editValorProdutoVenda.getText().toString()));
+        btAdicionarProdutoVenda.setOnClickListener(view -> {
+            if (checkFields()) {
+                addProdutoToSelecionados(produtoSelecionado,
+                        Integer.parseInt(editQtdProdutoVenda.getText().toString()),
+                        MaskEditUtil.moneyToDoubleTest(editValorProdutoVenda.getText().toString()));
 
-                }
             }
         });
 
-        btAvancar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (clienteSelecionado != null && vendaRascunho != null && !listaDinamicaProdVenda.isEmpty()) {
-                    saveVendaAndProdVenda();
-                    startNextAddVendaActivity();
-                } else {
-                    Log.e("INFO BT AVANÇAR", "/// não entrou no if " + clienteSelecionado.getNome() + " " + String.valueOf(vendaRascunho) + " " + String.valueOf(listaDinamicaProdVenda));
-                }
+        btAvancar.setOnClickListener(view -> {
+            if (clienteSelecionado != null && vendaRascunho != null && !listaDinamicaProdVenda.isEmpty()) {
+                saveVendaAndProdVenda();
+                startNextAddVendaActivity();
+            } else {
+                assert clienteSelecionado != null;
+                Log.e("INFO BT AVANÇAR", "/// não entrou no if " + clienteSelecionado.getNome() + " " + vendaRascunho + " " + listaDinamicaProdVenda);
             }
         });
 
-        btCancelar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setResult(RESULT_CANCELED);
-                finish();
-            }
+        btCancelar.setOnClickListener(view -> {
+            setResult(RESULT_CANCELED);
+            finish();
         });
     }
 
@@ -338,7 +303,6 @@ public class AddVenda extends AppCompatActivity {
     private void initLinearLayouts () {
         llClienteVenda = (LinearLayout) findViewById(R.id.llClienteNovaVenda);
         llProdutoVenda = (LinearLayout) findViewById(R.id.llProdutoNovaVenda);
-        llProdutosAdicionados = (LinearLayout) findViewById(R.id.llProdutosAdicionadosNovaVenda);
 
     }
 
@@ -351,35 +315,54 @@ public class AddVenda extends AppCompatActivity {
         imgLessQtdProduto = (ImageView) findViewById(R.id.imgLessQtdProduto);
         imgMoreQtdProduto = (ImageView) findViewById(R.id.imgMoreQtdProduto);
 
-        imgLessQtdProduto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int qtdProduto = Integer.parseInt(editQtdProdutoVenda.getText().toString());
-                if (qtdProduto > 0) {
-                    qtdProduto--;
-                    editQtdProdutoVenda.setText(String.valueOf(qtdProduto));
-                } else {
-                    Toast.makeText(AddVenda.this, "Quantidade incorreta", Toast.LENGTH_SHORT).show();
-                }
+        imgLessQtdProduto.setOnClickListener(view -> {
+            int qtdProduto = Integer.parseInt(editQtdProdutoVenda.getText().toString());
+            if (qtdProduto > 0) {
+                qtdProduto--;
+                editQtdProdutoVenda.setText(String.valueOf(qtdProduto));
+            } else {
+                Toast.makeText(AddVenda.this, "Quantidade incorreta", Toast.LENGTH_SHORT).show();
             }
         });
 
-        imgMoreQtdProduto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int qtdProduto = Integer.parseInt(editQtdProdutoVenda.getText().toString());
-                if (qtdProduto >= 0) {
-                    qtdProduto++;
-                    editQtdProdutoVenda.setText(String.valueOf(qtdProduto));
-                } else {
-                    Toast.makeText(AddVenda.this, "Quantidade incorreta", Toast.LENGTH_SHORT).show();
-                }
+        imgMoreQtdProduto.setOnClickListener(view -> {
+            int qtdProduto = Integer.parseInt(editQtdProdutoVenda.getText().toString());
+            if (qtdProduto >= 0) {
+                qtdProduto++;
+                editQtdProdutoVenda.setText(String.valueOf(qtdProduto));
+            } else {
+                Toast.makeText(AddVenda.this, "Quantidade incorreta", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void initListViews () {
         lvProdutosAdicionados = (ListView) findViewById(R.id.lvProdVendaAdicionados);
+    }
+
+    private void initLvProdVenda () {
+        listaDinamicaProdVenda = new ArrayList<>();
+        adapterProdutoVenda2 = new AdapterProdutoVenda2(this, 0, listaDinamicaProdVenda);
+
+        lvProdutosAdicionados.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+        lvProdutosAdicionados.setAdapter(adapterProdutoVenda2);
+        lvProdutosAdicionados.setOnItemClickListener((adapterView, view, i, l) -> {
+            ProdVenda pv = (ProdVenda) adapterView.getItemAtPosition(i);
+            try {
+                Produto p = pv.getProduto();
+                tvProdutoVenda.setText(p.getDescricao());
+                if (produtoSelecionado != p) {
+                    produtoSelecionado = p;
+                }
+                editQtdProdutoVenda.setText(String.valueOf(pv.getQtd()));
+                editValorProdutoVenda.setText(MaskEditUtil.doubleToMoneyTest(pv.getValor_unit()));
+                listaDinamicaProdVenda.remove(i);
+                adapterProdutoVenda2.notifyDataSetChanged();
+                justifyListViewHeightBasedOnChildren(lvProdutosAdicionados);
+            } catch (Exception e) {
+                Log.e("ERROR", e.getMessage());
+            }
+        });
     }
 
     private void criaVenda () {
@@ -394,11 +377,9 @@ public class AddVenda extends AppCompatActivity {
             vendaRascunho.setId(idMaxVenda + 1);
         vendaRascunho.setData(DateCustomText.getActualDateTime());
         vendaRascunho.setCliente(clienteSelecionado);
-        Log.e("CLIENTE SELECIONADO - variavel", clienteSelecionado.getNome());
-        Log.e("CLIENTE SELECIONADO - Venda", vendaRascunho.getCliente().getNome());
-
     }
 
+    @SuppressLint("SetTextI18n")
     private void addProdutoToSelecionados (Produto _produto, int _qtd, Double _valor) {
         ProdVenda pv = new ProdVenda(vendaRascunho, _produto, _qtd, _valor);
         listaDinamicaProdVenda.add(pv);

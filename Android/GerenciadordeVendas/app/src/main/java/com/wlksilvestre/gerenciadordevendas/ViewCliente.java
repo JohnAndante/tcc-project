@@ -3,7 +3,6 @@ package com.wlksilvestre.gerenciadordevendas;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -102,7 +101,6 @@ public class ViewCliente extends AppCompatActivity {
                 textBairro.setText(e.getBairro());
 
                 Estado estado = e.getCidade().getEstado();
-                Cidade cidade = e.getCidade();
 
                 textUf.setText(estado.getNome());
                 textCidade.setText(estado.getNome());
@@ -129,19 +127,17 @@ public class ViewCliente extends AppCompatActivity {
         });
 
         imgWhatsapp.setOnClickListener(view -> {
-            String a = String.valueOf(telefone.getNum().toString().replaceAll("[^0-9]+", "").charAt(0));
-            String b = String.valueOf(telefone.getNum().toString().replaceAll("[^0-9]+", "").charAt(1));
+            String a = String.valueOf(telefone.getNum().replaceAll("[^0-9]+", "").charAt(0));
+            String b = String.valueOf(telefone.getNum().replaceAll("[^0-9]+", "").charAt(1));
+            String url;
             if ( a.equals("5") && b.equals("5")) {
-                String url = "https://api.whatsapp.com/send?phone=" + telefone.getNum().replaceAll("[^0-9]+", "");
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);
+                url = "https://api.whatsapp.com/send?phone=" + telefone.getNum().replaceAll("[^0-9]+", "");
             } else {
-                String url = "https://api.whatsapp.com/send?phone=" + "55" + telefone.getNum().replaceAll("[^0-9]+", "");
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);
+                url = "https://api.whatsapp.com/send?phone=" + "55" + telefone.getNum().replaceAll("[^0-9]+", "");
             }
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            startActivity(i);
         });
 
     }
@@ -152,34 +148,27 @@ public class ViewCliente extends AppCompatActivity {
     }
 
     private void initButtonsOnClick () {
-        Editar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ViewCliente.this, AddCliente.class);
-                Bundle bundle = new Bundle();
+        Editar.setOnClickListener(view -> {
+            Intent intent = new Intent(ViewCliente.this, AddCliente.class);
+            Bundle bundle = new Bundle();
 
-                bundle.putInt("ID", id_cliente);
-                intent.putExtras(bundle);
-                startActivityForResult(intent, ALTERAR_CLIENTE);
-            }
+            bundle.putInt("ID", id_cliente);
+            intent.putExtras(bundle);
+            startActivityForResult(intent, ALTERAR_CLIENTE);
         });
 
-        Voltar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (cliente_alterado) {
-                    Intent intent2 = new Intent();
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("ID", cliente.getId());
-                    intent2.putExtras(bundle);
+        Voltar.setOnClickListener(view -> {
+            if (cliente_alterado) {
+                Intent intent2 = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putInt("ID", cliente.getId());
+                intent2.putExtras(bundle);
 
-                    setResult(RESULT_ALT_CLIENTE, intent2);
-                    finish();
-                } else {
-                    setResult(RESULT_CANCELED);
-                    finish();
-                }
+                setResult(RESULT_ALT_CLIENTE, intent2);
+            } else {
+                setResult(RESULT_CANCELED);
             }
+            finish();
         });
     }
 }

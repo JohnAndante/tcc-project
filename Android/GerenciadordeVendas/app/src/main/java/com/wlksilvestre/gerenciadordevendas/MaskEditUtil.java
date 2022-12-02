@@ -96,7 +96,6 @@ public abstract class MaskEditUtil {
                                 .replaceAll("[,]", ".")
                                 .replaceAll("[ ]", "");
 
-        Log.e("INFO DOUBLE", formatted);
         return Double.valueOf(formatted);
     }
 
@@ -118,11 +117,6 @@ public abstract class MaskEditUtil {
         String formatted = NumberFormat.getCurrencyInstance().format(parsed);
         formatted = formatted.replaceAll("[R]", "")
                              .replaceAll("[$]", "");
-        /*
-                             .replaceAll("[,]", "a")
-                             .replaceAll("[.]", ",")
-                             .replaceAll("[a]", ".");
-        */
         return formatted;
     }
 
@@ -138,25 +132,13 @@ public abstract class MaskEditUtil {
 
         String s = new DecimalFormat("#.00").format(value);
 
-        Log.e("INFO MASK ORIGINAL DOUBLE", s);
-
         String cleanString = s.replaceAll("[$,.]", "");
-
-        Log.e("INFO MASK CLEAN STRING", cleanString);
 
         BigDecimal parsed = new BigDecimal(cleanString).setScale(2, BigDecimal.ROUND_FLOOR).divide(new BigDecimal(100), BigDecimal.ROUND_FLOOR);
 
-        Log.e("INFO MASK PARSED", parsed.toString());
-
         String formatted = NumberFormat.getCurrencyInstance().format(parsed);
         formatted = formatted.replaceAll("[R]", "")
-                             .replaceAll("[$]", "");/*
-                             .replaceAll("[,]", "a")
-                             .replaceAll("[.]", ",")
-                             .replaceAll("[a]", ".");
-*/
-
-        Log.e("INFO MASK FORMATTED", formatted);
+                             .replaceAll("[$]", "");
 
         return formatted;
     }
