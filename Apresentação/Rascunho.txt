@@ -1,0 +1,31 @@
+De onde veio a ideia - Problema
+
+Resumo
+
+Mercado atual
+
+Propostas similares
+
+Controle de Vendas
+- Cadastro de clientes (simples);
+- Cadastro das vendas por categoria e produtos;
+- Parcelamentos
+- Notificação de cobrança;
+- Emissão de relatórios (clientes e Categorias);
+- Exportar relatório para PDF.
+- Backup e Restauração;
+- Proteção por senha (opcional);
+- Pagamento total ou parcial.
+- Lembrete de Backup semanal;
+- Apagar lançamentos mais antigos;
+- Suporte online para recuperação de senha.
+
+Tabela de comparação com concorrentes
+
+objetivo do aplicativo
+
+tecnologias utilizadas
+
+fotos do aplicativo
+
+aplicativo funcionando
