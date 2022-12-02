@@ -1,31 +1,73 @@
-De onde veio a ideia - Problema
-
-Resumo
-
-Mercado atual
-
-Propostas similares
-
-Controle de Vendas
-- Cadastro de clientes (simples);
-- Cadastro das vendas por categoria e produtos;
-- Parcelamentos
-- Notificação de cobrança;
-- Emissão de relatórios (clientes e Categorias);
-- Exportar relatório para PDF.
-- Backup e Restauração;
-- Proteção por senha (opcional);
-- Pagamento total ou parcial.
-- Lembrete de Backup semanal;
-- Apagar lançamentos mais antigos;
-- Suporte online para recuperação de senha.
-
-Tabela de comparação com concorrentes
-
-objetivo do aplicativo
-
-tecnologias utilizadas
-
-fotos do aplicativo
-
-aplicativo funcionando
+1 
+ 
+2 - Vendedor Autônomo 
+ Revendedores; 
+ Independentes, sem chefe ou horário fixo; 
+ Sem salário fixo; 
+ Renda depende do lucro das vendas. 
+ 
+3 - Registro de Informações 
+ Maneira tradicional; 
+ Varia conforme a necessidade; 
+ Grande maioria não entrega comprovantes. 
+ 
+4 - Problema atual 
+ Tempo dedicado ao registro e recuperação muito extenso; 
+ Possível perda de informações essenciais para a renda; 
+ Pouco valor perante ao cliente. 
+ 
+ 
+5 - Solução Proposta 
+ Aplicação que permita registrar, consultar e compartilhar 
+ os dados de vendas e produtos; 
+ 
+6 - Mercado Atual - Controle de Vendas 
+ 
+ 
+7 - Gerenciador de vendas - Objetivo 
+ Oferecer uma solução de controle de clientes, produtos, 
+ vendas e pagamentos; 
+ Permitir que suas vendas e pagamentos possuam comprovante, 
+ e que possa ser compartilhado à maneira que  o usuário desejar; 
+ 
+ 
+8 - Gerenciador de vendas - Tecnologias 
+ Android Studio 
+ Java 
+ MySql 
+ 
+ Firebase 
+ Firebase Auth 
+ Cloud Firestore 
+ 
+9 - Gerenciador de Vendas – Autenticação 
+ 
+10 - Gerenciador de Vendas – Cadastro de Clientes 
+ 
+11 - Gerenciador de Vendas  – Cadastro de Produtos 
+ 
+12 - Gerenciador de Vendas  – Registro de Venda 
+ 
+13 - Tabela Comparativa 
+** Controle de Vendas 
+ - Cadastro de clientes (simples); 
+ - Cadastro das vendas por categoria e produtos; 
+ - Parcelamentos 
+ - Notificação de cobrança; 
+ - Emissão de relatórios (clientes e Categorias); 
+ - Exportar relatório para PDF. 
+ - Backup e Restauração; 
+ - Proteção por senha (opcional); 
+ - Pagamento total ou parcial. 
+ - Lembrete de Backup semanal; 
+ - Apagar lançamentos mais antigos; 
+ - Suporte online para recuperação de senha. 
+ 
+14 - Apresentando a Aplicação 
+ 
+15 - Gerenciador de Vendas  - Vantagens 
+ Melhor organização de dados; 
+ Melhor resposta de informações; 
+ Gera valor para o cliente; 
+ Menor risco de perda de dados; 
+ Otimização nos processos diários.
