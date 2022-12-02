@@ -318,6 +318,14 @@ public class AddVenda extends AppCompatActivity {
                 }
             }
         });
+
+        btCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setResult(RESULT_CANCELED);
+                finish();
+            }
+        });
     }
 
     private void initTextViews () {
@@ -431,6 +439,14 @@ public class AddVenda extends AppCompatActivity {
             ok = false;
             editQtdProdutoVenda.requestFocus();
             Toast.makeText(AddVenda.this, "Insira uma quantidade válida para o produto selecionado", Toast.LENGTH_LONG).show();
+        } else
+        if (MaskEditUtil.moneyToDoubleTest(editValorProdutoVenda.getText().toString()) > produtoSelecionado.getValor()) {
+            ok = false;
+            Toast.makeText(AddVenda.this, "Valor do produto não pode ser maior que o cadastrado", Toast.LENGTH_LONG).show();
+        } else
+        if (MaskEditUtil.moneyToDoubleTest(editValorProdutoVenda.getText().toString()) <= 0) {
+            ok = false;
+            Toast.makeText(AddVenda.this, "Insira um valor válido para o produto", Toast.LENGTH_LONG).show();
         }
         return ok;
     }
@@ -444,11 +460,12 @@ public class AddVenda extends AppCompatActivity {
     }
 
     private void startNextAddVendaActivity () {
-        Intent intent = new Intent(AddVenda.this, AddVendaDetails.class);
+        Intent intent = new Intent(AddVenda.this, ViewVenda.class);
         Bundle bundle = new Bundle();
 
         bundle.putInt("ID", vendaRascunho.getId());
         intent.putExtras(bundle);
+        finish();
 
         startActivity(intent);
     }

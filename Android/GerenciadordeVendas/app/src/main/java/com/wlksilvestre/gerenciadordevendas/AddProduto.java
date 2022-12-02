@@ -128,9 +128,11 @@ public class AddProduto extends AppCompatActivity {
             Marca m = db.selectMarca(l.getMarca().getId());
             List<ProdSubcat> prodSubcats = db.listProdSubcatsByProduto(p);
             listaDinamicaSubcat = new ArrayList<>();
-            Categoria c = db.selectFirstProdSubcatByProd(p).getSubcat().getCategoria();
 
             if (!prodSubcats.isEmpty()) {
+                Categoria c = db.selectFirstProdSubcatByProd(p).getSubcat().getCategoria();
+                textCategoria.setText(c.getDescricao());
+                categoriaSelecionada = c;
                 for (ProdSubcat ps : prodSubcats) {
                     listaDinamicaSubcat.add(ps.getSubcat());
                 }
@@ -140,11 +142,9 @@ public class AddProduto extends AppCompatActivity {
             editTextValor.setText(MaskEditUtil.doubleToMoneyValue(p.getValor()));
             textMarca.setText(m.getDescricao());
             textLinha.setText(l.getDescricao());
-            textCategoria.setText(c.getDescricao());
 
             linhaSelecionada = l;
             marcaSelecionada = m;
-            categoriaSelecionada = c;
 
             if (!listaDinamicaSubcat.isEmpty()) {
                 for (Subcat s : listaDinamicaSubcat) {
@@ -182,7 +182,7 @@ public class AddProduto extends AppCompatActivity {
 
                 String desc = editTextDescricao.getText().toString();
 
-                Double valor = MaskEditUtil.moneyToDouble(editTextValor.getText().toString());
+                Double valor = MaskEditUtil.moneyToDoubleTest(editTextValor.getText().toString());
 
                 bundle.putInt("ID", id_produto);
                 if (hasPosicao == true)
@@ -191,21 +191,27 @@ public class AddProduto extends AppCompatActivity {
                 Linha l = db.selectLinha(p.getLinha().getId());
                 Marca m = db.selectMarca(l.getMarca().getId());
                 ProdSubcat psc = db.selectFirstProdSubcatByProd(p);
-                Subcat sc = db.selectSubcat(psc.getSubcat().getId());
-                Categoria c = db.selectCategoria(sc.getCategoria().getId());
+                Categoria c = new Categoria();
+
+                if (psc != null) {
+                    Subcat sc = db.selectSubcat(psc.getSubcat().getId());
+                    c = db.selectCategoria(sc.getCategoria().getId());
+                }
 
                 p.setDescricao(desc);
                 p.setValor(valor);
 
                 m = marcaSelecionada;
                 l = linhaSelecionada;
+                c = categoriaSelecionada;
 
                 p.setLinha(l);
 
                 db.updateProduto(p);
 
-                c = categoriaSelecionada;
 
+                // Método antigo
+                /*
                 // Aqui segue o algoritmo pra trabalhar com as subcategorias existentes
                 // Primero geramos a lista do prodsubcat atual
                 List<ProdSubcat> prodSubcatsOld = db.listProdSubcatsByProduto(p);
@@ -247,6 +253,32 @@ public class AddProduto extends AppCompatActivity {
                 // cada subcategoria na lista de novos, adicionaremos ela ao banco
                 for (ProdSubcat pscNew : prodSubcatsNew) {
                     db.addProdSubcat(pscNew);
+                }
+
+                */
+
+                // Método novo
+                List<ProdSubcat> prodSubcatsOld = db.listProdSubcatsByProduto(p);
+                for (ProdSubcat ps : prodSubcatsOld) {
+                    if (db.deleteAllProdSubcat(ps))
+                        Log.e("DELETADO PRODSUBCAT", ps.getSubcat().getDescricao());
+                    else
+                        Log.e("Não DELETADO PRODSUBCAT", ps.getSubcat().getDescricao());
+                }
+
+                List<ProdSubcat> prodSubcatNew = new ArrayList<>();
+                for (int i = 0; i < chipGroupSubcat.getChildCount(); i++) {
+                    Chip chip = (Chip) chipGroupSubcat.getChildAt(i);
+                    if (chip.isChecked()) {
+                        Log.e("INFO CHIP LOOP 2 / IS CHECKED", chip.getText().toString());
+                        Subcat sct = db.selectSubcat(chip.getId());
+                        prodSubcatNew.add(new ProdSubcat(p, sct));
+                    }
+                }
+
+                for (ProdSubcat psct: prodSubcatNew) {
+                    db.addProdSubcat(psct);
+                    Log.e("INFO PRODSUBCAT SENDO GRAVADO", psct.getProduto().getDescricao() + " - " + psct.getSubcat().getDescricao());
                 }
 
                 db.updateProduto(p);
@@ -696,7 +728,13 @@ public class AddProduto extends AppCompatActivity {
 
         setChipCheckedStyle(chip);
 
-        chip.setOnClickListener(view -> setChipCheckedStyle(chip));
+        chip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setChipCheckedStyle(chip);
+                Log.e("INFO TOUCK CHIP - ", String.valueOf(chip.isChecked()));
+            }
+        });
     }
 
     @SuppressLint("ResourceAsColor")

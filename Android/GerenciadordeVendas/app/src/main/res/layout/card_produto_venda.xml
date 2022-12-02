@@ -27,7 +27,7 @@
         <TextView
             android:id="@+id/tvCifraValorprodutoVenda2"
             style="@style/Text_inner_default"
-            android:layout_marginStart="200dp"
+            android:layout_marginStart="178dp"
             android:text="R$ "
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
@@ -37,6 +37,7 @@
             android:id="@+id/tvValorProdVenda"
             style="@style/Text_inner_default"
             android:text="0,00"
+            android:layout_marginStart="0dp"
             android:textColor="@color/white"
             app:layout_constraintStart_toEndOf="@+id/tvCifraValorprodutoVenda2"
             app:layout_constraintTop_toTopOf="parent" />

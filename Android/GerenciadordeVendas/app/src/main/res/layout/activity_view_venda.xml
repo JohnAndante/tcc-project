@@ -230,21 +230,10 @@
                                 app:layout_constraintTop_toTopOf="parent" />
 
                             <TextView
-                                android:id="@+id/textCifraValorJurosAplicados"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:text="R$ "
-                                android:textColor="@color/white"
-                                android:textSize="15dp"
-                                android:textStyle="bold"
-                                app:layout_constraintStart_toEndOf="@+id/textJurosAplicados"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <TextView
                                 android:id="@+id/tvValorJurosAplicados"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginStart="0dp"
                                 android:layout_marginTop="8dp"
                                 android:maxWidth="150dp"
                                 android:text="0,00"
@@ -252,7 +241,19 @@
                                 android:textColor="@color/white"
                                 android:textSize="15dp"
                                 android:textStyle="bold"
-                                app:layout_constraintStart_toEndOf="@id/textCifraValorJurosAplicados"
+                                app:layout_constraintStart_toEndOf="@+id/textJurosAplicados"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/textPercentJurosAplicados"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text=" %"
+                                android:textColor="@color/white"
+                                android:textSize="15dp"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toEndOf="@+id/tvValorJurosAplicados"
                                 app:layout_constraintTop_toTopOf="parent" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>

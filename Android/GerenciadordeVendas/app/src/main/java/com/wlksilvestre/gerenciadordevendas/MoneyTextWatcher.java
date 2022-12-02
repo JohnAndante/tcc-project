@@ -48,60 +48,46 @@ public class MoneyTextWatcher implements TextWatcher {
 
         editText.removeTextChangedListener(this);
 
-
-
         String a = "";
         String b = "";
         String c = "";
         String d = "";
 
-        Log.e("INFO NUMBER 1 // ", s);
-
         String cleanString = s.replaceAll("[^0-9]+", "")
                 //.replace("[/^0+/]", "");
                 .replaceFirst("^0+(?!$)", "");
-        Log.e("INFO NUMBER 2 // ", cleanString);
 
         if (cleanString.replaceAll("[0]", "").equals(""))
             Log.e("INFO", "True");
 
         if (cleanString.length() > 1) {
             a = cleanString.substring(cleanString.length()-2);
-            Log.e("INFO String a1 // ", a);
         } else
         if (cleanString.length() > 0) {
             a = cleanString.substring(0, cleanString.length());
             a = "0" + a;
-            Log.e("INFO String a2 // ", a);
         }
 
         if (cleanString.length() > 2 && cleanString.length() >= 5) {
             b = cleanString.substring(cleanString.length()-5, cleanString.length()-2);
-            Log.e("INFO String b1 // ", b);
         } else
         if (cleanString.length() > 2) {
             b = cleanString.substring(0, cleanString.length()-2);
-            Log.e("INFO String b2 // ", b);
         }
 
         if (cleanString.length() > 5 && cleanString.length() >= 8) {
             c = cleanString.substring(cleanString.length()-8, cleanString.length()-5);
-            Log.e("INFO String c1 // ", c);
         } else
         if (cleanString.length() > 5) {
             c = cleanString.substring(0, cleanString.length()-5);
-            Log.e("INFO String c2 // ", c);
         }
 
         if (cleanString.length() > 8 && cleanString.length() >= 11) {
             d = cleanString.substring(cleanString.length()-11, cleanString.length()-8);
-            Log.e("INFO String d1 // ", d);
         } else
         if (cleanString.length() > 8) {
             d = cleanString.substring(0, cleanString.length()-8);
-            Log.e("INFO String d2 // ", d);
         }
-
 
         String y = "0," + a;
 
@@ -118,13 +104,8 @@ public class MoneyTextWatcher implements TextWatcher {
         }
 
         formatted = y;
-
-        Log.e("Final Desejado //", "12.450,21");
-        Log.e("Final Obtido // ", y);
-
         editText.setText(formatted);
         editText.setSelection(formatted.length());
-
         editText.addTextChangedListener(this);
     }
 }

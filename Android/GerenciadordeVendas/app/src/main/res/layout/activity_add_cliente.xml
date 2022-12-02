@@ -68,7 +68,7 @@
                 <EditText
                     android:id="@+id/editTelefoneCliente"
                     style="@style/EditText_default"
-                    android:hint="(XX) 9 9999-9999"
+                    android:hint="(__) _____-____"
                     android:inputType="number|phone"
                     android:nextFocusForward="@id/editRuaEndereco" />
 

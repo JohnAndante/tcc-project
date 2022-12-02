@@ -521,7 +521,7 @@ public class AddVendaDetails extends AppCompatActivity {
                 valorTotal = valorTotal + valorParcela;
             }
             valorComJuros = valorTotal;
-            tvValorJuros.setText(MaskEditUtil.doubleToMoneyValue(valorComJuros - venda.getValor()));
+            tvValorJuros.setText(MaskEditUtil.doubleToMoneyValue(pctJuros));
         }
 
         tvValorTotalJuros.setText(MaskEditUtil.doubleToMoneyValue(valorComJuros));

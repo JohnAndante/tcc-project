@@ -154,7 +154,6 @@ public class ListVendas extends AppCompatActivity {
         btVendaVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setResult(RESULT_CANCELED);
                 finish();
             }
         });
@@ -232,8 +231,8 @@ public class ListVendas extends AppCompatActivity {
 
         listViewVendas.setOnItemClickListener((adapterView, view, i, l) -> {
             try {
-                Venda v = (Venda) listViewVendas.getItemAtPosition(i);
-                openVendaData(v, i);
+                VendaQtd vq = (VendaQtd) listViewVendas.getItemAtPosition(i);
+                openVendaData(vq.getVenda(), i);
             } catch (Exception e) {
                 Log.e("ERROR", e.getMessage());
             }
@@ -258,8 +257,8 @@ public class ListVendas extends AppCompatActivity {
 
         listViewVendas.setOnItemClickListener((adapterView, view, i, l) -> {
             try {
-                Venda v = (Venda) listViewVendas.getItemAtPosition(i);
-                openVendaData(v, i);
+                VendaQtd vq = (VendaQtd) listViewVendas.getItemAtPosition(i);
+                openVendaData(vq.getVenda(), i);
             } catch (Exception e) {
                 Log.e("ERROR", e.getMessage());
             }

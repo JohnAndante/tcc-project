@@ -24,6 +24,8 @@
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/drawable/ic_baseline_post_add_24_white.xml" value="0.109" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/drawable/ic_baseline_savings_white_24.xml" value="0.2945" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/drawable/ic_baseline_shopping_bag_24_white.xml" value="0.109" />
+        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/drawable/ic_baseline_whatsapp_white.xml" value="0.1" />
+        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/drawable/ic_whatsapp_icon_seeklogo_com.xml" value="0.2415" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/drawable/iconbg_roundcorners_blue_stroke.xml" value="0.109" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/drawable/iconbg_roundcorners_darkgray_01_stroke.xml" value="0.109" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/drawable/iconbg_roundcorners_lightblue_01.xml" value="0.109" />
@@ -42,7 +44,7 @@
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/activity_add_cliente.xml" value="0.18" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/activity_add_produto.xml" value="0.33" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/activity_add_venda_01.xml" value="0.5" />
-        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/activity_add_venda_02.xml" value="0.39375" />
+        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/activity_add_venda_02.xml" value="0.33" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/activity_list_clients_zero.xml" value="0.358695652173913" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/activity_list_pgtos.xml" value="0.33" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/activity_list_produtos.xml" value="0.1" />
@@ -57,12 +59,13 @@
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/activity_view_cliente.xml" value="0.43291839557399725" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/activity_view_produto.xml" value="0.264945652173913" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/activity_view_teste.xml" value="0.37447916666666664" />
-        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/activity_view_venda.xml" value="0.33" />
+        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/activity_view_venda.xml" value="0.4130841121495327" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/card_categ_main.xml" value="0.3723958333333333" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/card_cidade.xml" value="0.196875" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/card_cliente.xml" value="0.33" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/card_password_reset.xml" value="0.20662568306010928" />
-        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/card_produto.xml" value="0.1" />
+        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/card_produto.xml" value="0.37447916666666664" />
+        <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/card_produto_comprovante.xml" value="0.37447916666666664" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/card_produto_dropdown.xml" value="0.33" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/card_produto_venda.xml" value="0.33" />
         <entry key="..\:/Users/Walke/Documents/TCC/tcc-project/Android/GerenciadordeVendas/app/src/main/res/layout/card_produto_venda_2.xml" value="0.33" />

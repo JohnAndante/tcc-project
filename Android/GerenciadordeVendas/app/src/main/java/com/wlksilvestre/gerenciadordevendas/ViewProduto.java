@@ -67,16 +67,25 @@ public class ViewProduto extends AppCompatActivity {
         idProduto = 0;
         produto_alterado = false;
 
+        chipGroupSubcats.removeViews(0, chipGroupSubcats.getChildCount());
+
         if (intent.hasExtra("ID")) {
             idProduto = intent.getIntExtra("ID", 0);
+
 
             produto = db.selectProduto(idProduto);
             linha = produto.getLinha();
             marca = linha.getMarca();
             prodSubcat = db.selectFirstProdSubcatByProd(produto);
-            subcat = prodSubcat.getSubcat();
-            categoria = subcat.getCategoria();
+
+            if (prodSubcat != null) {
+                subcat = prodSubcat.getSubcat();
+                categoria = subcat.getCategoria();
+            }
+
             List<ProdSubcat> prodSubcats = db.listProdSubcatsByProduto(produto);
+
+            arrayListSubcats = new ArrayList<>();
 
             if (!prodSubcats.isEmpty()) {
                 for (ProdSubcat ps : prodSubcats) {
@@ -123,14 +132,36 @@ public class ViewProduto extends AppCompatActivity {
             linha = produto.getLinha();
             marca = linha.getMarca();
             prodSubcat = db.selectFirstProdSubcatByProd(produto);
-            subcat = prodSubcat.getSubcat();
-            categoria = subcat.getCategoria();
+            if (prodSubcat != null) {
+                subcat = prodSubcat.getSubcat();
+                categoria = subcat.getCategoria();
+            }
+
+            List<ProdSubcat> prodSubcats = db.listProdSubcatsByProduto(produto);
+
+            arrayListSubcats = new ArrayList<>();
+
+            for (int i = 0; i < chipGroupSubcats.getChildCount(); i++) {
+                chipGroupSubcats.removeView(chipGroupSubcats.getChildAt(i));
+            }
+
+            if (!prodSubcats.isEmpty()) {
+                for (ProdSubcat ps : prodSubcats) {
+                    arrayListSubcats.add(ps.getSubcat());
+                }
+            }
 
             textDesc.setText(produto.getDescricao());
-            textValor.setText(MaskEditUtil.doubleToMoneyValue(produto.getValor()));
+            textValor.setText("R$ " + MaskEditUtil.doubleToMoneyValue(produto.getValor()));
             textMarca.setText(marca.getDescricao());
             textLinha.setText(linha.getDescricao());
             textCategoria.setText(categoria.getDescricao());
+
+            if (!arrayListSubcats.isEmpty()) {
+                for (Subcat s : arrayListSubcats) {
+                    addChipSubcat(s.getDescricao());
+                }
+            }
         }
     }
 

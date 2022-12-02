@@ -35,7 +35,7 @@ public class AdapterProdutoVenda2 extends ArrayAdapter {
         TextView textQtdUnitProduto = view.findViewById(R.id.tvQtdUnitProdVenda);
 
         // Definir bg conforme a categoria do produto
-        //imageIconeProduto.setBackground();
+        // imageIconeProduto.setBackground();
         textNomeProduto.setText(data.get(position).getProduto().getDescricao());
         textValorProduto.setText(MaskEditUtil.doubleToMoneyValue(data.get(position).getValor_unit()));
         textQtdUnitProduto.setText(String.valueOf(data.get(position).getQtd()));

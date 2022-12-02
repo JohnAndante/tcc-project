@@ -30,6 +30,8 @@
         <TextView
             android:id="@+id/tvNomeProduto"
             style="@style/Text_inner_default"
+            android:maxWidth="250dp"
+            android:maxLines="2"
             android:textColor="@color/white"
             android:layout_marginStart="10dp"
             app:layout_constraintTop_toTopOf="parent"

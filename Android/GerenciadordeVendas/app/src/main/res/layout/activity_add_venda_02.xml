@@ -143,22 +143,22 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/textCifraValorJurosAplicados"
+                        android:id="@+id/tvValorJurosAplicados"
                         style="@style/Text_inner_default"
                         android:layout_marginStart="202dp"
-                        android:text="R$ "
+                        android:maxWidth="120dp"
+                        android:text="0,00"
                         android:textColor="@color/white"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent" />
 
                     <TextView
-                        android:id="@+id/tvValorJurosAplicados"
+                        android:id="@+id/textPercentJurosAplicados"
                         style="@style/Text_inner_default"
-                        android:maxWidth="120dp"
-                        android:text="0,00"
+                        android:text=" %"
                         android:textColor="@color/white"
-                        app:layout_constraintStart_toEndOf="@id/textCifraValorJurosAplicados"
+                        app:layout_constraintStart_toEndOf="@id/tvValorJurosAplicados"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent" />
 

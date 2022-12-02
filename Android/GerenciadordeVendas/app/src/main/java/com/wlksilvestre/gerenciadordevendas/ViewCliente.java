@@ -1,9 +1,11 @@
 package com.wlksilvestre.gerenciadordevendas;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -15,7 +17,6 @@ public class ViewCliente extends AppCompatActivity {
 
     private Button Editar;
     private Button Voltar;
-
     private TextView textNome;
     private TextView textTelefone;
     private TextView textRua;
@@ -24,6 +25,7 @@ public class ViewCliente extends AppCompatActivity {
     private TextView textBairro;
     private TextView textUf;
     private TextView textCidade;
+    private ImageView imgWhatsapp;
 
     BancoDadosCliente db = new BancoDadosCliente(this);
 
@@ -118,12 +120,35 @@ public class ViewCliente extends AppCompatActivity {
         textBairro   = (TextView) findViewById(R.id.tvBairroEndereco);
         textUf       = (TextView) findViewById(R.id.tvUfEndereco);
         textCidade   = (TextView) findViewById(R.id.tvCidadeEndereco);
+        imgWhatsapp  = (ImageView) findViewById(R.id.imgWhatsapp);
+
+        textTelefone.setOnClickListener(view -> {
+            Intent intent = new Intent(Intent.ACTION_DIAL);
+            intent.setData(Uri.parse("tel:" + telefone.getNum().replaceAll("[^0-9]+", "")));
+            startActivity(intent);
+        });
+
+        imgWhatsapp.setOnClickListener(view -> {
+            String a = String.valueOf(telefone.getNum().toString().replaceAll("[^0-9]+", "").charAt(0));
+            String b = String.valueOf(telefone.getNum().toString().replaceAll("[^0-9]+", "").charAt(1));
+            if ( a.equals("5") && b.equals("5")) {
+                String url = "https://api.whatsapp.com/send?phone=" + telefone.getNum().replaceAll("[^0-9]+", "");
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+            } else {
+                String url = "https://api.whatsapp.com/send?phone=" + "55" + telefone.getNum().replaceAll("[^0-9]+", "");
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+            }
+        });
+
     }
 
     private void initButtons () {
         Editar = (Button) findViewById(R.id.btClienteEditar);
         Voltar = (Button) findViewById(R.id.btClienteVoltar);
-
     }
 
     private void initButtonsOnClick () {

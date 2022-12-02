@@ -33,7 +33,7 @@ public class AdapterProdutoVenda extends ArrayAdapter {
         TextView textQtdProduto = view.findViewById(R.id.tvQtdProdVenda);
 
         textDescProduto.setText(data.get(position).getProduto().getDescricao());
-        textValorProduto.setText(MaskEditUtil.doubleToMoneyValue(data.get(position).getProduto().getValor()));
+        textValorProduto.setText(MaskEditUtil.doubleToMoneyValue(data.get(position).getValor_unit()));
         textQtdProduto.setText(String.valueOf(data.get(position).getQtd()));
 
         return view;

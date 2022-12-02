@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -107,7 +108,6 @@ public class AddCliente extends AppCompatActivity {
         initButtonsCfg();
         initButtonsOnclick();
         initEditTexts();
-        changellButtons();
         initEditOnFocus();
 
         Intent intent = getIntent();
@@ -327,6 +327,8 @@ public class AddCliente extends AppCompatActivity {
         editTextBairro      = findViewById(R.id.editBairroEndereco);
         textUf              = findViewById(R.id.editUfEndereco);
         textCidade          = findViewById(R.id.editCidadeEndereco);
+
+        editTextTelefone.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
     }
 
     private void initEditOnFocus(){
@@ -334,35 +336,32 @@ public class AddCliente extends AppCompatActivity {
             @Override
             public void onFocusChange(View view, boolean b) {
                 //    if (editTextNome.isFocused() && )
-                changellButtons();
             }
         });
 
         editTextTelefone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                changellButtons();
+
             }
         });
 
         editTextRua.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                changellButtons();
+
             }
         });
 
         editTextNum.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                changellButtons();
             }
         });
 
         editTextCompl.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                changellButtons();
             }
         });
 
@@ -379,20 +378,19 @@ public class AddCliente extends AppCompatActivity {
         textUf.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                changellButtons();
+                ;
             }
         });
 
         textCidade.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                changellButtons();
+
             }
         });
     }
 
-    private void changellButtons(){
-    }
+
 
     private void estadoDropdown () {
 

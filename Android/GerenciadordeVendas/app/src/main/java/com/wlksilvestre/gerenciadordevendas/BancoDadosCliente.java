@@ -2357,7 +2357,9 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
         db.insert(PROD_SUBCAT_TABLE, null, values);
     }
 
+    /*
     public void deleteProdSubcat (@NonNull ProdSubcat prodSubcat) {
+
         SQLiteDatabase db = this.getWritableDatabase();
 
         String QUERY = (" DELETE FROM " + PROD_SUBCAT_TABLE +
@@ -2366,6 +2368,12 @@ public class BancoDadosCliente extends SQLiteOpenHelper {
 
         db.rawQuery(QUERY, null);
         db.close();
+    }
+    */
+
+    public boolean deleteAllProdSubcat (@NonNull ProdSubcat prodSubcat) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(PROD_SUBCAT_TABLE, PROD_SUBCAT_PROD + "=" + prodSubcat.getProduto().getId(), null) > 0;
     }
 
     public ProdSubcat selectFirstProdSubcatByProd (@NonNull Produto produto) {
